@@ -1,6 +1,7 @@
 package com.project.db;
 
 import com.project.db.DatabaseContract.ActivityTable;
+import com.project.model.ActivityModel;
 
 import android.content.ContentValues;
 import android.content.Context;
