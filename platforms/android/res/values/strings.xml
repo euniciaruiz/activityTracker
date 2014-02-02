@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+
     <string name="app_name">ActivityTracker</string>
     <string name="title_activity_create">CreateActivity</string>
     <string name="action_settings">Settings</string>
@@ -18,4 +19,6 @@
     <string name="add_repetition">Repetition</string>
     <string name="add_notification">Notification</string>
     <string name="button_createActivity">Create Activity</string>
+    <string name="selectdate">Select Start Date</string>
+
 </resources>
