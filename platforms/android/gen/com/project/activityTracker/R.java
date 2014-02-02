@@ -10,14 +10,80 @@ package com.project.activityTracker;
 public final class R {
     public static final class attr {
     }
+    public static final class dimen {
+        /**  Default screen margins, per the Android Design guidelines. 
+
+         Customize dimensions originally defined in res/values/dimens.xml (such as
+         screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
+    
+         */
+        public static final int activity_horizontal_margin=0x7f050000;
+        public static final int activity_vertical_margin=0x7f050001;
+    }
     public static final class drawable {
         public static final int icon=0x7f020000;
     }
+    public static final class id {
+        public static final int action_settings=0x7f09000e;
+        public static final int btnCreateActivity=0x7f09000b;
+        public static final int inputAlert=0x7f090008;
+        public static final int inputDescription=0x7f090001;
+        public static final int inputEndDate=0x7f090004;
+        public static final int inputEndTime=0x7f090006;
+        public static final int inputLocation=0x7f090002;
+        public static final int inputNotification=0x7f09000a;
+        public static final int inputPriority=0x7f090007;
+        public static final int inputRepetition=0x7f090009;
+        public static final int inputStartDate=0x7f090003;
+        public static final int inputStartTime=0x7f090005;
+        public static final int inputTitle=0x7f090000;
+        public static final int listView1=0x7f09000d;
+        public static final int testbutton=0x7f09000c;
+    }
     public static final class layout {
-        public static final int main_screen=0x7f030000;
+        public static final int activity_create=0x7f030000;
+        public static final int main_screen=0x7f030001;
+    }
+    public static final class menu {
+        public static final int create=0x7f080000;
+        public static final int main_screen_actions=0x7f080001;
     }
     public static final class string {
-        public static final int app_name=0x7f050000;
+        public static final int action_settings=0x7f060002;
+        /**  Create Strings 
+         */
+        public static final int add_activity=0x7f060003;
+        public static final int add_alert=0x7f06000c;
+        public static final int add_description=0x7f060005;
+        public static final int add_endDate=0x7f060008;
+        public static final int add_endTime=0x7f06000a;
+        public static final int add_location=0x7f060006;
+        public static final int add_notification=0x7f06000e;
+        public static final int add_priority=0x7f06000b;
+        public static final int add_repetition=0x7f06000d;
+        public static final int add_startDate=0x7f060007;
+        public static final int add_startTime=0x7f060009;
+        public static final int add_title=0x7f060004;
+        public static final int app_name=0x7f060000;
+        public static final int button_createActivity=0x7f06000f;
+        public static final int title_activity_create=0x7f060001;
+    }
+    public static final class style {
+        /** 
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    
+
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        
+         */
+        public static final int AppBaseTheme=0x7f070000;
+        /**  Application theme. 
+ All customizations that are NOT specific to a particular API-level can go here. 
+         */
+        public static final int AppTheme=0x7f070001;
     }
     public static final class xml {
         public static final int config=0x7f040000;

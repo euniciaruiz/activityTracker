@@ -1,4 +1,21 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="app_name">ActivityTracker</string>
+    <string name="title_activity_create">CreateActivity</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Create Strings -->
+    <string name="add_activity">Add Activity</string>
+    <string name="add_title">Title</string>
+    <string name="add_description">Description</string>
+    <string name="add_location">Location</string>
+    <string name="add_startDate">Start Date</string>
+    <string name="add_endDate">End Date</string>
+    <string name="add_startTime">Start Time</string>
+    <string name="add_endTime">End Time</string>
+    <string name="add_priority">Priority</string>
+    <string name="add_alert">Alert</string>
+    <string name="add_repetition">Repetition</string>
+    <string name="add_notification">Notification</string>
+    <string name="button_createActivity">Create Activity</string>
 </resources>

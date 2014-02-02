@@ -19,17 +19,33 @@
 
 package com.project.activityTracker;
 
+import org.apache.cordova.CordovaActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
-import org.apache.cordova.*;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.View;
 
 public class ActivityTracker extends CordovaActivity 
 {
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_screen);
-        
+        setContentView(R.layout.main_screen);   
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	// Inflate the menu items for use in the action bar
+    	MenuInflater inflater = getMenuInflater();
+    	inflater.inflate(R.menu.main_screen_actions, menu);
+    	return super.onCreateOptionsMenu(menu);
+    }
+
+    public void addActivity(View view) {
+    	Intent intent = new Intent(this, CreateActivity.class);
+    	startActivity(intent);
     }
 }
 
