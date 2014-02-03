@@ -73,4 +73,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.insert(CREATE_TABLE_ACTIVTY_TRACKER, null, values);
 		db.close();
 	}
+	
+	public int updateActivity(ActivityModel activity){
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		ContentValues values = new ContentValues();
+		values.put(ActivityTable.COLUMN_NAME_TITLE, activity.getTitle());
+		values.put(ActivityTable.COLUMN_NAME_DESCRIPTION, activity.getDescription());
+		values.put(ActivityTable.COLUMN_NAME_LOCATION, activity.getLocation());
+		values.put(ActivityTable.COLUMN_NAME_START_DATE, activity.getStart_date());
+		values.put(ActivityTable.COLUMN_NAME_END_DATE, activity.getEnd_date());
+		values.put(ActivityTable.COLUMN_NAME_START_TIME, activity.getStart_time());
+		values.put(ActivityTable.COLUMN_NAME_END_TIME, activity.getEnd_time());
+		values.put(ActivityTable.COLUMN_NAME_PRIORITY, activity.getPriority());
+		values.put(ActivityTable.COLUMN_NAME_ALERT, activity.getAlert());
+		values.put(ActivityTable.COLUMN_NAME_REPETITION, activity.getRepetition());
+		values.put(ActivityTable.COLUMN_NAME_NOTIFICATION, activity.getNotification());
+		
+		return db.update(ActivityTable.TABLE_NAME, values, ActivityTable.COLUMN_NAME_ID + " = ?", 
+				new String[] { String.valueOf(activity.getId()) } );
+		
+	}
 }
