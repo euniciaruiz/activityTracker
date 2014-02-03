@@ -1,10 +1,14 @@
 package com.project.db;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.project.db.DatabaseContract.ActivityTable;
 import com.project.model.ActivityModel;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -73,4 +77,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.insert(CREATE_TABLE_ACTIVTY_TRACKER, null, values);
 		db.close();
 	}
+	
+	public List<String> readActivityTitle(){
+		SQLiteDatabase db = this.getReadableDatabase();
+		List<String> titles = new ArrayList<String>();
+		String[] projection = {ActivityTable.COLUMN_NAME_TITLE};
+
+		Cursor c = db.query(
+				ActivityTable.TABLE_NAME,  			 // The table to query
+				projection,     // The columns to return
+				null,                                // The columns for the WHERE clause
+				null,                           	 // The values for the WHERE clause
+				null,                                // don't group the rows
+				null,                                // don't filter by row groups
+				null								 // The sort order
+				);
+		
+		while(c.moveToNext()){
+			String title = c.getString(0);
+			
+			titles.add(title);
+		}
+		return titles;
+	}
+	
+	
+	
 }

@@ -26,15 +26,19 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.Button;
 
 public class ActivityTracker extends CordovaActivity 
 {
+	Button showBtn;
+	Intent showActivity;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_screen);   
+        setContentView(R.layout.main_screen);  
+       
     }
-    
+   
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	// Inflate the menu items for use in the action bar
@@ -47,5 +51,13 @@ public class ActivityTracker extends CordovaActivity
     	Intent intent = new Intent(this, CreateActivity.class);
     	startActivity(intent);
     }
+    
+    public void showActivity(View v){
+    	Intent intent = new Intent(this, ShowActivity.class);
+    	startActivity(intent);
+    }
+    
+    
+    
 }
 
