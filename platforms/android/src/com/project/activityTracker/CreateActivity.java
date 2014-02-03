@@ -36,7 +36,8 @@ public class CreateActivity extends Activity implements OnClickListener {
 	EditText inputRepetition;
 	EditText inputNotification;
 	
-	private ImageButton ib;
+	private ImageButton startDateCalendar;
+	private ImageButton endDateCalendar;
 	private Calendar cal;
 	private int day;
 	private int month;
@@ -52,15 +53,27 @@ public class CreateActivity extends Activity implements OnClickListener {
 		setupActionBar();
 		
 		inputTitle = (EditText) findViewById(R.id.inputTitle);
-		Button btnCreateProduct = (Button) findViewById(R.id.btnCreateActivity);
+		inputDescription = (EditText) findViewById(R.id.inputDescription);
+		inputLocation = (EditText) findViewById(R.id.inputLocation);
+		inputStartDate = (EditText) findViewById(R.id.inputStartDate);
+		startDateCalendar = (ImageButton) findViewById(R.id.calendarImageButton1);
+		inputEndDate = (EditText) findViewById(R.id.inputEndDate);
+		endDateCalendar = (ImageButton) findViewById(R.id.calendarImageButton2);
+		inputStartTime = (EditText) findViewById(R.id.inputStartTime);
+		inputEndTime = (EditText) findViewById(R.id.inputEndTime);
+		inputPriority = (EditText) findViewById(R.id.inputPriority);
+		inputAlert = (EditText) findViewById(R.id.inputAlert);
+		inputRepetition = (EditText) findViewById(R.id.inputRepetition);
+		inputNotification = (EditText) findViewById(R.id.inputNotification);
 
-		ib = (ImageButton) findViewById(R.id.imageButton1);
 		cal = Calendar.getInstance();
 		day = cal.get(Calendar.DAY_OF_MONTH);
 		month = cal.get(Calendar.MONTH);
 		year = cal.get(Calendar.YEAR);
-		et = (EditText) findViewById(R.id.editText);
-		ib.setOnClickListener(this);
+		startDateCalendar.setOnClickListener(this);
+		endDateCalendar.setOnClickListener(this);
+		
+		Button btnCreateProduct = (Button) findViewById(R.id.btnCreateActivity);
 		  
 		btnCreateProduct.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -72,16 +85,16 @@ public class CreateActivity extends Activity implements OnClickListener {
 				activity = new ActivityModel();
 				Log.d("Insert: ", "Inserting ..");
 				activity.setTitle(inputTitle.getText().toString());
-		        activity.setDescription(inputTitle.getText().toString());
-		        activity.setLocation(inputTitle.getText().toString());
-		        activity.setStart_date(inputTitle.getText().toString());
-		        activity.setEnd_date(inputTitle.getText().toString());
-		        activity.setStart_time(inputTitle.getText().toString());
-		        activity.setEnd_time(inputTitle.getText().toString());
-		        activity.setPriority(inputTitle.getText().toString());
-		        activity.setAlert(inputTitle.getText().toString());
-		        activity.setRepetition(inputTitle.getText().toString());
-		        activity.setNotification(inputTitle.getText().toString());
+		        activity.setDescription(inputDescription.getText().toString());
+		        activity.setLocation(inputLocation.getText().toString());
+		        activity.setStart_date(inputStartDate.getText().toString());
+		        activity.setEnd_date(inputEndDate.getText().toString());
+		        activity.setStart_time(inputStartTime.getText().toString());
+		        activity.setEnd_time(inputEndTime.getText().toString());
+		        activity.setPriority(inputPriority.getText().toString());
+		        activity.setAlert(inputAlert.getText().toString());
+		        activity.setRepetition(inputRepetition.getText().toString());
+		        activity.setNotification(inputNotification.getText().toString());
 				
 				db.createActivity(activity);
 				

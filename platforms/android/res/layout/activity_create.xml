@@ -62,7 +62,7 @@
 	        android:text="@string/add_location"
 	        android:textSize="17sp" />
 	
-	        <!-- Input location -->
+	    <!-- Input location -->
         <EditText
             android:id="@+id/inputLocation"
             android:layout_width="fill_parent"
@@ -73,22 +73,29 @@
 
         <!-- Start Date Label -->
         <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dip"
-            android:paddingRight="10dip"
-            android:paddingTop="10dip"
-            android:text="@string/add_startDate"
-            android:textSize="17sp" />
-
-        <!-- Input Start Date -->
-        <EditText
-            android:id="@+id/inputStartDate"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dip"
-            android:layout_marginBottom="15dip"
-            android:singleLine="true" />
+	    	android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="10dip"
+	        android:paddingRight="10dip"
+	        android:paddingTop="10dip"
+	        android:text="@string/add_startDate"
+	        android:textSize="17sp" />
+	
+	    <EditText
+	        android:id="@+id/inputStartDate"
+	        android:layout_width="224dp"
+	        android:layout_height="wrap_content"
+	        android:layout_margin="5dp"
+	        android:layout_marginBottom="15dp"
+	        android:editable="false" />
+	    
+	    <ImageButton
+	        android:id="@+id/calendarImageButton1"
+	        android:layout_width="50dp"
+	        android:layout_height="44dp"
+	        android:contentDescription="@string/selectdate"
+	        android:cropToPadding="false"
+	        android:src="@drawable/calendar_icon" />
 
         <!-- End Date Label -->
         <TextView
@@ -100,14 +107,21 @@
             android:text="@string/add_endDate"
             android:textSize="17sp" />
 
-        <!-- Input End Date -->
         <EditText
-            android:id="@+id/inputEndDate"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dip"
-            android:layout_marginBottom="15dip"
-            android:singleLine="true" />
+	        android:id="@+id/inputEndDate"
+	        android:layout_width="224dp"
+	        android:layout_height="wrap_content"
+	        android:layout_margin="5dp"
+	        android:layout_marginBottom="15dp"
+	        android:editable="false" />
+	    
+	    <ImageButton
+	        android:id="@+id/calendarImageButton2"
+	        android:layout_width="50dp"
+	        android:layout_height="44dp"
+	        android:contentDescription="@string/selectdate"
+	        android:cropToPadding="false"
+	        android:src="@drawable/calendar_icon" />
 
 		<!-- Start Time Label -->
 	    <TextView
@@ -119,21 +133,14 @@
 	        android:text="@string/add_startTime"
 	        android:textSize="17sp" />
 	
-	    <EditText
-	        android:id="@+id/editText"
-	        android:layout_width="224dp"
-	        android:layout_height="wrap_content"
-	        android:layout_margin="5dp"
-	        android:layout_marginBottom="15dp"
-	        android:editable="false" />
-	
-	    <ImageButton
-	        android:id="@+id/imageButton1"
-	        android:layout_width="50dp"
-	        android:layout_height="44dp"
-	        android:contentDescription="@string/selectdate"
-	        android:cropToPadding="false"
-	        android:src="@drawable/calendar_icon" />
+	    <!-- Input Start Time -->
+        <EditText
+            android:id="@+id/inputStartTime"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dip"
+            android:layout_marginBottom="15dip"
+            android:singleLine="true" />
 
         <!-- End Time Label -->
 

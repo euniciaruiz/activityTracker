@@ -1,12 +1,12 @@
 package com.project.db;
 
-import com.project.db.DatabaseContract.ActivityTable;
-import com.project.model.ActivityModel;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.project.db.DatabaseContract.ActivityTable;
+import com.project.model.ActivityModel;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 	// If you change the database schema, you must increment the database version.
@@ -15,7 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	private static final String CREATE_TABLE_ACTIVTY_TRACKER =
 		"CREATE TABLE " + DatabaseContract.ActivityTable.TABLE_NAME + "(" +
-			ActivityTable.COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+				ActivityTable.COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 	    		ActivityTable.COLUMN_NAME_TITLE + " TEXT UNIQUE NOT NULL," +
 	    		ActivityTable.COLUMN_NAME_DESCRIPTION + " TEXT," +
 	    		ActivityTable.COLUMN_NAME_LOCATION + " TEXT," +
@@ -70,7 +70,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(ActivityTable.COLUMN_NAME_NOTIFICATION, activity.getNotification());
 
 		// insert row
-		db.insert(CREATE_TABLE_ACTIVTY_TRACKER, null, values);
+		db.insert(ActivityTable.TABLE_NAME, null, values);
 		db.close();
 	}
 }

@@ -20,5 +20,7 @@
     <string name="add_notification">Notification</string>
     <string name="button_createActivity">Create Activity</string>
     <string name="selectdate">Select Start Date</string>
+    <string name="title_activity_test">Test</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

@@ -32,7 +32,7 @@ public class ActivityTracker extends CordovaActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_screen);   
+        setContentView(R.layout.main_screen);
     }
     
     @Override
@@ -48,4 +48,3 @@ public class ActivityTracker extends CordovaActivity
     	startActivity(intent);
     }
 }
-
