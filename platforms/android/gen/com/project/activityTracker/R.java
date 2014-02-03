@@ -40,7 +40,7 @@ public final class R {
         public static final int inputStartDate=0x7f090003;
         public static final int inputStartTime=0x7f090007;
         public static final int inputTitle=0x7f090000;
-        public static final int listView1=0x7f09000f;
+        public static final int showBtn=0x7f09000f;
         public static final int testbutton=0x7f09000e;
     }
     public static final class layout {

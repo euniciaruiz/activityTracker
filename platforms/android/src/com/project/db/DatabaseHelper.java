@@ -1,7 +1,15 @@
 package com.project.db;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.project.db.DatabaseContract.ActivityTable;
+import com.project.model.ActivityModel;
+
+>>>>>>> 61cd1e63442a818dc1bf9c289d1db5572c374d59
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -72,5 +80,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		// insert row
 		db.insert(ActivityTable.TABLE_NAME, null, values);
 		db.close();
+	}
+	
+	public List<String> readActivityTitle(){
+		SQLiteDatabase db = this.getReadableDatabase();
+		List<String> titles = new ArrayList<String>();
+		String[] projection = {ActivityTable.COLUMN_NAME_TITLE};
+
+		Cursor c = db.query(
+				ActivityTable.TABLE_NAME,  			 // The table to query
+				projection,     // The columns to return
+				null,                                // The columns for the WHERE clause
+				null,                           	 // The values for the WHERE clause
+				null,                                // don't group the rows
+				null,                                // don't filter by row groups
+				null								 // The sort order
+				);
+		
+		while(c.moveToNext()){
+			String title = c.getString(0);
+			
+			titles.add(title);
+		}
+		return titles;
+	}
+	
+	public int updateActivity(ActivityModel activity){
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		ContentValues values = new ContentValues();
+		values.put(ActivityTable.COLUMN_NAME_TITLE, activity.getTitle());
+		values.put(ActivityTable.COLUMN_NAME_DESCRIPTION, activity.getDescription());
+		values.put(ActivityTable.COLUMN_NAME_LOCATION, activity.getLocation());
+		values.put(ActivityTable.COLUMN_NAME_START_DATE, activity.getStart_date());
+		values.put(ActivityTable.COLUMN_NAME_END_DATE, activity.getEnd_date());
+		values.put(ActivityTable.COLUMN_NAME_START_TIME, activity.getStart_time());
+		values.put(ActivityTable.COLUMN_NAME_END_TIME, activity.getEnd_time());
+		values.put(ActivityTable.COLUMN_NAME_PRIORITY, activity.getPriority());
+		values.put(ActivityTable.COLUMN_NAME_ALERT, activity.getAlert());
+		values.put(ActivityTable.COLUMN_NAME_REPETITION, activity.getRepetition());
+		values.put(ActivityTable.COLUMN_NAME_NOTIFICATION, activity.getNotification());
+		
+		return db.update(ActivityTable.TABLE_NAME, values, ActivityTable.COLUMN_NAME_ID + " = ?", 
+				new String[] { String.valueOf(activity.getId()) } );
 	}
 }

@@ -41,10 +41,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.project.activityTracker.ActivityTracker" />
         </activity>
+        <activity
+            android:name="com.project.activityTracker.ShowActivity"
+            android:parentActivityName="com.project.activityTracker.ActivityTracker" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.project.activityTracker.ActivityTracker" />
+        </activity>
     </application>
 
     <uses-sdk
-        android:minSdkVersion="10"
-        android:targetSdkVersion="19" />
+        android:minSdkVersion="8"
+        android:targetSdkVersion="17" />
 
 </manifest>
