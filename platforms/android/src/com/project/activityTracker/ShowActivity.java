@@ -31,8 +31,16 @@ public class ShowActivity extends ListActivity{
 		
 	}
 
+<<<<<<< HEAD
 	protected void onListItemClick(ListView l, View v,int position, long id){
 		String s = (String) getListAdapter().getItem(position);
+=======
+	@SuppressWarnings("deprecation")
+	@Override
+	public void onClick(View arg0) {
+		showDialog(0);
+		
+>>>>>>> 7ffdf34bdc17ffe7550c7fb032405d7fb29fc774
 	}
 	
 }

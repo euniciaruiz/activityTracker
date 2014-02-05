@@ -20,7 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	private static final String CREATE_TABLE_ACTIVTY_TRACKER =
 		"CREATE TABLE " + DatabaseContract.ActivityTable.TABLE_NAME + "(" +
-			ActivityTable.COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+				ActivityTable.COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 	    		ActivityTable.COLUMN_NAME_TITLE + " TEXT UNIQUE NOT NULL," +
 	    		ActivityTable.COLUMN_NAME_DESCRIPTION + " TEXT," +
 	    		ActivityTable.COLUMN_NAME_LOCATION + " TEXT," +
@@ -75,8 +75,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(ActivityTable.COLUMN_NAME_NOTIFICATION, activity.getNotification());
 
 		// insert row
+<<<<<<< HEAD
 		db.insert(CREATE_TABLE_ACTIVTY_TRACKER, null, values);
 		db.close(p);
+=======
+		db.insert(ActivityTable.TABLE_NAME, null, values);
+		db.close();
+>>>>>>> 7ffdf34bdc17ffe7550c7fb032405d7fb29fc774
 	}
 	
 	public List<String> readActivityTitle(){
@@ -103,8 +108,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return titles;
 	}
 	
+<<<<<<< HEAD
 
 	
+=======
+>>>>>>> 7ffdf34bdc17ffe7550c7fb032405d7fb29fc774
 	public int updateActivity(ActivityModel activity){
 		SQLiteDatabase db = this.getWritableDatabase();
 		
@@ -123,6 +131,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		return db.update(ActivityTable.TABLE_NAME, values, ActivityTable.COLUMN_NAME_ID + " = ?", 
 				new String[] { String.valueOf(activity.getId()) } );
-		
 	}
 }
