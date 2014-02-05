@@ -6,15 +6,11 @@ import java.util.List;
 import com.project.db.DatabaseContract.ActivityTable;
 import com.project.model.ActivityModel;
 
->>>>>>> 61cd1e63442a818dc1bf9c289d1db5572c374d59
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import com.project.db.DatabaseContract.ActivityTable;
-import com.project.model.ActivityModel;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 	// If you change the database schema, you must increment the database version.

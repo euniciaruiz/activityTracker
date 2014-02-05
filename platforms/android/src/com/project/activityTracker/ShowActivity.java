@@ -33,6 +33,7 @@ public class ShowActivity extends ListActivity implements OnClickListener{
 		
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onClick(View arg0) {
 		showDialog(0);
