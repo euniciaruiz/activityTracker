@@ -23,5 +23,6 @@
     <string name="selectdate">Select Start Date</string>
     <string name="title_activity_test">Test</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_activity_controller">ActivityController</string>
 
 </resources>

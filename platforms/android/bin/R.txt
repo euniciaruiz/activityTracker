@@ -43,6 +43,7 @@ int string button_createActivity 0x7f060010
 int string hello_world 0x7f060013
 int string pick_startTime 0x7f06000a
 int string selectdate 0x7f060011
+int string title_activity_activity_controller 0x7f060014
 int string title_activity_create 0x7f060001
 int string title_activity_test 0x7f060012
 int style AppBaseTheme 0x7f070000

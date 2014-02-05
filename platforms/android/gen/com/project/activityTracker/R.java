@@ -74,6 +74,7 @@ public final class R {
         public static final int hello_world=0x7f060013;
         public static final int pick_startTime=0x7f06000a;
         public static final int selectdate=0x7f060011;
+        public static final int title_activity_activity_controller=0x7f060014;
         public static final int title_activity_create=0x7f060001;
         public static final int title_activity_test=0x7f060012;
     }
