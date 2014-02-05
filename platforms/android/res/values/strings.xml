@@ -21,11 +21,8 @@
     <string name="add_notification">Notification</string>
     <string name="button_createActivity">Create Activity</string>
     <string name="selectdate">Select Start Date</string>
-<<<<<<< HEAD
     <string name="title_activity_main">MainActivity</string>
-=======
     <string name="title_activity_test">Test</string>
->>>>>>> 7ffdf34bdc17ffe7550c7fb032405d7fb29fc774
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_activity_controller">ActivityController</string>
 

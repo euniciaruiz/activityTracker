@@ -18,25 +18,15 @@ int id inputRepetition 0x7f09000d
 int id inputStartDate 0x7f090003
 int id inputStartTime 0x7f090007
 int id inputTitle 0x7f090000
-<<<<<<< HEAD
-int id listView1 0x7f09000e
-int id testbutton 0x7f09000d
-=======
-int id showBtn 0x7f090011
+int id listView1 0x7f090011
 int id startTimeImageButton 0x7f090008
 int id testbutton 0x7f090010
->>>>>>> 7ffdf34bdc17ffe7550c7fb032405d7fb29fc774
 int layout activity_create 0x7f030000
 int layout activity_main 0x7f030001
 int layout main_screen 0x7f030002
 int menu create 0x7f080000
-<<<<<<< HEAD
 int menu main 0x7f080001
 int menu main_screen_actions 0x7f080002
-int menu time_picker 0x7f080003
-=======
-int menu main_screen_actions 0x7f080001
->>>>>>> 7ffdf34bdc17ffe7550c7fb032405d7fb29fc774
 int string action_settings 0x7f060002
 int string add_activity 0x7f060003
 int string add_alert 0x7f06000d
@@ -51,21 +41,14 @@ int string add_startDate 0x7f060007
 int string add_startTime 0x7f060009
 int string add_title 0x7f060004
 int string app_name 0x7f060000
-<<<<<<< HEAD
-int string button_createActivity 0x7f06000f
-int string hello_world 0x7f060012
-int string selectdate 0x7f060010
-int string title_activity_create 0x7f060001
-int string title_activity_main 0x7f060011
-=======
 int string button_createActivity 0x7f060010
-int string hello_world 0x7f060013
+int string hello_world 0x7f060014
 int string pick_startTime 0x7f06000a
 int string selectdate 0x7f060011
-int string title_activity_activity_controller 0x7f060014
+int string title_activity_activity_controller 0x7f060015
 int string title_activity_create 0x7f060001
-int string title_activity_test 0x7f060012
->>>>>>> 7ffdf34bdc17ffe7550c7fb032405d7fb29fc774
+int string title_activity_main 0x7f060012
+int string title_activity_test 0x7f060013
 int style AppBaseTheme 0x7f070000
 int style AppTheme 0x7f070001
 int xml config 0x7f040000

@@ -43,7 +43,6 @@ public class ActivityTracker extends CordovaActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
-<<<<<<< HEAD
         
         datasource = new DatabaseHelper(this);
         
@@ -55,8 +54,6 @@ public class ActivityTracker extends CordovaActivity
 		// elements in a ListView
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, value);
 		activityList.setAdapter(adapter);
-=======
->>>>>>> 7ffdf34bdc17ffe7550c7fb032405d7fb29fc774
     }
    
     @Override
@@ -76,8 +73,4 @@ public class ActivityTracker extends CordovaActivity
     	Intent intent = new Intent(this, ShowActivity.class);
     	startActivity(intent);
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 7ffdf34bdc17ffe7550c7fb032405d7fb29fc774
