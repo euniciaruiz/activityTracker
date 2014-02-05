@@ -11,6 +11,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 	// If you change the database schema, you must increment the database version.
@@ -75,10 +76,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 		// insert row
 		db.insert(CREATE_TABLE_ACTIVTY_TRACKER, null, values);
-		db.close();
+		db.close(p);
 	}
 	
-<<<<<<< HEAD
 	public List<String> readActivityTitle(){
 		SQLiteDatabase db = this.getReadableDatabase();
 		List<String> titles = new ArrayList<String>();
@@ -96,15 +96,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		while(c.moveToNext()){
 			String title = c.getString(0);
-			
+			int count = c.getCount();
+			Log.i("count:", "count is: "+count);
 			titles.add(title);
 		}
 		return titles;
 	}
 	
+
 	
-	
-=======
 	public int updateActivity(ActivityModel activity){
 		SQLiteDatabase db = this.getWritableDatabase();
 		
@@ -125,5 +125,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				new String[] { String.valueOf(activity.getId()) } );
 		
 	}
->>>>>>> 8df9c2ed9058db216ff84ca982b30886061de0ff
 }

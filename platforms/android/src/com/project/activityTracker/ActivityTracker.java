@@ -19,6 +19,8 @@
 
 package com.project.activityTracker;
 
+import java.util.List;
+
 import org.apache.cordova.CordovaActivity;
 
 import android.content.Intent;
@@ -26,17 +28,32 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+
+import com.project.db.DatabaseHelper;
 
 public class ActivityTracker extends CordovaActivity 
 {
 	Button showBtn;
 	Intent showActivity;
+	private DatabaseHelper datasource;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_screen);  
-       
+        setContentView(R.layout.main_screen);
+        
+        datasource = new DatabaseHelper(this);
+        
+		List<String> value = datasource.readActivityTitle();
+
+		ListView activityList = (ListView) findViewById(R.id.listView1);
+		
+		// Use the SimpleCursorAdapter to show the
+		// elements in a ListView
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, value);
+		activityList.setAdapter(adapter);
     }
    
     @Override
@@ -56,8 +73,4 @@ public class ActivityTracker extends CordovaActivity
     	Intent intent = new Intent(this, ShowActivity.class);
     	startActivity(intent);
     }
-    
-    
-    
 }
-

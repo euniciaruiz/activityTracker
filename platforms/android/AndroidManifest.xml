@@ -48,6 +48,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.project.activityTracker.ActivityTracker" />
         </activity>
+        <activity
+            android:name="com.project.activityTracker.MainActivity"
+            android:label="@string/title_activity_main" >
+        </activity>
     </application>
 
     <uses-sdk
