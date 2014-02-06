@@ -31,7 +31,6 @@ public class ShowActivity extends ListActivity{
 		
 	}
 
-
 	protected void onListItemClick(ListView l, View v,int position, long id){
 		String s = (String) getListAdapter().getItem(position);
 	}

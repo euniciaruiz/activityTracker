@@ -52,6 +52,10 @@
             android:name="com.project.activityTracker.MainActivity"
             android:label="@string/title_activity_main" >
         </activity>
+        <activity
+            android:name="com.project.activityTracker.CustomOnItemSelectedListener"
+            android:label="@string/title_activity_spinner" >
+        </activity>
     </application>
 
     <uses-sdk
