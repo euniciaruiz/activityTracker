@@ -12,28 +12,6 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class ShowActivity extends ListActivity{
-	DatabaseHelper db;
-	List<String> list;
-    ArrayAdapter<String> ad;
-	ActivityModel act;
-
-	protected void onCreate(Bundle savedInstanceState){
-		super.onCreate(savedInstanceState);
-		db = new DatabaseHelper(this);
-		db.getReadableDatabase();
-		
-		list = db.readActivityTitle();
-		
-		ad = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
-		setListAdapter(ad);
-		db.close();
-	
-		
-	}
-
-	protected void onListItemClick(ListView l, View v,int position, long id){
-		String s = (String) getListAdapter().getItem(position);
-	}
+public class ShowActivity{
 	
 }

@@ -104,30 +104,92 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	public String getActivityDetails(String title){
 		String desc = null;
-		String loc = null;
-		String startDate = null;
-		String endDate = null;
-		String startTime = null;
-		String endTime = null;
+		
+		
 		SQLiteDatabase db = this.getReadableDatabase();
 		String titles[] = {title};
-		String[] projection = {ActivityTable.COLUMN_NAME_DESCRIPTION, ActivityTable.COLUMN_NAME_LOCATION,
-							   ActivityTable.COLUMN_NAME_START_DATE, ActivityTable.COLUMN_NAME_START_TIME,
-							   ActivityTable.COLUMN_NAME_END_DATE, ActivityTable.COLUMN_NAME_END_TIME
-							  };
+		String[] projection = {ActivityTable.COLUMN_NAME_DESCRIPTION};
 		Cursor c = db.query(ActivityTable.TABLE_NAME, projection, "title=?", titles, null, null, null);
 		
 		while(c.moveToNext()){
 			desc = c.getString(0);
-			loc = c.getString(1);
-			startDate = c.getString(2);
-			startTime = c.getString(3);
-			endDate = c.getString(4);
-			endTime = c.getString(5);
+			
 		}
 		return desc;
 	}
+	
+	public String getActivityLocation(String title){
+		String loc = null;
+		String titles[] = {title};
+		SQLiteDatabase db = this.getReadableDatabase();
+		String[] projection = { ActivityTable.COLUMN_NAME_LOCATION};
+		Cursor c = db.query(ActivityTable.TABLE_NAME, projection, "title=?", titles, null, null, null);
+		while(c.moveToNext()){
+			
+			loc = c.getString(0);
+			
+		}
+		return loc;
+	}
+	
+	public String getStartDate(String title){
+		String startDate = null;
+		String titles[] = {title};
+		SQLiteDatabase db = this.getReadableDatabase();
+		String[] projection = {ActivityTable.COLUMN_NAME_START_DATE};
+		Cursor c = db.query(ActivityTable.TABLE_NAME, projection, "title=?", titles, null, null, null);
+		while(c.moveToNext()){
+			
+			startDate = c.getString(0);
+			
+		}
+		return startDate;
+	}
 
+	public String getEndDate(String title){
+
+		String endDate = null;
+		String titles[] = {title};
+		SQLiteDatabase db = this.getReadableDatabase();
+		String[] projection = {ActivityTable.COLUMN_NAME_END_DATE};
+		Cursor c = db.query(ActivityTable.TABLE_NAME, projection, "title=?", titles, null, null, null);
+		while(c.moveToNext()){
+			
+			endDate = c.getString(0);
+			
+		}
+		return endDate;
+	}
+	
+	public String getStartTime(String title){
+		String startTime = null;
+		String titles[] = {title};
+		SQLiteDatabase db = this.getReadableDatabase();
+		String[] projection = {ActivityTable.COLUMN_NAME_START_TIME};
+		Cursor c = db.query(ActivityTable.TABLE_NAME, projection, "title=?", titles, null, null, null);
+		while(c.moveToNext()){
+			
+			startTime = c.getString(0);
+			
+		}
+		return startTime;		
+	}
+	
+	public String endTime(String title){
+		String endTime = null;
+		String titles[] = {title};
+		SQLiteDatabase db = this.getReadableDatabase();
+		String[] projection = {ActivityTable.COLUMN_NAME_END_TIME};
+		Cursor c = db.query(ActivityTable.TABLE_NAME, projection, "title=?", titles, null, null, null);
+		while(c.moveToNext()){
+			
+			endTime = c.getString(0);
+			
+		}
+		return endTime;		
+	}
+	
+	
 	public int updateActivity(ActivityModel activity){
 		SQLiteDatabase db = this.getWritableDatabase();
 		
