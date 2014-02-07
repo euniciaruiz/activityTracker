@@ -24,6 +24,7 @@ public class ShowActivity extends ListActivity{
 		db.getReadableDatabase();
 		
 		list = db.readActivityTitle();
+		
 		ad = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
 		setListAdapter(ad);
 		db.close();

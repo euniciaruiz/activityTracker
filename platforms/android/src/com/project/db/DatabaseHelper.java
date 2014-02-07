@@ -101,6 +101,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		}
 		return titles;
 	}
+	
+	public String getActivityDetails(String title){
+		String desc = null;
+		String loc = null;
+		String startDate = null;
+		String endDate = null;
+		String startTime = null;
+		String endTime = null;
+		SQLiteDatabase db = this.getReadableDatabase();
+		String titles[] = {title};
+		String[] projection = {ActivityTable.COLUMN_NAME_DESCRIPTION, ActivityTable.COLUMN_NAME_LOCATION,
+							   ActivityTable.COLUMN_NAME_START_DATE, ActivityTable.COLUMN_NAME_START_TIME,
+							   ActivityTable.COLUMN_NAME_END_DATE, ActivityTable.COLUMN_NAME_END_TIME
+							  };
+		Cursor c = db.query(ActivityTable.TABLE_NAME, projection, "title=?", titles, null, null, null);
+		
+		while(c.moveToNext()){
+			desc = c.getString(0);
+			loc = c.getString(1);
+			startDate = c.getString(2);
+			startTime = c.getString(3);
+			endDate = c.getString(4);
+			endTime = c.getString(5);
+		}
+		return desc;
+	}
 
 	public int updateActivity(ActivityModel activity){
 		SQLiteDatabase db = this.getWritableDatabase();
