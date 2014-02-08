@@ -23,14 +23,12 @@ import java.util.List;
 
 import org.apache.cordova.CordovaActivity;
 
-import android.content.ClipData.Item;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -45,7 +43,7 @@ public class ActivityTracker extends CordovaActivity implements OnItemClickListe
 	Intent showActivity;
 	private DatabaseHelper datasource;
 	
-	private OnItemClickListener listener;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +80,7 @@ public class ActivityTracker extends CordovaActivity implements OnItemClickListe
 	public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
 		Intent intent = new Intent();
 		intent.setClass(this, ShowActivity.class);
-		intent.putExtra("position", pos);
+		
 		intent.putExtra("id", id);
 		startActivity(intent);	
 		

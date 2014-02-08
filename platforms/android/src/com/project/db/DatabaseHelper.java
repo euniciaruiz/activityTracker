@@ -102,10 +102,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return titles;
 	}
 	
+	public String getActivityTitle(long id){
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		String title = null;
+		String i = String.valueOf(id);
+		Log.v("value of", "value"+i);
+		String ids[] = {i};
+		Log.v("ids", "ids"+ids);
+		String[] projection = {ActivityTable.COLUMN_NAME_TITLE};
+		Cursor c = db.query(ActivityTable.TABLE_NAME, projection, ActivityTable.COLUMN_NAME_ID + "=" + id, null, null, null, null);
+		while(c.moveToNext()){
+			title = c.getString(0);
+		}
+		return title;
+	}
+	
 	public String getActivityDetails(String title){
 		String desc = null;
-		
-		
 		SQLiteDatabase db = this.getReadableDatabase();
 		String titles[] = {title};
 		String[] projection = {ActivityTable.COLUMN_NAME_DESCRIPTION};
