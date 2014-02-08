@@ -23,27 +23,32 @@ import java.util.List;
 
 import org.apache.cordova.CordovaActivity;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
 import com.project.db.DatabaseHelper;
 
-public class ActivityTracker extends CordovaActivity 
+public class ActivityTracker extends CordovaActivity implements OnItemClickListener 
 {
 	Button showBtn;
 	Intent showActivity;
 	private DatabaseHelper datasource;
+	
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
-        
+        showActivity = new Intent(this, ShowActivity.class);
         datasource = new DatabaseHelper(this);
         
 		List<String> value = datasource.readActivityTitle();
@@ -54,7 +59,9 @@ public class ActivityTracker extends CordovaActivity
 		// elements in a ListView
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, value);
 		activityList.setAdapter(adapter);
-    }
+		
+		activityList.setOnItemClickListener(this);
+		}
    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -68,9 +75,15 @@ public class ActivityTracker extends CordovaActivity
     	Intent intent = new Intent(this, CreateActivity.class);
     	startActivity(intent);
     }
-    
-    public void showActivity(View v){
-    	Intent intent = new Intent(this, ShowActivity.class);
-    	startActivity(intent);
-    }
+
+	@Override
+	public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
+		Intent intent = new Intent();
+		intent.setClass(this, ShowActivity.class);
+		
+		intent.putExtra("id", id);
+		startActivity(intent);	
+		
+	}
+  
 }

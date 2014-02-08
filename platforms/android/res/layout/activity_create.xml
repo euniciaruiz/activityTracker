@@ -7,7 +7,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="horizontal">
-
+	
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
 	        android:paddingTop="10dip"
 	        android:text="@string/add_title"
 	        android:textSize="17sp" />
-	
+		
 	    <!-- Input Title -->
 	    <EditText
 	        android:id="@+id/inputTitle"
@@ -188,13 +188,12 @@
             android:textSize="17sp" />
 
         <!-- Input Priority -->
-        <EditText
-            android:id="@+id/inputPriority"
+        <Spinner
+            android:id="@+id/priority_spinner"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dip"
-            android:layout_marginBottom="15dip"
-            android:singleLine="true" />
+            android:layout_marginBottom="15dip" />
 
         <!-- Alert Label -->
 
@@ -208,17 +207,14 @@
             android:textSize="17sp" />
 
         <!-- Input Alert -->
-
-        <EditText
-            android:id="@+id/inputAlert"
+        <Spinner
+            android:id="@+id/alert_spinner"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dip"
-            android:layout_marginBottom="15dip"
-            android:singleLine="true" />
+            android:layout_marginBottom="15dip" />
 
         <!-- Repetition Label -->
-
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -230,16 +226,14 @@
 
         <!-- Input Repetition -->
 
-        <EditText
-            android:id="@+id/inputRepetition"
+        <Spinner
+            android:id="@+id/repetition_spinner"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dip"
-            android:layout_marginBottom="15dip"
-            android:singleLine="true" />
+            android:layout_marginBottom="15dip" />
 
         <!-- Notification Label -->
-
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -250,17 +244,14 @@
             android:textSize="17sp" />
 
         <!-- Input Notification -->
-
-        <EditText
-            android:id="@+id/inputNotification"
+        <Spinner
+            android:id="@+id/notification_spinner"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dip"
-            android:layout_marginBottom="15dip"
-            android:singleLine="true" />
+            android:layout_marginBottom="15dip" />
 
         <!-- Button Create Product -->
-
         <Button
             android:id="@+id/btnCreateActivity"
             android:layout_width="fill_parent"

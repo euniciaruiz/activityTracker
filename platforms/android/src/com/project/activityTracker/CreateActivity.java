@@ -1,6 +1,8 @@
 package com.project.activityTracker;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -13,30 +15,32 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import com.project.db.DatabaseHelper;
 import com.project.model.ActivityModel;
 
 public class CreateActivity extends Activity{
-	DatabaseHelper db;
-	ActivityModel activity;
-	EditText inputTitle;
-	EditText inputDescription;
-	EditText inputLocation;
-	EditText inputStartDate;
-	EditText inputEndDate;
-	EditText inputStartTime;
-	EditText inputEndTime;
-	EditText inputPriority;
-	EditText inputAlert;
-	EditText inputRepetition;
-	EditText inputNotification;
-	Button btnCreateProduct;
+	private DatabaseHelper db;
+	private ActivityModel activity;
+	private EditText inputTitle;
+	private EditText inputDescription;
+	private EditText inputLocation;
+	private EditText inputStartDate;
+	private EditText inputEndDate;
+	private EditText inputStartTime;
+	private EditText inputEndTime;
+	private Spinner inputPriority;
+	private Spinner inputAlert;
+	private Spinner inputRepetition;
+	private Spinner inputNotification;
+	private Button btnCreateProduct;
 	
 	private ImageButton startDateCalendar;
 	private ImageButton endDateCalendar;
@@ -78,10 +82,11 @@ public class CreateActivity extends Activity{
 		startTimePicker = (ImageButton) findViewById(R.id.startTimeImageButton);
 		inputEndTime = (EditText) findViewById(R.id.inputEndTime);
 		endTimePicker = (ImageButton) findViewById(R.id.endTimeImageButton);
-		inputPriority = (EditText) findViewById(R.id.inputPriority);
-		inputAlert = (EditText) findViewById(R.id.inputAlert);
-		inputRepetition = (EditText) findViewById(R.id.inputRepetition);
-		inputNotification = (EditText) findViewById(R.id.inputNotification);
+		//inputPriority = (EditText) findViewById(R.id.inputPriority);
+		inputPriority = (Spinner) findViewById(R.id.priority_spinner);
+		inputAlert = (Spinner) findViewById(R.id.alert_spinner);
+		inputRepetition = (Spinner) findViewById(R.id.repetition_spinner);
+		inputNotification = (Spinner) findViewById(R.id.notification_spinner);
 		btnCreateProduct = (Button) findViewById(R.id.btnCreateActivity);
 		
 		startDateCalendar.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +121,11 @@ public class CreateActivity extends Activity{
 			}
 		});
 		
+		addItemsOnPrioritySpinner();
+		addItemsOnAlertSpinner();
+		addItemsOnRepetitionSpinner();
+		addItemsOnNotificationSpinner();
+		
 		btnCreateProduct.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -132,10 +142,10 @@ public class CreateActivity extends Activity{
 		        activity.setEnd_date(inputEndDate.getText().toString());
 		        activity.setStart_time(inputStartTime.getText().toString());
 		        activity.setEnd_time(inputEndTime.getText().toString());
-		        activity.setPriority(inputPriority.getText().toString());
-		        activity.setAlert(inputAlert.getText().toString());
-		        activity.setRepetition(inputRepetition.getText().toString());
-		        activity.setNotification(inputNotification.getText().toString());
+		        activity.setPriority(inputPriority.getSelectedItem().toString());
+		        activity.setAlert(inputAlert.getSelectedItem().toString());
+		        activity.setRepetition(inputRepetition.getSelectedItem().toString());
+		        activity.setNotification(inputNotification.getSelectedItem().toString());
 				
 				db.createActivity(activity);
 				
@@ -221,4 +231,62 @@ public class CreateActivity extends Activity{
         	inputEndTime.setText(hour + " : " + minute + " " + am_pm);
         }
     };
+    
+    // add items into spinner dynamically
+    public void addItemsOnPrioritySpinner() {
+    	List<String> list = new ArrayList<String>();
+    	ArrayAdapter<String> dataAdapter;
+    	
+    	list.add("High");
+    	list.add("Medium");
+    	list.add("Low");
+    	
+    	inputPriority = (Spinner) findViewById(R.id.priority_spinner);
+    	dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+    	dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    	inputPriority.setAdapter(dataAdapter);
+     }
+    
+    public void addItemsOnAlertSpinner() {
+    	List<String> list = new ArrayList<String>();
+    	ArrayAdapter<String> dataAdapter;
+    	
+    	list.add("No");
+    	list.add("Yes");
+    	    	
+    	inputAlert = (Spinner) findViewById(R.id.alert_spinner);
+    	dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+    	dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    	inputAlert.setAdapter(dataAdapter);
+     }
+    
+    public void addItemsOnRepetitionSpinner() {
+    	List<String> list = new ArrayList<String>();
+    	ArrayAdapter<String> dataAdapter;
+    	
+    	list.add("never");
+    	list.add("daily");
+    	list.add("weekly");
+    	list.add("monthly");
+    	list.add("yearly");
+    	
+    	inputRepetition = (Spinner) findViewById(R.id.repetition_spinner);
+    	dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+    	dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    	inputRepetition.setAdapter(dataAdapter);
+     }
+    
+    public void addItemsOnNotificationSpinner() {
+    	List<String> list = new ArrayList<String>();
+    	ArrayAdapter<String> dataAdapter;
+    	
+    	list.add("High");
+    	list.add("Medium");
+    	list.add("Low");
+    	
+    	inputNotification = (Spinner) findViewById(R.id.notification_spinner);
+    	dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+    	dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    	inputNotification.setAdapter(dataAdapter);
+     }
 }
