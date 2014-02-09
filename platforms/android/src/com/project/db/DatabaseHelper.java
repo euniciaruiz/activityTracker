@@ -9,11 +9,14 @@ import com.project.model.ActivityModel;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+	SQLiteDatabase db=null;
+	DatabaseHelper cdb = null;
 	// If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "activityTracker.db";
@@ -44,6 +47,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(CREATE_TABLE_ACTIVTY_TRACKER);		
 	}
+	
+	public void open() throws SQLException{
+		db=cdb.getWritableDatabase();
+	}
+	
+	public void close(){
+        db.close();
+	 }
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -222,5 +233,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		return db.update(ActivityTable.TABLE_NAME, values, ActivityTable.COLUMN_NAME_ID + " = ?", 
 				new String[] { String.valueOf(activity.getId()) } );
+	}
+	
+	public void deleteActivity(String id){
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		String selection = ActivityTable.COLUMN_NAME_ID + " LIKE ?";
+		String[] selectionArgs = { String.valueOf(id) };
+		db.delete("ActivityTable", selection, selectionArgs);
+		
 	}
 }
