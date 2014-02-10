@@ -28,10 +28,10 @@ public final class R {
         public static final int action_settings=0x7f090016;
         public static final int alert_spinner=0x7f09000c;
         public static final int btnCreateActivity=0x7f09000f;
-        public static final int btnDelete=0x7f090013;
+        public static final int btnDelete=0x7f090010;
         public static final int calendarImageButton1=0x7f090004;
         public static final int calendarImageButton2=0x7f090006;
-        public static final int desc=0x7f090011;
+        public static final int desc=0x7f090012;
         public static final int endTimeImageButton=0x7f09000a;
         public static final int inputDescription=0x7f090001;
         public static final int inputEndDate=0x7f090005;
@@ -44,10 +44,10 @@ public final class R {
         public static final int notification_spinner=0x7f09000e;
         public static final int priority_spinner=0x7f09000b;
         public static final int repetition_spinner=0x7f09000d;
-        public static final int sdate=0x7f090012;
+        public static final int sdate=0x7f090013;
         public static final int startTimeImageButton=0x7f090008;
         public static final int testbutton=0x7f090014;
-        public static final int title=0x7f090010;
+        public static final int title=0x7f090011;
     }
     public static final class layout {
         public static final int activity_create=0x7f030000;
@@ -79,6 +79,9 @@ public final class R {
         public static final int add_startTime=0x7f060009;
         public static final int add_title=0x7f060004;
         public static final int app_name=0x7f060000;
+        /**  Delete Strings 
+         */
+        public static final int btnDelete=0x7f060017;
         public static final int button_createActivity=0x7f060010;
         public static final int hello_world=0x7f060014;
         public static final int pick_startTime=0x7f06000a;

@@ -26,5 +26,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_activity_controller">ActivityController</string>
     <string name="title_activity_spinner">SpinnerActivity</string>
+    
+    <!-- Delete Strings -->
+    <string name="btnDelete">Delete</string>
 
 </resources>
