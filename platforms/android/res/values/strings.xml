@@ -26,8 +26,26 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_activity_controller">ActivityController</string>
     <string name="title_activity_spinner">SpinnerActivity</string>
-    
-    <!-- Delete Strings -->
-    <string name="btnDelete">Delete</string>
+    <string name="title_activity_edit">EditActivity</string>
+    <string name="title_activity_show">ShowActivity</string>
 
+    <!-- Show Strings -->
+	<string name="show_title">Show Title</string>
+	<string name="show_description">Show Description</string>
+	<string name="show_location">Show Location</string>
+	<string name="show_startDate">Show Start Date</string>
+	<string name="show_endDate">Show End Date</string>
+	<string name="show_startTime">Show Start Time</string>
+	<string name="show_endTime">Show End Time</string>
+	<string name="show_priority">Show Priority</string>
+	<string name="show_alert">Show Alert</string>
+	<string name="show_repetition">Show Repetition</string>
+	<string name="show_notification">Show Notification</string>
+	
+	<!-- Edit Strings -->
+	<string name="button_editActivity">Save</string>
+	<string name="edit_button">Edit</string>
+	<string name="delete_button">Delete</string>
+	
+	<!-- Delete Strings -->
 </resources>

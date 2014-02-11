@@ -42,26 +42,34 @@ public class ActivityTracker extends CordovaActivity implements OnItemClickListe
 	Button showBtn;
 	Intent showActivity;
 	private DatabaseHelper datasource;
-	
+	private ListView activityList;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
-        showActivity = new Intent(this, ShowActivity.class);
-        datasource = new DatabaseHelper(this);
         
+        datasource = new DatabaseHelper(this);
 		List<String> value = datasource.readActivityTitle();
-
-		ListView activityList = (ListView) findViewById(R.id.listView1);
+		activityList = (ListView) findViewById(R.id.listView1);
 		
 		// Use the SimpleCursorAdapter to show the
 		// elements in a ListView
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, value);
 		activityList.setAdapter(adapter);
 		
-		activityList.setOnItemClickListener(this);
-		}
+		activityList.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
+				Intent intent = new Intent(ActivityTracker.this, ShowActivity.class);
+				String title = (String) activityList.getAdapter().getItem(position);
+				intent.putExtra("activityTitle", title);
+				startActivity(intent);
+			}
+    	});
+		
+		datasource.close();
+    }
    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

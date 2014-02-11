@@ -119,18 +119,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return title;
 	}
 	
-	public String getActivityDetails(String title){
-		String desc = null;
+	public ActivityModel getActivityDetails(String activityTitle){
 		SQLiteDatabase db = this.getReadableDatabase();
-		String titles[] = {title};
-		String[] projection = {ActivityTable.COLUMN_NAME_DESCRIPTION};
-		Cursor c = db.query(ActivityTable.TABLE_NAME, projection, "title=?", titles, null, null, null);
+		ActivityModel activity = new ActivityModel();
+		String id[] = {activityTitle};
+		String[] projection = {ActivityTable.COLUMN_NAME_ID, ActivityTable.COLUMN_NAME_TITLE, 
+								ActivityTable.COLUMN_NAME_DESCRIPTION, ActivityTable.COLUMN_NAME_LOCATION,
+								ActivityTable.COLUMN_NAME_START_DATE, ActivityTable.COLUMN_NAME_END_DATE,
+								ActivityTable.COLUMN_NAME_START_TIME, ActivityTable.COLUMN_NAME_END_TIME,
+								ActivityTable.COLUMN_NAME_PRIORITY, ActivityTable.COLUMN_NAME_ALERT,
+								ActivityTable.COLUMN_NAME_REPETITION, ActivityTable.COLUMN_NAME_NOTIFICATION};
+
+		Cursor cursor = db.query("activity", projection, "title=?", id, null, null, null);
 		
-		while(c.moveToNext()){
-			desc = c.getString(0);
-			
-		}
-		return desc;
+		cursor.moveToFirst();
+		activity.setId(cursor.getInt(cursor.getColumnIndexOrThrow(ActivityTable.COLUMN_NAME_ID)));
+		activity.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(ActivityTable.COLUMN_NAME_TITLE)));
+		activity.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(ActivityTable.COLUMN_NAME_DESCRIPTION)));
+		activity.setLocation(cursor.getString(cursor.getColumnIndexOrThrow(ActivityTable.COLUMN_NAME_LOCATION)));
+		activity.setStart_date(cursor.getString(cursor.getColumnIndexOrThrow(ActivityTable.COLUMN_NAME_START_DATE)));
+		activity.setEnd_date(cursor.getString(cursor.getColumnIndexOrThrow(ActivityTable.COLUMN_NAME_END_DATE)));
+		activity.setStart_time(cursor.getString(cursor.getColumnIndexOrThrow(ActivityTable.COLUMN_NAME_START_TIME)));
+		activity.setEnd_time(cursor.getString(cursor.getColumnIndexOrThrow(ActivityTable.COLUMN_NAME_END_TIME)));
+		activity.setPriority(cursor.getString(cursor.getColumnIndexOrThrow(ActivityTable.COLUMN_NAME_PRIORITY)));
+		activity.setAlert(cursor.getString(cursor.getColumnIndexOrThrow(ActivityTable.COLUMN_NAME_ALERT)));
+		activity.setRepetition(cursor.getString(cursor.getColumnIndexOrThrow(ActivityTable.COLUMN_NAME_REPETITION)));
+		activity.setNotification(cursor.getString(cursor.getColumnIndexOrThrow(ActivityTable.COLUMN_NAME_NOTIFICATION)));
+		
+		return activity;
 	}
 	
 	public String getActivityLocation(String title){
