@@ -23,7 +23,7 @@ import android.widget.TimePicker;
 import com.project.db.DatabaseHelper;
 import com.project.model.ActivityModel;
 
-public class EditActivity extends Activity{
+public class EditActivity extends Activity {
 	private DatabaseHelper db;
 	private ActivityModel activity;
 	private EditText inputTitle;
@@ -59,6 +59,8 @@ public class EditActivity extends Activity{
 	private static final int END_DATE_DIALOG_ID = 1;
 	private static final int START_TIME_DIALOG_ID = 2;
 	private static final int END_TIME_DIALOG_ID = 3;
+	String activityTitle;
+	int id;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +84,24 @@ public class EditActivity extends Activity{
 		inputNotification = (Spinner) findViewById(R.id.notification_spinner);
 		btnEditProduct = (Button) findViewById(R.id.btnEditActivity);
 		
+		db = new DatabaseHelper(this);
+		
 		Intent intent = getIntent();
-		String activityTitle = intent.getStringExtra("activityTitle");
+		activityTitle = intent.getStringExtra("activityTitle");
+		ActivityModel activityDetails = db.getActivityDetails(activityTitle);
+		
+		id = activityDetails.getId();
+		inputTitle.setText(activityDetails.getTitle());
+		inputDescription.setText(activityDetails.getDescription());
+		inputLocation.setText(activityDetails.getLocation());
+		inputStartDate.setText(activityDetails.getStart_date());
+		inputEndDate.setText(activityDetails.getEnd_date());
+		inputStartTime.setText(activityDetails.getStart_time());
+		inputEndTime.setText(activityDetails.getEnd_time());
+		/*inputPriority.setText("Priority: " + activity.getPriority());
+		inputAlert.setText("Alert: " + activity.getAlert());
+		inputRepetition.setText("Repetition: " + activity.getRepetition());
+		inputNotification.setText("Notification: " + activity.getNotification())*/
 		
 		startDateCalendar.setOnClickListener(new View.OnClickListener() {
 			@SuppressWarnings("deprecation")
@@ -129,6 +147,7 @@ public class EditActivity extends Activity{
 				db = new DatabaseHelper(getApplicationContext());
 				activity = new ActivityModel();
 				Log.d("Insert: ", "Inserting ..");
+				activity.setId(id);
 				activity.setTitle(inputTitle.getText().toString());
 		        activity.setDescription(inputDescription.getText().toString());
 		        activity.setLocation(inputLocation.getText().toString());
@@ -140,7 +159,8 @@ public class EditActivity extends Activity{
 		        activity.setAlert(inputAlert.getSelectedItem().toString());
 		        activity.setRepetition(inputRepetition.getSelectedItem().toString());
 		        activity.setNotification(inputNotification.getSelectedItem().toString());
-				
+		        Log.d("Insert: ", "Inserting .." + inputTitle.getText().toString());
+		        
 				db.updateActivity(activity);
 				
 				Intent i = new Intent(getApplicationContext(), ActivityTracker.class);
