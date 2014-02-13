@@ -148,7 +148,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		return activity;
 	}
-	
+	/*
 	public String getActivityLocation(String title){
 		String loc = null;
 		String titles[] = {title};
@@ -217,7 +217,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			endTime = c.getString(0);
 			
 		}
-		return endTime;
+		return endTime;	*/	
 	
 	
 	
