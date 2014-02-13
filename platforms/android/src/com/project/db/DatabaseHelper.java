@@ -223,7 +223,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	public int updateActivity(ActivityModel activity){
 		SQLiteDatabase db = this.getWritableDatabase();
-		
+
 		ContentValues values = new ContentValues();
 		values.put(ActivityTable.COLUMN_NAME_TITLE, activity.getTitle());
 		values.put(ActivityTable.COLUMN_NAME_DESCRIPTION, activity.getDescription());
