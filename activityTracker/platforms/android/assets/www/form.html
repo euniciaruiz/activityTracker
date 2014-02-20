@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html lang="en" manifest="cache.manifest">
+
+<head>
+  <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.2.0.css" />
+        <title>Add</title>
+</head>
+
+<body>
+  <div data-role="page">
+
+    <div data-role="header">
+      <h1>Add Activity</h1>
+    </div>
+
+    <div data-role="content">
+      <form>
+      	<input type="hidden" id="id"/>
+      	
+        <label for="Title">Title</label>
+        <input type="text" id="title">
+
+        <label for="Description">Description</label>
+        <input type="text" id="description">
+        
+        <label for="Location">Location</label>
+        <input type="text" id="location">
+        
+        <label for="Start Date">Start Date</label>
+        <input type="text" id="start_date">
+        
+        <label for="End Date">Start Time</label>
+        <input type="text" id="end_date">
+        
+        <label for="End Date">End Time</label>
+        <input type="text" id="end_date">
+        
+        <label for="Priority">Priority</label>
+        <select id="priority">
+			<option value="High">High</option>
+			<option value="Medium">Medium</option>
+			<option value="Low">Low</option>
+		</select>
+        
+        <label for="Alert">Alert</label>
+        <select id="priority">
+			<option value="Yes">Yes</option>
+			<option value="No">No</option>
+		</select>
+        
+        <label for="Repetition">Repetition</label>
+        <input type="text" id="repetition">
+        
+        <label for="Notification">Notification</label>
+        <input type="text" id="notificcation">
+
+        <div class="ui-body-b ui-body">
+          <button id="btnSave" type="button" data-inline="true" data-icon="refresh">Save</button>
+          <button id="btnCancel" type="button" data-inline="true" data-icon="plus" data-theme="c" onClick="cancelAction()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="assets/vendor/jquery-1.8.3/jquery-1.8.3.js"></script>
+  <script src="assets/vendor/jquery.mobile-1.2.0/jquery.mobile-1.2.0.js"></script>
+  <script src="assets/js/model.js"></script>
+</body>
+</html>
