@@ -40,3 +40,66 @@ function createTableIfNotExists() {
         }
     );
 }
+
+
+function showRecords() {
+    console.debug('called showRecords()');
+
+    var sql = "SELECT * FROM Activity";
+
+    db.transaction(
+        function (transaction) {
+            transaction.executeSql(sql, [], renderRecords, handleErrors);
+        }
+    );
+}
+
+
+function renderRecords(transaction, results) {
+    console.debug('called renderRecords()');
+
+    html = '';
+    $('#results').html('');
+
+    dataset = results.rows;
+
+    if (dataset.length > 0) {
+        html = html + '  <ul data-role="listview">';
+
+        for (var i = 0, item = null; i < dataset.length; i++) {
+            item = dataset.item(i);
+
+            html = html + '    <li>';
+            html = html + '      <h3>' + item['title'] + '</h3>';
+            html = html + '      <p>';
+            html = html + '<h1>Description: ' + item['description'] + '</h1>';
+            html = html + '<h1>Location: ' + item['location'] + '</h1>';
+            html = html + '<h1>Start Date: ' + item['start_date'] + '</h1>';
+            html = html + '<h1>End Date: ' + item['end_date'] + '</h1>';
+            html = html + '<h1>Start Time: ' + item['start_time'] + '</h1>';
+            html = html + '<h1>End Time: ' + item['end_time'] + '</h1>';
+            html = html + '<h1>Priority: ' + item['priority'] + '</h1>';            
+            html = html + '    </li>';
+        }
+
+        html = html + '  </ul>';
+
+        $('#results').append(html);
+        $('#results ul').listview();
+    }
+}
+
+function loadRecord(i) {
+    console.debug('called loadRecord()');
+
+    var item = dataset.item(i);
+
+    $('#title').val(item['title']);
+    $('#description').val(item['description']);
+    $('#location').val(item['location']);
+    $('#start_date').val(item['start_date']);
+    $('#end_date').val(item['end_date']);
+    $('#start_time').val(item['start_time']);
+    $('#end_time').val(item['end_time']);
+    $('#priority').val(item['priority']);
+}
