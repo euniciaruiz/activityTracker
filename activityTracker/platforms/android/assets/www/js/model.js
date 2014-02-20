@@ -25,3 +25,18 @@ function initDatabase() {
         return;
     }
 }
+
+function createTableIfNotExists() {
+    console.debug('called createTableIfNotExists()');
+
+    var sql = "CREATE TABLE IF NOT EXISTS Activity (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT UNIQUE NOT NULL," +
+    		  "description TEXT, location TEXT, start_date DATE, end_date DATE, start_time DATETIME, end_time DATETIME," +
+    		  "priority TEXT, alert TEXT NOT NULL, repetition TEXT, notification TEXT)";
+
+    db.transaction(
+        function (transaction) {
+            transaction.executeSql(sql, [], showRecords, handleErrors);
+            console.debug('executeSql: ' + sql);
+        }
+    );
+}
