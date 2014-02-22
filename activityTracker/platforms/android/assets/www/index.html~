@@ -65,8 +65,12 @@
           <button id="btnCancel" type="button" data-inline="true" data-icon="plus" data-theme="c" onClick="cancelAction()">Cancel</button>
         </div>
       </form>
+    <div class="ui-body">
+        <div id="results"></div>
+      </div>
       
     </div>
+    
   </div>
 
   <script src="js/jquery-1.8.3.js"></script>
@@ -74,4 +78,3 @@
   <script src="js/model.js"></script>
 </body>
 </html>
-
