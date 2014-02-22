@@ -44,7 +44,7 @@ function createTableIfNotExists() {
 function insertRecord() {
     console.debug('called insertRecord()');
 
-	var title = $('#title').val();
+var title = $('#title').val();
     var description = $('#description').val();
     var location = $('#location').val();
     var start_date = $('#start_date').val();
