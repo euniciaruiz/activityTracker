@@ -10,12 +10,21 @@
             <script type="text/javascript" charset="utf-8" src="js/jquery-1.9.1.min.js"></script>
             <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.4.1.min.js"></script>
             <script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
+<<<<<<< HEAD
             <script type="text/javascript" src="js/jquery-1.8.3.js"></script> 
             <script type="text/javascript" src="js/jquery.mobile-1.4.1.js"></script>
             <script type="text/javascript" src="js/jqm-datebox.core.min.js"></script>
             <script type="text/javascript" src="js/jqm-datebox.mode.calbox.min.js"></script>
             <script type="text/javascript" src="js/jqm-datebox.mode.datebox.min.js"></script>
             <script type="text/javascript" src="js/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
+=======
+			<script type="text/javascript" src="js/jquery-1.8.3.js"></script> 
+			<script type="text/javascript" src="js/jquery.mobile-1.4.1.js"></script>
+			<script type="text/javascript" src="js/jqm-datebox.core.min.js"></script>
+			<script type="text/javascript" src="js/jqm-datebox.mode.calbox.min.js"></script>
+			<script type="text/javascript" src="js/jqm-datebox.mode.datebox.min.js"></script>
+			<script type="text/javascript" src="js/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
+>>>>>>> 6fc9c9af29fb5ca4560c7214fbc3220fbe86b7ee
             <style>
             .error{
                 font-size: 0.8em;
@@ -177,6 +186,7 @@
                 }
                 
                 $('#start_date').live('change', function() {
+<<<<<<< HEAD
                     $('#end_date').val($('#start_date').val());
                     var temp = new Date(),
                         diff = parseInt(($('#start_date').data('mobileDatebox').theDate - temp) / ( 1000 * 60 * 60 * 24 ));
@@ -184,12 +194,25 @@
 
                     $('#end_date').data('mobileDatebox').options.minDays = diffstrt;
                 });
+=======
+				    $('#end_date').val($('#start_date').val());
+				    var temp = new Date(),
+				        diff = parseInt(($('#start_date').data('mobileDatebox').theDate - temp) / ( 1000 * 60 * 60 * 24 ));
+				        diffstrt = (diff * -1)-1; // If you want a minimum of 1 day between, make this -2 instead of -1
+				
+				    $('#end_date').data('mobileDatebox').options.minDays = diffstrt;
+				});
+>>>>>>> 6fc9c9af29fb5ca4560c7214fbc3220fbe86b7ee
             });
             </script>
         </head>
     <body>
     
+<<<<<<< HEAD
         <!-- Form Page Start -->
+=======
+    	<!-- Form Page Start -->
+>>>>>>> 6fc9c9af29fb5ca4560c7214fbc3220fbe86b7ee
         <div data-role="page" id="addNewPage">
             <div data-role="header" data-position="fixed">
                 <a href="#" class="back" data-role="button" data-icon="arrow-l" data-theme="a" title="Back">Back</a>
@@ -213,6 +236,7 @@
                 </div>
                 <div data-role="fieldcontain">
                     <label for="start_date">Start Date</label>
+<<<<<<< HEAD
                     <input name="start_date" id="start_date" type="text" value="" data-role="datebox" data-options='{"mode": "calbox", "afterToday": true, "useFocus": true, "useButton": false}' />
                 </div>
                 <div data-role="fieldcontain">
@@ -222,6 +246,17 @@
                 <div data-role="fieldcontain">
                     <label for="start_time">Start Time</label>
                     <input name="start_time" id="start_time" type="text" value="" data-role="datebox" data-options='{"mode":"timebox", "useNewStyle":true, "useFocus": true , "useButton": false}' />
+=======
+					<input name="start_date" id="start_date" type="text" value="" data-role="datebox" data-options='{"mode": "calbox", "afterToday": true, "useFocus": true, "useButton": false}' />
+                </div>
+                <div data-role="fieldcontain">
+                	<label for="end_date">End Date</label>
+					<input name="end_date" id="end_date" type="text" value="" data-role="datebox" data-options='{"mode": "calbox", "afterToday": true, "useFocus": true, "useButton": false}' />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="start_time">Start Time</label>
+					<input name="start_time" id="start_time" type="text" value="" data-role="datebox" data-options='{"mode":"timebox", "useNewStyle":true, "useFocus": true , "useButton": false}' />
+>>>>>>> 6fc9c9af29fb5ca4560c7214fbc3220fbe86b7ee
                 </div>
                 <div data-role="fieldcontain">
                     <label for="end_time">End Time:</label>
@@ -230,15 +265,27 @@
                 <div data-role="fieldcontain">
                     <label for="alert">Alert:</label>
                     <select name="alert">
+<<<<<<< HEAD
                       <option value="Yes">Yes</option>
                       <option value="No">No</option>
                     </select>
                 </div>
 
+=======
+					  <option value="Yes">Yes</option>
+					  <option value="No">No</option>
+					</select>
+                </div>
+					
+>>>>>>> 6fc9c9af29fb5ca4560c7214fbc3220fbe86b7ee
                 <input type="hidden" name="id" id="id" value="" />
             </div>
         </div>
         <!-- Form Page End -->
    
     </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 6fc9c9af29fb5ca4560c7214fbc3220fbe86b7ee
