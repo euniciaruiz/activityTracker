@@ -1,76 +1,107 @@
-<!DOCTYPE html>
+<!doctype html>
+    <html lang="en">
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>My Contacts</title>
+            <style>
+            .error{
+                font-size: 0.8em;
+                border: 1px solid;
+                margin: 10px 0px;
+                padding:15px 10px 15px 8px;
+                text-align:center;
+                color: #D8000C;
+                background-color: #FFBABA;
+            }
+            </style>
+            <script type="text/javascript" charset="utf-8">
+             
+            $(document).ready(function(){
+            	document.addEventListener("deviceready", onDeviceReady, false);
+                 
+                var db = window.openDatabase("Database", "1.0", "MyContactsDB", 200000);
+ 
+                function onDeviceReady(){
+                    //Populate the databse
+                    db.transaction(populateDB, errorCB, successCB);
+                    //Override the back button functionality
+                    document.addEventListener('backbutton', onBack, false);
+                }
+                 
+                function onBack(){
+                    //If the current page is index page then exit other wise navigate to index page
+                    if($.mobile.activePage.is('#index')){
+                        navigator.app.exitApp();
+                    }
+                    else{
+                        db.transaction(queryDB, errorCB);
+                    }
+                }
 
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <link rel="stylesheet" type="text/css" href="css/style.css" />
-        <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.2.0.css" />
-        <title>Home</title>
-</head>
+                function errorCB(err){
+ 
+                } 
 
-<body>
-  <div data-role="page">
+                $(".refresh").bind("click", function (event){
+                    db.transaction(queryDB, errorCB);
+                });
 
-    <div data-role="header">
-      <h1>Activity Tracker</h1>
-      <a href="#" id="btnAdd" class="button ui-btn-right" data-theme="b" data-icon="plus" onClick="prepareAdd()">Add</a>
-    </div>
+                $(".back").bind("click", function (event){
+                    resetForm();
+                    db.transaction(queryDB, errorCB);
+                });
 
-    <div data-role="content">
-      <form>
-        <label for="Title">Title</label>
-		<input type="text" id="title">
-		
-		<label for="Description">Description</label>
-		<input type="text" id="description">
-		
-		<label for="Location">Location</label>
-		<input type="text" id="location">
-		
-		<label for="Start Date">Start Date</label>
-		<input type="text" id="start_date">
-		
-		<label for="End Date">Start Time</label>
-		<input type="text" id="end_date">
-		
-		<label for="End Date">End Time</label>
-		<input type="text" id="end_date">
-		
-		<label for="Priority">Priority</label>
-		<select id="priority">
-		<option value="High">High</option>
-		<option value="Medium">Medium</option>
-		<option value="Low">Low</option>
-		</select>
-		
-		<label for="Alert">Alert</label>
-		<select id="priority">
-		<option value="Yes">Yes</option>
-		<option value="No">No</option>
-		</select>
-		
-		<label for="Repetition">Repetition</label>
-		<input type="text" id="repetition">
-		
-		<label for="Notification">Notification</label>
-		<input type="text" id="notification">
-		
-		<input type="hidden" id="id"/>
+                $("#index [data-role='content'] ul").on('tap taphold', 'li', function (event){
+                    event.preventDefault();
+                    event.stopImmediatePropagation();
+                    var liId = this.id;
 
-        <div class="ui-body-b ui-body">
-          <button id="btnSave" type="button" data-inline="true" data-icon="refresh">Save</button>
-          <button id="btnCancel" type="button" data-inline="true" data-icon="plus" data-theme="c" onClick="cancelAction()">Cancel</button>
-        </div>
-      </form>
-      
-    </div>
-  </div>
+                    if (event.type === 'taphold'){
+                        navigator.notification.vibrate(30);
+                        var $popup = $('#actionList-popup');
+                        $("#actionList").html('');
+                        $("#actionList").append('<li id="delete&'+liId+'">Delete</li>').listview('refresh');
+                        $popup.popup();
+                        $popup.popup('open');
+                        $("#tapHoldCheck").val('true');
+                    }
+                    else if (event.type === 'tap'){
+                    }
+                });
 
-  <script src="js/jquery-1.8.3.js"></script>
-  <script src="js/jquery.mobile-1.2.0.js"></script>
-  <script src="js/model.js"></script>
-</body>
-</html>
+                //Change the hidden field value when the popup is closed
+                $('#actionList-popup').bind({
+                    popupafterclose: function(event, ui){
+                        $("#tapHoldCheck").val('');
+                    }
+                });
+  
+
+                $("#index [data-role='popup'] ul").on('click', 'li', function (event){
+                    var action_liId = this.id.split('&');
+                    var action = action_liId[0];
+                    var id = action_liId[1];
+
+                    if (action == 'delete'){
+                        navigator.notification.confirm(
+                            'Are you sure?',
+                            function(buttonIndex){onConfirm(buttonIndex, id);},
+                            'Delete Contact',
+                            'Ok, Cancel'
+                        );
+                    }
+                });
+
+                function onConfirm(buttonIndex, id){
+                    if (buttonIndex === 1){ //Delete
+                        db.transaction(function (tx){ tx.executeSql("DELETE FROM MyContacts WHERE id=?", [id], queryDB, errorCB); });
+                    }
+                    if (buttonIndex === 2){
+                        $.mobile.changePage($("#index"), { transition : "slide"});
+                    }
+                }
+            });
+            </script>
+        </head>
+    <body>
