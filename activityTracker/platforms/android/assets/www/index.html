@@ -4,6 +4,10 @@
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <title>Home</title>
+            <link rel="stylesheet" href="css/jquery.mobile-1.4.1.min.css">
+            <script type="text/javascript" charset="utf-8" src="js/jquery-1.9.1.min.js"></script>
+            <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.4.1.min.js"></script>
+            <script type="text/javascript" charset="utf-8" src="cordova-2.7.0.js"></script>
             <style>
             .error{
                 font-size: 0.8em;
@@ -38,10 +42,59 @@
                         db.transaction(queryDB, errorCB);
                     }
                 }
+                
+                function populateDB(tx){
+                    //Create the table
+                    //tx.executeSql('DROP TABLE IF EXISTS MyContacts');
+                    tx.executeSql('CREATE TABLE IF NOT EXISTS Activity (id INTEGER PRIMARY KEY AUTOINCREMENT, \
+                            title TEXT NOT NULL, description TEXT, location TEXT, start_date DATE, \
+                            end_date DATE, start_time DATETIME, end_time DATETIME, alert TEXT NOT NULL)\
+                             ');
+                }
+ 
+                function successCB(){
+                    db.transaction(queryDB, errorCB);
+                }
 
                 function errorCB(err){
  
-                } 
+                }
+                
+                $("#addNewPage .error").html('').hide();
+                
+                $(".addNew").bind ("click", function (event){
+                    $("#addNewPage.error").html('').hide();
+                    $.mobile.changePage ($("#addNewPage"), { transition : "slide", reverse : true });
+                    $("#addNewPageHeader").html("Add New");
+                });
+                
+                $("#save").bind ("click", function (event){
+                    var title = $.trim($("#title").val()).replace(/[^A-Za-z0-9 ]/g, '');
+                    var description = $.trim($("#description").val());
+                    var location = $.trim($("#location").val());
+                    var start_date = $.trim($("#start_date").val());
+                    var end_date = $.trim($("#end_date").val());
+                    var start_time = $.trim($("#start_time").val());
+                    var end_time = $.trim($("#end_time").val());
+                    var alert = $.trim($("#alert").val());
+                    console.log(title+' '+description+' '+location+' '+start_date+' '+end_date+' '+start_time+' '+end_time+' '+alert);
+ 
+                    if (title == ''){
+                        $("#addNewPage .error").html('Please enter activity title.').show();
+                    }
+                    else{
+                        resetForm();
+ 
+                        var id = $("#id").val();
+                        $("#id").val('');
+                        if (id == ''){  //Save
+                            db.transaction(function (tx){ tx.executeSql("INSERT INTO Activity (title, description, location, start_date, start_time, start_time, end_time, alert) VALUES  (?, ?, ?, ?, ?, ?, ?, ?)",[title, description, location, start_date, start_time, start_time, end_time, alert],
+                            queryDB, errorCB); }); 
+                        }
+                        
+                        db.transaction(queryDB, errorCB);
+                    }
+                });
 
                 $(".refresh").bind("click", function (event){
                     db.transaction(queryDB, errorCB);
@@ -51,6 +104,19 @@
                     resetForm();
                     db.transaction(queryDB, errorCB);
                 });
+                
+                function resetForm(){
+                    $("#addNewPage .error").html('').hide();
+                    $("#addNewPage #title").val('');
+                    $("#addNewPage #description").val('');
+                    $("#addNewPage #location").val('');
+                    $("#addNewPage #start_date").val('');
+                    $("#addNewPage #end_date").val('');
+                    $("#addNewPage #start_time").val('');
+                    $("#addNewPage #end_time").val('');
+                    $("#addNewPage #alert").val('');
+                    $("#addNewPage #addNewPageHeader").html('');   
+                }
 
                 $("#index [data-role='content'] ul").on('tap taphold', 'li', function (event){
                     event.preventDefault();
@@ -105,3 +171,53 @@
             </script>
         </head>
     <body>
+    
+    	<!-- Form Page Start -->
+        <div data-role="page" id="addNewPage">
+            <div data-role="header" data-position="fixed">
+                <a href="#" class="back" data-role="button" data-icon="arrow-l" data-theme="a" title="Back">Back</a>
+                <h1 id="addNewPageHeader"></h1>
+                <a href="#" id="save" data-role="button" data-icon="check" data-theme="a" title="Save">Save</a>
+            </div>
+            <div data-role="content">
+                <div class='error'></div>
+                <div data-role="fieldcontain">
+                    <label for="name">Title:</label>
+                    <input type="text" name="title" id="title" required="true" maxlength="20" value="" />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="description">Description:</label>
+                    <input type="text" name="description" id="description" maxlength="100" value="" />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="location">Location:</label>
+                    <input type="text" name="location" id="location" value="" />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="start_date">Start Date:</label>
+                    <input type="date" name="start_date" id="start_date" value="" />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="end_date">End Date:</label>
+                    <input type="date" name="end_date" id="end_date" value="" />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="start_time">Start Time:</label>
+                    <input type="text" name="start_time" id="start_time" value="" />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="end_time">End Time:</label>
+                    <input type="text" name="end_time" id="end_time" value="" />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="alert">Alert:</label>
+                    <input type="text" name="alert" id="alert" value="" />
+                </div>
+                
+                <input type="hidden" name="id" id="id" value="" />
+            </div>
+        </div>
+        <!-- Form Page End -->
+   
+    </body>
+</html>
