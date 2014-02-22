@@ -146,6 +146,11 @@ function cancelAction() {
   $('#btnSave').off('click');
 }
 
+function updateCacheContent(event) {
+    console.debug('called updateCacheContent()');
+    window.applicationCache.swapCache();
+}
+
 $(document).ready(function () {
     window.applicationCache.addEventListener('updateready', updateCacheContent, false);
 
