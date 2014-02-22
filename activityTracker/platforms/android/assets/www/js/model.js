@@ -44,7 +44,7 @@ function createTableIfNotExists() {
 function insertRecord() {
     console.debug('called insertRecord()');
 
-var title = $('#title').val();
+	var title = $('#title').val();
     var description = $('#description').val();
     var location = $('#location').val();
     var start_date = $('#start_date').val();
@@ -56,7 +56,7 @@ var title = $('#title').val();
     var repetition = $('#repetition').val();
     var notification = $('#notification').val();
 
-    var sql = 'INSERT INTO Contacts (title, description, location, start_date, end_date, start_time, end_time,' +
+    var sql = 'INSERT INTO Activity (title, description, location, start_date, end_date, start_time, end_time,' +
      'priority, alert, repetition, notification) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
     db.transaction(
@@ -66,6 +66,38 @@ var title = $('#title').val();
             console.debug('executeSql: ' + sql);
         }
     );
+}
+
+function resetForm() {
+    console.debug('called resetForm()');
+    
+    $('#title').val('');
+    $('#description').val('');
+    $('#location').val('');
+    $('#start_date').val('');
+    $('#end_date').val('');
+    $('#start_time').val('');
+    $('#end_time').val('');
+    $('#priority').val('');
+    $('#alert').val('');
+    $('#repetition').val('');
+    $('#notification').val('');
+    $('#id').val('');
+}
+
+function showRecordsAndResetForm() {
+    console.debug('called showRecordsAndResetForm()');
+
+    resetForm();
+    showRecords()
+}
+
+function handleErrors(transaction, error) {
+    console.debug('called handleErrors()');
+    console.error('error ' + error.message);
+
+    alert(error.message);
+    return true;
 }
 
 function showRecords() {
@@ -144,6 +176,11 @@ function cancelAction() {
   $('#btnAdd').removeClass('ui-disabled');
   $('#results').removeClass('ui-disabled');
   $('#btnSave').off('click');
+}
+
+function updateCacheContent(event) {
+    console.debug('called updateCacheContent()');
+    window.applicationCache.swapCache();
 }
 
 $(document).ready(function () {
