@@ -68,6 +68,32 @@ var title = $('#title').val();
     );
 }
 
+function updateRecord() {
+    console.debug('called updateRecord()');
+
+    var title = $('#title').val();
+    var description = $('#description').val();
+    var location = $('#location').val();
+    var start_date = $('#start_date').val();
+    var end_date = $('#end_date').val();
+    var start_time = $('#start_time').val();
+    var end_time = $('#end_time').val();
+    var priority = $('#priority').val();
+    var alert = $('#alert').val();
+    var repetition = $('#repetition').val();
+    var notification = $('#notification').val();
+
+    var sql = 'UPDATE Activity SET title=?, phone=?, description=?, location=?, start_date=?, end_date=?, start_time=?, end_time=?, priority=?, alert=?, repetition=?, notification=? WHERE id=?';
+
+    db.transaction(
+        function (transaction) {
+            transaction.executeSql(sql, [title, description, location, start_date, end_date, start_time, end_time,
+     priority, alert, repetition, notification], showRecordsAndResetForm, handleErrors);
+            console.debug('executeSql: ' + sql);
+        }
+    );
+}
+
 function resetForm() {
     console.debug('called resetForm()');
     
