@@ -10,15 +10,13 @@
             <script type="text/javascript" charset="utf-8" src="js/jquery-1.7.2.min.js"></script>
             <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.1.0.min.js"></script>
             <script type="text/javascript" charset="utf-8" src="js/cordova.js"></script>
-            
             <script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
-
-			<script type="text/javascript" src="js/jquery-1.8.3.js"></script> 
-			<script type="text/javascript" src="js/jquery.mobile-1.4.1.js"></script>
-			<script type="text/javascript" src="js/jqm-datebox.core.min.js"></script>
-			<script type="text/javascript" src="js/jqm-datebox.mode.calbox.min.js"></script>
-			<script type="text/javascript" src="js/jqm-datebox.mode.datebox.min.js"></script>
-			<script type="text/javascript" src="js/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
+	    <script type="text/javascript" src="js/jquery-1.8.3.js"></script> 
+	    <script type="text/javascript" src="js/jquery.mobile-1.4.1.js"></script>
+	    <script type="text/javascript" src="js/jqm-datebox.core.min.js"></script>
+	    <script type="text/javascript" src="js/jqm-datebox.mode.calbox.min.js"></script>
+	    <script type="text/javascript" src="js/jqm-datebox.mode.datebox.min.js"></script>
+	    <script type="text/javascript" src="js/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
 
             <style>
             .error{
@@ -34,9 +32,10 @@
             <script type="text/javascript" charset="utf-8">
              
             $(document).ready(function(){
+
                 document.addEventListener("deviceready", onDeviceReady, false);
                  
-                var db = window.openDatabase("Database", "1.0", "MyContactsDB", 200000);
+                var db = window.openDatabase("Database", "1.0", "ActivityTracker", 200000);
  
                 function onDeviceReady(){
                     //Populate the databse
@@ -57,19 +56,19 @@
                 
                 function populateDB(tx){
                     //Create the table
-                    //tx.executeSql('DROP TABLE IF EXISTS MyContacts');
+                    //tx.executeSql('DROP TABLE IF EXISTS Activity');
                     tx.executeSql('CREATE TABLE IF NOT EXISTS Activity (id INTEGER PRIMARY KEY AUTOINCREMENT, \
                             title TEXT NOT NULL, description TEXT, location TEXT, start_date DATE, \
                             end_date DATE, start_time DATETIME, end_time DATETIME, alert TEXT NOT NULL)\
                              ');
-                    tx.executeSql('SELECT id, title, description, location, start_date, end_date, start_time, end_time, alert FROM MyContacts ORDER BY start_date', [], querySuccess, errorCB);
+                    tx.executeSql('SELECT id, title, description, location, start_date, end_date, start_time, end_time, alert FROM Activity ORDER BY start_date', [], querySuccess, errorCB);
                 }
  
                 function successCB(){
                     db.transaction(queryDB, errorCB);
                 }
                 function queryDB(tx){
-                    tx.executeSql('SELECT id, title, description, location, start_date, end_date, start_time, end_time, alert FROM MyContacts ORDER BY start_date', [], querySuccess, errorCB);
+                    tx.executeSql('SELECT id, title, description, location, start_date, end_date, start_time, end_time, alert FROM Activity ORDER BY start_date', [], querySuccess, errorCB);
                 }
  
                 function querySuccess(tx, results){
