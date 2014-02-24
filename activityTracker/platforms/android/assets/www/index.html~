@@ -1,91 +1,25 @@
-<<<<<<< HEAD
-<!DOCTYPE html>
-
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <link rel="stylesheet" type="text/css" href="css/style.css" />
-        <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.2.0.css" />
-        <title>Home</title>
-</head>
-
-<body>
-  <div data-role="page">
-
-    <div data-role="header">
-      <h1>Activity Tracker</h1>
-      <a href="#" id="btnAdd" class="button ui-btn-right" data-theme="b" data-icon="plus" onClick="prepareAdd()">Add</a>
-    </div>
-
-    <div data-role="content">
-      <form>
-        <label for="Title">Title</label>
-		<input type="text" id="title">
-			
-		<label for="Description">Description</label>
-		<input type="text" id="description">
-			        
-		<label for="Location">Location</label>
-		<input type="text" id="location">
-			        
-		<label for="Start Date">Start Date</label>
-		<input type="text" id="start_date">
-			        
-		<label for="End Date">Start Time</label>
-		<input type="text" id="end_date">
-			        
-		<label for="End Date">End Time</label>
-		<input type="text" id="end_date">
-			        
-		<label for="Priority">Priority</label>
-		<select id="priority">
-			<option value="High">High</option>
-			<option value="Medium">Medium</option>
-			<option value="Low">Low</option>
-		</select>
-			        
-		<label for="Alert">Alert</label>
-		<select id="priority">
-			<option value="Yes">Yes</option>
-			<option value="No">No</option>
-		</select>
-			        
-		<label for="Repetition">Repetition</label>
-		<input type="text" id="repetition">
-			        
-		<label for="Notification">Notification</label>
-		<input type="text" id="notification">
-			        
-		<input type="hidden" id="id"/>
-
-        <div class="ui-body-b ui-body">
-          <button id="btnSave" type="button" data-inline="true" data-icon="refresh">Save</button>
-          <button id="btnCancel" type="button" data-inline="true" data-icon="plus" data-theme="c" onClick="cancelAction()">Cancel</button>
-        </div>
-      </form>
-    <div class="ui-body">
-        <div id="results"></div>
-      </div>
-      
-    </div>
-    
-  </div>
-
-  <script src="js/jquery-1.8.3.js"></script>
-  <script src="js/jquery.mobile-1.2.0.js"></script>
-  <script src="js/model.js"></script>
-</body>
-</html>
-=======
 <!doctype html>
     <html lang="en">
         <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>My Contacts</title>
+            <title>Home</title>
+            <link rel="stylesheet" href="css/jquery.mobile-1.4.1.css">
+            <link rel="stylesheet" href="css/jquery.mobile-1.4.1.min.css">
+            <link type="text/css" href="css/jqm-datebox.min.css" rel="stylesheet">
+            <script type="text/javascript" charset="utf-8" src="js/jquery-1.7.2.min.js"></script>
+            <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.1.0.min.js"></script>
+            <script type="text/javascript" charset="utf-8" src="js/cordova.js"></script>
+            
+            <script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
+
+			<script type="text/javascript" src="js/jquery-1.8.3.js"></script> 
+			<script type="text/javascript" src="js/jquery.mobile-1.4.1.js"></script>
+			<script type="text/javascript" src="js/jqm-datebox.core.min.js"></script>
+			<script type="text/javascript" src="js/jqm-datebox.mode.calbox.min.js"></script>
+			<script type="text/javascript" src="js/jqm-datebox.mode.datebox.min.js"></script>
+			<script type="text/javascript" src="js/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
+
             <style>
             .error{
                 font-size: 0.8em;
@@ -100,7 +34,7 @@
             <script type="text/javascript" charset="utf-8">
              
             $(document).ready(function(){
-            	document.addEventListener("deviceready", onDeviceReady, false);
+                document.addEventListener("deviceready", onDeviceReady, false);
                  
                 var db = window.openDatabase("Database", "1.0", "MyContactsDB", 200000);
  
@@ -120,10 +54,81 @@
                         db.transaction(queryDB, errorCB);
                     }
                 }
+                
+                function populateDB(tx){
+                    //Create the table
+                    //tx.executeSql('DROP TABLE IF EXISTS MyContacts');
+                    tx.executeSql('CREATE TABLE IF NOT EXISTS Activity (id INTEGER PRIMARY KEY AUTOINCREMENT, \
+                            title TEXT NOT NULL, description TEXT, location TEXT, start_date DATE, \
+                            end_date DATE, start_time DATETIME, end_time DATETIME, alert TEXT NOT NULL)\
+                             ');
+                    tx.executeSql('SELECT id, title, description, location, start_date, end_date, start_time, end_time, alert FROM MyContacts ORDER BY start_date', [], querySuccess, errorCB);
+                }
+ 
+                function successCB(){
+                    db.transaction(queryDB, errorCB);
+                }
+                function queryDB(tx){
+                    tx.executeSql('SELECT id, title, description, location, start_date, end_date, start_time, end_time, alert FROM MyContacts ORDER BY start_date', [], querySuccess, errorCB);
+                }
+ 
+                function querySuccess(tx, results){
+                    $.mobile.showPageLoadingMsg(true);
+                    var len = results.rows.length;
+                    $("#activityList").html('');
+                    for (var i=0; i<len; i++){
+                        var row= results.rows.item(i);
+                        var htmlData = '<li id="'+row["id"]+'"><a href="#"><h2>'+row["title"]+'</h2><p class="ui-li-aside">'+row["start_date"]+'</p></a></li>';
+                        $("#activityList").append(htmlData).listview('refresh');
+                    }
+                    $.mobile.changePage($("#index"), { transition : "slide"});
+                    $.mobile.hidePageLoadingMsg();
+                }
+ 
 
                 function errorCB(err){
  
-                } 
+                }
+                
+                $("#addNewPage .error").html('').hide();
+                
+                $(".addNew").bind ("click", function (event){
+                    $("#addNewPage.error").html('').hide();
+                    $.mobile.changePage ($("#addNewPage"), { transition : "slide", reverse : true });
+                    $("#addNewPageHeader").html("Add New");
+                });
+                
+                $("#save").bind ("click", function (event){
+                    var title = $.trim($("#title").val()).replace(/[^A-Za-z0-9 ]/g, '');
+                    var description = $.trim($("#description").val());
+                    var location = $.trim($("#location").val());
+                    var start_date = $.trim($("#start_date").val());
+                    var end_date = $.trim($("#end_date").val());
+                    var start_time = $.trim($("#start_time").val());
+                    var end_time = $.trim($("#end_time").val());
+                    var alert = $.trim($("#alert").val());
+                    console.log(title+' '+description+' '+location+' '+start_date+' '+end_date+' '+start_time+' '+end_time+' '+alert);
+ 
+                    if (title == ''){
+                        $("#addNewPage .error").html('Please enter activity title.').show();
+                    }
+                    else{
+                        resetForm();
+ 
+                        var id = $("#id").val();
+                        $("#id").val('');
+                        if (id == ''){  //Save
+                            db.transaction(function (tx){ tx.executeSql("INSERT INTO Activity (title, description, location, start_date, end_date, start_time, end_time, alert) VALUES  (?, ?, ?, ?, ?, ?, ?, ?)",[title, description, location, start_date, end_date, start_time, end_time, alert],
+                            queryDB, errorCB); }); 
+                        }
+			else{   //Update
+                            db.transaction(function (tx){ tx.executeSql("UPDATE Activity SET title=?, description=?, location=?, start_date=?, end_date=?, start_time=?, end_time=?, alert=?, WHERE id=? ",[title, description, location, start_date, end_date, start_time, end_time, alert],
+                            queryDB, errorCB); }); 
+                        }
+                        
+                        db.transaction(queryDB, errorCB);
+                    }
+                });
 
                 $(".refresh").bind("click", function (event){
                     db.transaction(queryDB, errorCB);
@@ -133,6 +138,19 @@
                     resetForm();
                     db.transaction(queryDB, errorCB);
                 });
+                
+                function resetForm(){
+                    $("#addNewPage .error").html('').hide();
+                    $("#addNewPage #title").val('');
+                    $("#addNewPage #description").val('');
+                    $("#addNewPage #location").val('');
+                    $("#addNewPage #start_date").val('');
+                    $("#addNewPage #end_date").val('');
+                    $("#addNewPage #start_time").val('');
+                    $("#addNewPage #end_time").val('');
+                    $("#addNewPage #alert").val('');
+                    $("#addNewPage #addNewPageHeader").html('');   
+                }
 
                 $("#index [data-role='content'] ul").on('tap taphold', 'li', function (event){
                     event.preventDefault();
@@ -149,6 +167,26 @@
                         $("#tapHoldCheck").val('true');
                     }
                     else if (event.type === 'tap'){
+                            db.transaction(function (tx){
+                                //tx.executeSql('SELECT id, title, description, location, start_date, end_date, start_time, end_time, alert FROM MyContacts ORDER BY start_date', [], querySuccess, errorCB);
+                                tx.executeSql("SELECT title, description, location, start_date, end_date, start_time, end_time, alert FROM MyContacts WHERE id=?;", [liId], function (tx, results){
+                                    var row = results.rows.item(0);
+                                    $.mobile.showPageLoadingMsg(true);
+                                    $.mobile.changePage($("#displayDataPage"), { transition : "slide"});
+                                    $("#titleHeader").html(row['title']);
+                                    $("#activityTitle").html(row['title']);
+                                    $("#activityDescription").html(row['description']);
+                                    $("activityLocation").html(row['location']);
+                                    $("activityStartDate").html(row['start_date']);
+                                    $("activityEndDate").html(row['end_date']);
+                                    $("activityStartTime").html(row['start_time']);
+                                    $("activityEndTime").html(row['end_time']);
+                                    $("activityAlert").html(row['alert']);
+                                    $('#dataList').trigger('create');
+                                    $('#dataList').listview('refresh');
+                                    $.mobile.hidePageLoadingMsg();                                 
+                                    }
+
                     }
                 });
 
@@ -164,7 +202,24 @@
                     var action_liId = this.id.split('&');
                     var action = action_liId[0];
                     var id = action_liId[1];
-
+		    if (action == 'edit'){
+                        db.transaction(function (tx){
+                            tx.executeSql("SELECT title, description, location, start_date, end_date, start_time, end_time, alert FROM MyContacts WHERE id=?;", [id], function (tx, results){
+                                var row = results.rows.item(0);
+                                $("#title").val(row['title']);
+                                $("#description").val(row['description']);
+                                $("#location").val(row['location']);
+                                $("#start_date").val(row['start_date']);
+                                $("#end_date").val(row['end_date']);
+                                $("#start_time").val(row['start_time']);
+                                $("#end_time").val(row['end_time']);
+				$("#alert").val(row['alert']);
+                                $("#id").val(id);
+                                $("#addNewPageHeader").html('Edit');
+                                $.mobile.changePage ($("#addNewPage"), { transition : "slide", reverse : true });
+                            });
+                         });
+                    }
                     if (action == 'delete'){
                         navigator.notification.confirm(
                             'Are you sure?',
@@ -183,8 +238,115 @@
                         $.mobile.changePage($("#index"), { transition : "slide"});
                     }
                 }
+                
+                $('#start_date').live('change', function() {
+
+				    $('#end_date').val($('#start_date').val());
+				    var temp = new Date(),
+				        diff = parseInt(($('#start_date').data('mobileDatebox').theDate - temp) / ( 1000 * 60 * 60 * 24 ));
+				        diffstrt = (diff * -1)-1; // If you want a minimum of 1 day between, make this -2 instead of -1
+				
+				    $('#end_date').data('mobileDatebox').options.minDays = diffstrt;
+				});
+
             });
             </script>
         </head>
     <body>
->>>>>>> 50a63562bd6fc35b3a871d715797080dd18b23cb
+        <!--Home page view -->
+        < <div data-role="page" id="index">
+            <div data-role="header" data-position="fixed">
+                <a href="#" class="refresh" data-role="button" data-icon="refresh" data-theme="a" title="Refresh">Refresh</a>
+                <h1>Upcoming Activities</h1>
+                <a href="#" class="addNew" data-role="button" data-icon="add" data-theme="a" title="Add New">Add</a>
+            </div>
+            <div data-role="content">
+                <ul data-role="listview" data-filter="true" data-filter-placeholder="Search..." id="userList">  </ul>
+            </div>
+            <div data-role="popup" id="actionList-popup" data-overlay-theme="a">
+                <ul data-role="listview" id="actionList" style="border: 1px solid blue; width:15em">  </ul>
+            </div>
+            <input type="hidden" id="tapHoldCheck" value="" />
+        </div>
+        <!--Home page view end-->
+
+    	<!-- Form Page Start -->
+
+        <div data-role="page" id="addNewPage">
+            <div data-role="header" data-position="fixed">
+                <a href="#" class="back" data-role="button" data-icon="arrow-l" data-theme="a" title="Back">Back</a>
+                <h1 id="addNewPageHeader"></h1>
+                <a href="#" id="save" data-role="button" data-icon="check" data-theme="a" title="Save">Save</a>
+            </div>
+            <div data-role="content">
+                <div class='error'></div>
+                <div data-role="fieldcontain">
+                    <label for="name">Title:</label>
+                    <input type="text" name="title" id="title" required="true" maxlength="20" value="" />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="description">Description:</label>
+                    <!--<input type="text" name="description" id="description" maxlength="100" value="" />-->
+                    <textarea name="description" id="description" value="" rows="4" cols="50" ></textarea>
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="location">Location:</label>
+                    <input type="text" name="location" id="location" value="" />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="start_date">Start Date</label>
+
+					<input name="start_date" id="start_date" type="text" value="" data-role="datebox" data-options='{"mode": "calbox", "afterToday": true, "useFocus": true, "useButton": false}' />
+                </div>
+                <div data-role="fieldcontain">
+                	<label for="end_date">End Date</label>
+					<input name="end_date" id="end_date" type="text" value="" data-role="datebox" data-options='{"mode": "calbox", "afterToday": true, "useFocus": true, "useButton": false}' />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="start_time">Start Time</label>
+					<input name="start_time" id="start_time" type="text" value="" data-role="datebox" data-options='{"mode":"timebox", "useNewStyle":true, "useFocus": true , "useButton": false}' />
+
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="end_time">End Time:</label>
+                    <input name="end_time" id="end_time" type="text" value="" data-role="datebox" data-options='{"mode":"timebox", "useNewStyle":true, "useFocus": true, "useButton": false}' />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="alert">Alert:</label>
+                    <select name="alert">
+
+					  <option value="Yes">Yes</option>
+					  <option value="No">No</option>
+					</select>
+                </div>
+
+                <input type="hidden" name="id" id="id" value="" />
+            </div>
+        </div>
+        <!-- Form Page End -->
+   
+        <!--view for each activity-->
+        <div data-role="page" id="displayDataPage">
+            <div data-role="header" data-position="fixed">
+                <a href="#" class="back" data-role="button" data-icon="arrow-l" data-theme="a" title="Back">Back</a>
+                <h1 id="nameHeader"></h1>
+                <a href="#" class="addNew" data-role="button" data-icon="plus" data-theme="a" title="Add New">Add</a>
+            </div>
+            <div data-role="content">
+                <ul data-role="listview" id="dataList">
+                    <li>Title : <span id="activityTitle"></span></li>
+                    <li>Description : <span id="activityDescription"></span></li>
+                    <li>Location : <span id="activityLocation"></span></li>
+                    <li>Start Date : <span id="activityStartDate"></span></li>
+                    <li>End Date : <span id="activityEndDate"></span></li>
+                    <li>Start Time : <span id="activityStartTime"></span></li>
+                    <li>End Time : <span id="activityStartTime"></span></li>
+                    <li>Alert : <span id="activityAlert"></span></li>
+                </ul>
+            </div>
+        </div>
+        <!--view for each activity end-->
+    </body>
+
+</html>
+

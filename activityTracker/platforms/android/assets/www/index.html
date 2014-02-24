@@ -118,7 +118,11 @@
                         var id = $("#id").val();
                         $("#id").val('');
                         if (id == ''){  //Save
-                            db.transaction(function (tx){ tx.executeSql("INSERT INTO Activity (title, description, location, start_date, start_time, start_time, end_time, alert) VALUES  (?, ?, ?, ?, ?, ?, ?, ?)",[title, description, location, start_date, start_time, start_time, end_time, alert],
+                            db.transaction(function (tx){ tx.executeSql("INSERT INTO Activity (title, description, location, start_date, end_date, start_time, end_time, alert) VALUES  (?, ?, ?, ?, ?, ?, ?, ?)",[title, description, location, start_date, end_date, start_time, end_time, alert],
+                            queryDB, errorCB); }); 
+                        }
+			else{   //Update
+                            db.transaction(function (tx){ tx.executeSql("UPDATE Activity SET title=?, description=?, location=?, start_date=?, end_date=?, start_time=?, end_time=?, alert=?, WHERE id=? ",[title, description, location, start_date, end_date, start_time, end_time, alert],
                             queryDB, errorCB); }); 
                         }
                         
@@ -198,7 +202,24 @@
                     var action_liId = this.id.split('&');
                     var action = action_liId[0];
                     var id = action_liId[1];
-
+		    if (action == 'edit'){
+                        db.transaction(function (tx){
+                            tx.executeSql("SELECT title, description, location, start_date, end_date, start_time, end_time, alert FROM MyContacts WHERE id=?;", [id], function (tx, results){
+                                var row = results.rows.item(0);
+                                $("#title").val(row['title']);
+                                $("#description").val(row['description']);
+                                $("#location").val(row['location']);
+                                $("#start_date").val(row['start_date']);
+                                $("#end_date").val(row['end_date']);
+                                $("#start_time").val(row['start_time']);
+                                $("#end_time").val(row['end_time']);
+				$("#alert").val(row['alert']);
+                                $("#id").val(id);
+                                $("#addNewPageHeader").html('Edit');
+                                $.mobile.changePage ($("#addNewPage"), { transition : "slide", reverse : true });
+                            });
+                         });
+                    }
                     if (action == 'delete'){
                         navigator.notification.confirm(
                             'Are you sure?',
