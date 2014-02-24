@@ -3,21 +3,11 @@
         <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>Home</title>
-            <link rel="stylesheet" href="css/jquery.mobile-1.4.1.css">
-            <link rel="stylesheet" href="css/jquery.mobile-1.4.1.min.css">
-            <link type="text/css" href="css/jqm-datebox.min.css" rel="stylesheet">
-            <script type="text/javascript" charset="utf-8" src="js/jquery-1.7.2.min.js"></script>
-            <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.1.0.min.js"></script>
-            <script type="text/javascript" charset="utf-8" src="js/cordova.js"></script>
-            <script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
-	    <script type="text/javascript" src="js/jquery-1.8.3.js"></script> 
-	    <script type="text/javascript" src="js/jquery.mobile-1.4.1.js"></script>
-	    <script type="text/javascript" src="js/jqm-datebox.core.min.js"></script>
-	    <script type="text/javascript" src="js/jqm-datebox.mode.calbox.min.js"></script>
-	    <script type="text/javascript" src="js/jqm-datebox.mode.datebox.min.js"></script>
-	    <script type="text/javascript" src="js/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
-
+            <title>My Contacts</title>
+            <link rel="stylesheet" href="css/jquery.mobile-1.3.1.min.css">
+            <script type="text/javascript" charset="utf-8" src="js/jquery-1.9.1.min.js"></script>
+            <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.3.1.min.js"></script>
+            <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
             <style>
             .error{
                 font-size: 0.8em;
@@ -32,13 +22,13 @@
             <script type="text/javascript" charset="utf-8">
              
             $(document).ready(function(){
-
+ 
                 document.addEventListener("deviceready", onDeviceReady, false);
                  
                 var db = window.openDatabase("Database", "1.0", "ActivityTracker", 200000);
  
                 function onDeviceReady(){
-                    //Populate the databse
+                    //Populate the database
                     db.transaction(populateDB, errorCB, successCB);
                     //Override the back button functionality
                     document.addEventListener('backbutton', onBack, false);
@@ -52,11 +42,11 @@
                     else{
                         db.transaction(queryDB, errorCB);
                     }
-                }
-                
+                }              
+ 
                 function populateDB(tx){
                     //Create the table
-                    //tx.executeSql('DROP TABLE IF EXISTS Activity');
+                    tx.executeSql('DROP TABLE IF EXISTS Activity');
                     tx.executeSql('CREATE TABLE IF NOT EXISTS Activity (id INTEGER PRIMARY KEY AUTOINCREMENT, \
                             title TEXT NOT NULL, description TEXT, location TEXT, start_date DATE, \
                             end_date DATE, start_time DATETIME, end_time DATETIME, alert TEXT NOT NULL)\
@@ -67,6 +57,7 @@
                 function successCB(){
                     db.transaction(queryDB, errorCB);
                 }
+ 
                 function queryDB(tx){
                     tx.executeSql('SELECT id, title, description, location, start_date, end_date, start_time, end_time, alert FROM Activity ORDER BY start_date', [], querySuccess, errorCB);
                 }
@@ -84,19 +75,18 @@
                     $.mobile.hidePageLoadingMsg();
                 }
  
-
                 function errorCB(err){
  
-                }
-                
+                }      
+             
                 $("#addNewPage .error").html('').hide();
-                
+ 
                 $(".addNew").bind ("click", function (event){
-                    $("#addNewPage.error").html('').hide();
+                    $("#addNewPage .error").html('').hide();
                     $.mobile.changePage ($("#addNewPage"), { transition : "slide", reverse : true });
                     $("#addNewPageHeader").html("Add New");
                 });
-                
+ 
                 $("#save").bind ("click", function (event){
                     var title = $.trim($("#title").val()).replace(/[^A-Za-z0-9 ]/g, '');
                     var description = $.trim($("#description").val());
@@ -120,7 +110,7 @@
                             db.transaction(function (tx){ tx.executeSql("INSERT INTO Activity (title, description, location, start_date, end_date, start_time, end_time, alert) VALUES  (?, ?, ?, ?, ?, ?, ?, ?)",[title, description, location, start_date, end_date, start_time, end_time, alert],
                             queryDB, errorCB); }); 
                         }
-			else{   //Update
+					else{   //Update
                             db.transaction(function (tx){ tx.executeSql("UPDATE Activity SET title=?, description=?, location=?, start_date=?, end_date=?, start_time=?, end_time=?, alert=?, WHERE id=? ",[title, description, location, start_date, end_date, start_time, end_time, alert],
                             queryDB, errorCB); }); 
                         }
@@ -128,16 +118,16 @@
                         db.transaction(queryDB, errorCB);
                     }
                 });
-
+                 
                 $(".refresh").bind("click", function (event){
                     db.transaction(queryDB, errorCB);
                 });
-
+                 
                 $(".back").bind("click", function (event){
                     resetForm();
                     db.transaction(queryDB, errorCB);
                 });
-                
+                 
                 function resetForm(){
                     $("#addNewPage .error").html('').hide();
                     $("#addNewPage #title").val('');
@@ -148,62 +138,63 @@
                     $("#addNewPage #start_time").val('');
                     $("#addNewPage #end_time").val('');
                     $("#addNewPage #alert").val('');
-                    $("#addNewPage #addNewPageHeader").html('');   
+                    $("#addNewPage #addNewPageHeader").html(''); 
                 }
-
+                 
                 $("#index [data-role='content'] ul").on('tap taphold', 'li', function (event){
                     event.preventDefault();
                     event.stopImmediatePropagation();
                     var liId = this.id;
-
                     if (event.type === 'taphold'){
                         navigator.notification.vibrate(30);
                         var $popup = $('#actionList-popup');
                         $("#actionList").html('');
+                        $("#actionList").append('<li id="edit&'+liId+'">Edit</li>').listview('refresh');
                         $("#actionList").append('<li id="delete&'+liId+'">Delete</li>').listview('refresh');
                         $popup.popup();
                         $popup.popup('open');
                         $("#tapHoldCheck").val('true');
                     }
                     else if (event.type === 'tap'){
+                        if ($("#tapHoldCheck").val() == ''){ //If the value of the text box is blank then only tap will work
                             db.transaction(function (tx){
-                                //tx.executeSql('SELECT id, title, description, location, start_date, end_date, start_time, end_time, alert FROM MyContacts ORDER BY start_date', [], querySuccess, errorCB);
-                                tx.executeSql("SELECT title, description, location, start_date, end_date, start_time, end_time, alert FROM MyContacts WHERE id=?;", [liId], function (tx, results){
+                                //tx.executeSql('SELECT id, title, description, location, start_date, end_date, start_time, end_time, alert FROM Activity ORDER BY start_date', [], querySuccess, errorCB);
+                                tx.executeSql("SELECT title, description, location, start_date, end_date, start_time, end_time, alert FROM Activity WHERE id=?;", [liId], function (tx, results){
                                     var row = results.rows.item(0);
                                     $.mobile.showPageLoadingMsg(true);
                                     $.mobile.changePage($("#displayDataPage"), { transition : "slide"});
                                     $("#titleHeader").html(row['title']);
                                     $("#activityTitle").html(row['title']);
                                     $("#activityDescription").html(row['description']);
-                                    $("activityLocation").html(row['location']);
-                                    $("activityStartDate").html(row['start_date']);
-                                    $("activityEndDate").html(row['end_date']);
-                                    $("activityStartTime").html(row['start_time']);
-                                    $("activityEndTime").html(row['end_time']);
-                                    $("activityAlert").html(row['alert']);
+                                    $("#activityLocation").html(row['location']);
+                                    $("#activityStartDate").html(row['start_date']);
+                                    $("#activityEndDate").html(row['end_date']);
+                                    $("#activityStartTime").html(row['start_time']);
+                                    $("#activityEndTime").html(row['end_time']);
+                                    $("#activityAlert").html(row['alert']);
                                     $('#dataList').trigger('create');
                                     $('#dataList').listview('refresh');
-                                    $.mobile.hidePageLoadingMsg();                                 
-                                    }
-
+                                    $.mobile.hidePageLoadingMsg();
+                                });
+                             });
+                        }
                     }
                 });
-
+ 
                 //Change the hidden field value when the popup is closed
                 $('#actionList-popup').bind({
                     popupafterclose: function(event, ui){
                         $("#tapHoldCheck").val('');
                     }
                 });
-  
-
+ 
                 $("#index [data-role='popup'] ul").on('click', 'li', function (event){
                     var action_liId = this.id.split('&');
                     var action = action_liId[0];
                     var id = action_liId[1];
-		    if (action == 'edit'){
+                    if (action == 'edit'){
                         db.transaction(function (tx){
-                            tx.executeSql("SELECT title, description, location, start_date, end_date, start_time, end_time, alert FROM MyContacts WHERE id=?;", [id], function (tx, results){
+                            tx.executeSql("SELECT title, description, location, start_date, end_date, start_time, end_time, alert FROM Activity WHERE id=?;", [id], function (tx, results){
                                 var row = results.rows.item(0);
                                 $("#title").val(row['title']);
                                 $("#description").val(row['description']);
@@ -228,31 +219,21 @@
                         );
                     }
                 });
-
+                 
                 function onConfirm(buttonIndex, id){
                     if (buttonIndex === 1){ //Delete
-                        db.transaction(function (tx){ tx.executeSql("DELETE FROM MyContacts WHERE id=?", [id], queryDB, errorCB); });
+                        db.transaction(function (tx){ tx.executeSql("DELETE FROM Activity WHERE id=?", [id], queryDB, errorCB); });
                     }
                     if (buttonIndex === 2){
                         $.mobile.changePage($("#index"), { transition : "slide"});
                     }
                 }
-                
-                $('#start_date').live('change', function() {
-
-				    $('#end_date').val($('#start_date').val());
-				    var temp = new Date(),
-				        diff = parseInt(($('#start_date').data('mobileDatebox').theDate - temp) / ( 1000 * 60 * 60 * 24 ));
-				        diffstrt = (diff * -1)-1; // If you want a minimum of 1 day between, make this -2 instead of -1
-				
-				    $('#end_date').data('mobileDatebox').options.minDays = diffstrt;
-				});
-
+ 
             });
             </script>
         </head>
     <body>
-        <!--Home page view -->
+ 		<!--Home page view -->
         < <div data-role="page" id="index">
             <div data-role="header" data-position="fixed">
                 <a href="#" class="refresh" data-role="button" data-icon="refresh" data-theme="a" title="Refresh">Refresh</a>
@@ -260,7 +241,7 @@
                 <a href="#" class="addNew" data-role="button" data-icon="add" data-theme="a" title="Add New">Add</a>
             </div>
             <div data-role="content">
-                <ul data-role="listview" data-filter="true" data-filter-placeholder="Search..." id="userList">  </ul>
+                <ul data-role="listview" data-filter="true" data-filter-placeholder="Search..." id="activityList">  </ul>
             </div>
             <div data-role="popup" id="actionList-popup" data-overlay-theme="a">
                 <ul data-role="listview" id="actionList" style="border: 1px solid blue; width:15em">  </ul>
@@ -294,12 +275,11 @@
                 </div>
                 <div data-role="fieldcontain">
                     <label for="start_date">Start Date</label>
-
-					<input name="start_date" id="start_date" type="text" value="" data-role="datebox" data-options='{"mode": "calbox", "afterToday": true, "useFocus": true, "useButton": false}' />
+					<input name="start_date" id="start_date" type="date" value="" data-role="datebox" data-options='{"mode": "calbox", "afterToday": true, "useFocus": true, "useButton": false}' />
                 </div>
                 <div data-role="fieldcontain">
                 	<label for="end_date">End Date</label>
-					<input name="end_date" id="end_date" type="text" value="" data-role="datebox" data-options='{"mode": "calbox", "afterToday": true, "useFocus": true, "useButton": false}' />
+					<input name="end_date" id="end_date" type="date" value="" data-role="datebox" data-options='{"mode": "calbox", "afterToday": true, "useFocus": true, "useButton": false}' />
                 </div>
                 <div data-role="fieldcontain">
                     <label for="start_time">Start Time</label>
@@ -346,6 +326,4 @@
         </div>
         <!--view for each activity end-->
     </body>
-
 </html>
-
