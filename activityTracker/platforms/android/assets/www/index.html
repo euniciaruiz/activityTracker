@@ -51,7 +51,7 @@
  
                 function populateDB(tx){
                     //Create the table
-                    tx.executeSql('DROP TABLE IF EXISTS Activity');
+                    //tx.executeSql('DROP TABLE IF EXISTS Activity');
                     tx.executeSql('CREATE TABLE IF NOT EXISTS Activity (id INTEGER PRIMARY KEY AUTOINCREMENT, \
                             title TEXT NOT NULL, description TEXT, location TEXT, start_date DATE, \
                             end_date DATE, start_time DATETIME, end_time DATETIME, alert TEXT NOT NULL)\
@@ -161,7 +161,7 @@
                     event.stopImmediatePropagation();
                     var liId = this.id;
                     if (event.type === 'taphold'){
-                        navigator.notification.vibrate(30);
+                        //navigator.notification.vibrate(30);
                         var $popup = $('#actionList-popup');
                         $("#actionList").html('');
                         $("#actionList").append('<li id="edit&'+liId+'">Edit</li>').listview('refresh');
@@ -173,7 +173,6 @@
                     else if (event.type === 'tap'){
                         if ($("#tapHoldCheck").val() == ''){ //If the value of the text box is blank then only tap will work
                             db.transaction(function (tx){
-                                //tx.executeSql('SELECT id, title, description, location, start_date, end_date, start_time, end_time, alert FROM Activity ORDER BY start_date', [], querySuccess, errorCB);
                                 tx.executeSql("SELECT title, description, location, start_date, end_date, start_time, end_time, alert FROM Activity WHERE id=?;", [liId], function (tx, results){
                                     var row = results.rows.item(0);
                                     $.mobile.showPageLoadingMsg(true);
@@ -218,7 +217,7 @@
                                 $("#end_date").val(row['end_date']);
                                 $("#start_time").val(row['start_time']);
                                 $("#end_time").val(row['end_time']);
-				$("#alert").val(row['alert']);
+				                $("#alert").val(row['alert']);
                                 $("#id").val(id);
                                 $("#addNewPageHeader").html('Edit');
                                 $.mobile.changePage ($("#addNewPage"), { transition : "slide", reverse : true });
@@ -226,12 +225,13 @@
                          });
                     }
                     if (action == 'delete'){
-                        navigator.notification.confirm(
-                            'Are you sure?',
-                            function(buttonIndex){onConfirm(buttonIndex, id);},
-                            'Delete Contact',
-                            'Ok, Cancel'
-                        );
+                        var y = confirm("Are you sure?");
+                        if (y==true){
+                            db.transaction(function (tx){ tx.executeSql("DELETE FROM Activity WHERE id=?", [id], queryDB, errorCB); });
+                        }
+                        else{
+                            $.mobile.changePage($("#index"), { transition : "slide"});  
+                        }     
                     }
                 });
                  
