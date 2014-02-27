@@ -114,7 +114,7 @@
                         $("#addNewPage .error").html("Please enter the activity title").show();
                     }
                     else {
-	                    if (start_date == ''){
+                    	if (start_date == ''){
 	                        $("#addNewPage .error").html('Please enter the starting date of the activity.').show();
 	                    }
 	                    else if (start_time == ''){
@@ -148,19 +148,19 @@
 						    if (endAMPM == "AM" && endHours == 12) endHours = endHours - 12;
 						    var endTimeHour = endHours.toString();
 						    if (endHours < 10) endTimeHour = "0" + endTimeHour;
-					
-		                    if(start_date === end_date && parseInt(startTimeHour) <= parseInt(currentHour)) {
-		                    		$("#addNewPage .error").html('Since the starting date is today, the start time must be ahead an hour or more than the current hour').show();
+							
+							if(start_date === end_date && parseInt(startTimeHour) <= parseInt(currentHour)) {
+		                    	$("#addNewPage .error").html('Since the starting date is today, the start time must be an hour or more ahead than the current hour').show();
 							}
 							else if(start_date === end_date && parseInt(startTimeHour) >= parseInt(endTimeHour)) {
-		                    		$("#addNewPage .error").html('Since the starting date is today, the start time must be less than an hour or more than the current hour').show();
+		                    	$("#addNewPage .error").html('Since the starting date is today, the start time must be less than an hour or more than the current hour').show();
 							}
 							else if(Date.parse(start_date) > Date.parse(end_date)){
-								$("#addNewPage .error").html('Sorry, you can't create an activity that ends before it starts.').show();
+								$("#addNewPage .error").html('Sorry, you cannot create an activity that ends before it starts.').show();
 							}
-		                    else{
+							else{
 		                    	if(Date.parse(start_date) < Date.parse(end_date) && parseInt(startTimeHour) <= parseInt(currentHour)) {
-		                    		$("#addNewPage .error").html('Since the starting date is today, the start time must be ahead an hour or more than the current hour').show();
+		                    		$("#addNewPage .error").html('Since the starting date is today, the start time must be an hour or more ahead than the current hour').show();
 								}			  	
 		                        resetForm();
 		 
@@ -177,9 +177,8 @@
 		                        
 		                        db.transaction(queryDB, errorCB);
 		                    }
-	                    }
-	                }
-                    
+						}
+                    }                    
                 });
                  
                 $(".refresh").bind("click", function (event){
