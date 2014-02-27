@@ -103,35 +103,83 @@
                     var end_time = $.trim($("#end_time").val());
                     var alert = $.trim($("#alert").val());
                     console.log(title+' '+description+' '+location+' '+start_date+' '+end_date+' '+start_time+' '+end_time+' '+alert);
-					
+
 					db.transaction(function (tx){
                     	tx.executeSql("SELECT * FROM Activity WHERE title=?;", [title], function (tx, results){
                         	len = results.rows.length;
                         });
                     });
-						
+                    
                     if (title == ''){
-                        $("#addNewPage .error").html('Please enter activity title.').show();
+                        $("#addNewPage .error").html(bool).show();
                     }
-                    else if (len == 0){
-                    	$("#addNewPage .error").html('Activity already exists.').show();
-                    }
-                    else{
-                        resetForm();
- 
-                        var id = $("#id").val();
-                        $("#id").val('');
-                        if (id == ''){  //Save
-                            db.transaction(function (tx){ tx.executeSql("INSERT INTO Activity (title, description, location, start_date, end_date, start_time, end_time, alert) VALUES  (?, ?, ?, ?, ?, ?, ?, ?)",[title, description, location, start_date, end_date, start_time, end_time, alert],
-                            queryDB, errorCB); }); 
-                        }
-						else{   //Update
-                            db.transaction(function (tx){ tx.executeSql("UPDATE Activity SET title=?, description=?, location=?, start_date=?, end_date=?, start_time=?, end_time=?, alert=?, WHERE id=? ",[title, description, location, start_date, end_date, start_time, end_time, alert],
-                            queryDB, errorCB); }); 
-                        }
-                        
-                        db.transaction(queryDB, errorCB);
-                    }
+                    else {
+	                    if (start_date == ''){
+	                        $("#addNewPage .error").html('Please enter the start date of the activity.').show();
+	                    }
+	                    else if (start_time == ''){
+	                        $("#addNewPage .error").html('Please enter the starting time of the activity.').show();
+	                    }
+	                    else if (end_date == ''){
+	                        $("#addNewPage .error").html('Please enter the end date of the activity.').show();
+	                    }
+	                    else if (end_time == ''){
+	                        $("#addNewPage .error").html('Please enter the ending time of the activity.').show();
+	                    }
+	                    else if (len == 0){
+	                    	$("#addNewPage .error").html('Activity already exists.').show();
+	                    }
+	                    else {
+	                    	var currentDate = new Date();
+	                    	var currentHour = currentDate.getHours();
+	                    
+	                    	var startTime = $("#start_time").val();
+						    var startHours = Number(startTime.match(/^(\d+)/)[1]);
+						    var startAMPM = startTime.match(/\s(.*)$/)[1];
+						    if (startAMPM == "PM" && startHours < 12) startHours = startHours + 12;
+						    if (startAMPM == "AM" && startHours == 12) startHours = startHours - 12;
+						    var startTimeHour = startHours.toString();
+						    if (startHours < 10) startTimeHour = "0" + startTimeHour;	    
+
+						    var endTime = $("#end_time").val();
+						    var endHours = Number(endTime.match(/^(\d+)/)[1]);
+						    var endAMPM = endTime.match(/\s(.*)$/)[1];
+						    if (endAMPM == "PM" && endHours < 12) endHours = endHours + 12;
+						    if (endAMPM == "AM" && endHours == 12) endHours = endHours - 12;
+						    var endTimeHour = endHours.toString();
+						    if (endHours < 10) endTimeHour = "0" + endTimeHour;
+					
+		                    if(start_date === end_date && parseInt(startTimeHour) <= parseInt(currentHour)) {
+		                    		$("#addNewPage .error").html('Since the start date is today, the start time must be ahead one hour or more than the current hour').show();
+							}
+							else if(start_date === end_date && parseInt(startTimeHour) >= parseInt(endTimeHour)) {
+		                    		$("#addNewPage .error").html('Since the start date is today, the start time must be less than one hour or more than the current hour').show();
+							}
+							else if(Date.parse(start_date) > Date.parse(end_date)){
+								$("#addNewPage .error").html('Start Date cannot be after End Date.').show();
+							}
+		                    else{
+		                    	if(Date.parse(start_date) < Date.parse(end_date) && parseInt(startTimeHour) <= parseInt(currentHour)) {
+		                    		$("#addNewPage .error").html('Since the start date is today, the start time must be ahead one hour or more than the current hour').show();
+								}			  	
+		                        resetForm();
+		 
+		                        var id = $("#id").val();
+		                        $("#id").val('');
+		                        if (id == ''){  //Save
+		                            db.transaction(function (tx){ tx.executeSql("INSERT INTO Activity (title, description, location, start_date, end_date, start_time, end_time, alert) VALUES  (?, ?, ?, ?, ?, ?, ?, ?)",[title, description, location, start_date, end_date, start_time, end_time, alert],
+		                            queryDB, errorCB); }); 
+		                        }
+								else{   //Update
+		                            db.transaction(function (tx){ tx.executeSql("UPDATE Activity SET title=?, description=?, location=?, start_date=?, end_date=?, start_time=?, end_time=?, alert=?, WHERE id=? ",[title, description, location, start_date, end_date, start_time, end_time, alert],
+		                            queryDB, errorCB); }); 
+		                        }
+		                        
+		                        db.transaction(queryDB, errorCB);
+		                    }
+	                    }
+	                }
+                    
                 });
                  
                 $(".refresh").bind("click", function (event){
@@ -218,7 +266,7 @@
                                 $("#end_date").val(row['end_date']);
                                 $("#start_time").val(row['start_time']);
                                 $("#end_time").val(row['end_time']);
-				$("#alert").val(row['alert']);
+								$("#alert").val(row['alert']);
                                 $("#id").val(id);
                                 $("#addNewPageHeader").html('Edit');
                                 $.mobile.changePage ($("#addNewPage"), { transition : "slide", reverse : true });
@@ -290,7 +338,6 @@
                 </div>
                 <div data-role="fieldcontain">
                     <label for="description">Description:</label>
-                    <!--<input type="text" name="description" id="description" maxlength="100" value="" />-->
                     <textarea name="description" id="description" value="" rows="4" cols="50" ></textarea>
                 </div>
                 <div data-role="fieldcontain">
@@ -299,7 +346,7 @@
                 </div>
                 <div data-role="fieldcontain">
                 	<label for="start_date">Start Date</label>
-                	<input name="start_date" id="start_date" type="date" data-role="datebox" data-options='{"mode": "calbox", "afterToday": true, "closeCallback": "$(\"#start_time\").datebox(\"open\");"}'/>
+                	<input name="start_date" id="start_date" type="text" data-role="datebox" data-options='{"mode": "calbox", "afterToday": true, "closeCallback": "$(\"#start_time\").datebox(\"open\");"}'/>
                 </div>
                 <div data-role="fieldcontain">
                     <label for="start_time">Start Time</label>
@@ -315,8 +362,7 @@
                 </div>
                 <div data-role="fieldcontain">
                     <label for="alert">Alert:</label>
-                    <select name="alert">
-
+                    <select name="alert" id="alert">
 					  <option value="Yes">Yes</option>
 					  <option value="No">No</option>
 					</select>
@@ -342,7 +388,7 @@
                     <li>Start Date : <span id="activityStartDate"></span></li>
                     <li>End Date : <span id="activityEndDate"></span></li>
                     <li>Start Time : <span id="activityStartTime"></span></li>
-                    <li>End Time : <span id="activityStartTime"></span></li>
+                    <li>End Time : <span id="activityEndTime"></span></li>
                     <li>Alert : <span id="activityAlert"></span></li>
                 </ul>
             </div>
