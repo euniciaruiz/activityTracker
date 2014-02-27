@@ -111,17 +111,17 @@
                     });
                     
                     if (title == ''){
-                        $("#addNewPage .error").html(bool).show();
+                        $("#addNewPage .error").html("Please enter the activity title").show();
                     }
                     else {
 	                    if (start_date == ''){
-	                        $("#addNewPage .error").html('Please enter the start date of the activity.').show();
+	                        $("#addNewPage .error").html('Please enter the starting date of the activity.').show();
 	                    }
 	                    else if (start_time == ''){
 	                        $("#addNewPage .error").html('Please enter the starting time of the activity.').show();
 	                    }
 	                    else if (end_date == ''){
-	                        $("#addNewPage .error").html('Please enter the end date of the activity.').show();
+	                        $("#addNewPage .error").html('Please enter the ending date of the activity.').show();
 	                    }
 	                    else if (end_time == ''){
 	                        $("#addNewPage .error").html('Please enter the ending time of the activity.').show();
@@ -150,17 +150,17 @@
 						    if (endHours < 10) endTimeHour = "0" + endTimeHour;
 					
 		                    if(start_date === end_date && parseInt(startTimeHour) <= parseInt(currentHour)) {
-		                    		$("#addNewPage .error").html('Since the start date is today, the start time must be ahead one hour or more than the current hour').show();
+		                    		$("#addNewPage .error").html('Since the starting date is today, the start time must be ahead an hour or more than the current hour').show();
 							}
 							else if(start_date === end_date && parseInt(startTimeHour) >= parseInt(endTimeHour)) {
-		                    		$("#addNewPage .error").html('Since the start date is today, the start time must be less than one hour or more than the current hour').show();
+		                    		$("#addNewPage .error").html('Since the starting date is today, the start time must be less than an hour or more than the current hour').show();
 							}
 							else if(Date.parse(start_date) > Date.parse(end_date)){
-								$("#addNewPage .error").html('Start Date cannot be after End Date.').show();
+								$("#addNewPage .error").html('Sorry, you can't create an activity that ends before it starts.').show();
 							}
 		                    else{
 		                    	if(Date.parse(start_date) < Date.parse(end_date) && parseInt(startTimeHour) <= parseInt(currentHour)) {
-		                    		$("#addNewPage .error").html('Since the start date is today, the start time must be ahead one hour or more than the current hour').show();
+		                    		$("#addNewPage .error").html('Since the starting date is today, the start time must be ahead an hour or more than the current hour').show();
 								}			  	
 		                        resetForm();
 		 
