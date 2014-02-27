@@ -171,8 +171,10 @@
 		                            queryDB, errorCB); }); 
 		                        }
 								else{   //Update
-		                            db.transaction(function (tx){ tx.executeSql("UPDATE Activity SET title=?, description=?, location=?, start_date=?, end_date=?, start_time=?, end_time=?, alert=?, WHERE id=? ",[title, description, location, start_date, end_date, start_time, end_time, alert],
+                                    console.log("start update");
+		                            db.transaction(function (tx){ tx.executeSql("UPDATE Activity SET title=?, description=?, location=?, start_date=?, end_date=?, start_time=?, end_time=?, alert=? WHERE id=? ",[title, description, location, start_date, end_date, start_time, end_time, alert, id],
 		                            queryDB, errorCB); }); 
+                                    console.log(title+' '+description+' '+location+' '+start_date+' '+end_date+' '+start_time+' '+end_time+' '+alert);
 		                        }
 		                        
 		                        db.transaction(queryDB, errorCB);
