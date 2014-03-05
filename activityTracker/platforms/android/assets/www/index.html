@@ -71,7 +71,7 @@
 	                            title TEXT NOT NULL, description TEXT, location TEXT, start_date DATE, \
 	                            end_date DATE, start_time DATETIME, end_time DATETIME, alert TEXT NOT NULL)\
 	                             ');
-	                    tx.executeSql('SELECT * FROM Activity WHERE start_date > ? ORDER BY start_date ASC', [dateToday], querySuccess, errorCB);
+	                    tx.executeSql('SELECT * FROM Activity WHERE start_date >= ? ORDER BY start_date ASC', [dateToday], querySuccess, errorCB);
 	                    
 	                }
 	 
@@ -499,101 +499,7 @@
 				            $('#login p').html(data.error);
 				        });
 				    }
-				};
-                 
-<<<<<<< HEAD
-                function onBack(){
-                    //If the current page is index page then exit other wise navigate to index page
-                    if($.mobile.activePage.is('#index')){
-                        navigator.app.exitApp();
-                    }
-                    else{
-                        db.transaction(queryDB, errorCB);
-                    }
-                }              
- 
-                function populateDB(tx){
-                    //Create the table
-                    //tx.executeSql('DROP TABLE IF EXISTS Activity');
-                    var currDate = new Date();
-                    var year = currDate.getFullYear();
-                    var month = currDate.getMonth() + 1;
-                    var day = currDate.getDate();
-                    if(day < 10)
-                    	day = "0"+day;
-	            if(month < 10)
-			month = "0"+month;
-                    var dateToday = year + "-" +month + "-" +day;
-		    console.log(dateToday);
-                    
-                    tx.executeSql('CREATE TABLE IF NOT EXISTS Activity (id INTEGER PRIMARY KEY AUTOINCREMENT, \
-                            title TEXT NOT NULL, description TEXT, location TEXT, start_date DATE, \
-                            end_date DATE, start_time DATETIME, end_time DATETIME, alert TEXT NOT NULL)\
-                             ');
-                    tx.executeSql('SELECT * FROM Activity WHERE start_date < ? ORDER BY start_date ASC', [dateToday], querySuccess, errorCB);
-		                    }
- 
-                function successCB(){
-                    db.transaction(queryDB, errorCB);
-                }
- 
-                function queryDB(tx){
-	 	    
-                    tx.executeSql('SELECT * FROM Activity ORDER BY start_date ASC', [], querySuccess, errorCB);
-		}
- 
-                function querySuccess(tx, results){
-                    $.mobile.showPageLoadingMsg(true);
-                    var len = results.rows.length;
-                    $("#activityList").html('');
-                    for (var i=0; i<len; i++){
-                        var row= results.rows.item(i);
-                        var htmlData = '<li id="'+row["id"]+'"><a href="#"><h2>'+row["title"]+'</h2><p class="ui-li-aside">'+row["start_date"]+'</p></a></li>';
-                        $("#activityList").append(htmlData).listview('refresh');
-                    }
-                    $.mobile.changePage($("#index"), { transition : "slide"});
-                    $.mobile.hidePageLoadingMsg();
-                }
- 
-                function errorCB(err){
- 
-                }      
-             
-                $("#addNewPage .error").html('').hide();
- 
-                $(".addNew").bind ("click", function (event){
-                    $("#addNewPage .error").html('').hide();
-                    $.mobile.changePage ($("#addNewPage"), { transition : "slide", reverse : true });
-                    $("#addNewPageHeader").html("Add New");
-                });
- 
-                $("#save").bind ("click", function (event){
-                	var len;
-                    var title = $.trim($("#title").val()).replace(/[^A-Za-z0-9 ]/g, '');
-                    var description = $.trim($("#description").val());
-                    var location = $.trim($("#location").val());
-                    var start_date = $.trim($("#start_date").val());
-                    var end_date = $.trim($("#end_date").val());
-                    var start_time = $.trim($("#start_time").val());
-                    var end_time = $.trim($("#end_time").val());
-                    var alert = $.trim($("#alert").val());
-                    console.log(title+' '+description+' '+location+' '+start_date+' '+end_date+' '+start_time+' '+end_time+' '+alert);
-=======
-                
->>>>>>> d15de9047186955a7fd19c0623754b53f352f135
-
-			// Wait for device API libraries to load
-		    //
-		    document.addEventListener("deviceready", onDeviceReady, false);
-
-		    // device APIs are available
-		    //
-		    function onDeviceReady() {
-		        // Empty
-		    }
-
-		    // Show a custom alert
-		    //
+				};             
 		    function showAlert() {
 		        navigator.notification.alert(
 		            'Activity about to Start!',  // message
