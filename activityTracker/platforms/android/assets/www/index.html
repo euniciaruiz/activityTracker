@@ -173,19 +173,17 @@
 							    var endTimeHour = endHours.toString();
 							    if (endHours < 10) endTimeHour = "0" + endTimeHour;
 								
-								if(start_date === end_date && parseInt(startTimeHour) <= parseInt(currentHour)) {
-			                    	$("#addNewPage .error").html('Since the starting date is today, the start time must be an hour or more ahead than the current hour').show();
+								if(start_date === end_date && parseInt(startTimeHour) >= parseInt(endTimeHour)) {
+		                    		$("#addNewPage .error").html('start time must be less than end time').show();
 								}
-								else if(start_date === end_date && parseInt(startTimeHour) >= parseInt(endTimeHour)) {
-			                    	$("#addNewPage .error").html('Since the starting date is today, the start time must be less than an hour or more than the current hour').show();
+								else if(start_date === end_date &&parseInt(startTimeHour) === parseInt(endTimeHour)){
+									$("#addNewPage .error").html('start time must not be equal to end time').show();
 								}
 								else if(Date.parse(start_date) > Date.parse(end_date)){
 									$("#addNewPage .error").html('Sorry, you cannot create an activity that ends before it starts.').show();
 								}
 								else{
-			                    	if(Date.parse(start_date) < Date.parse(end_date) && parseInt(startTimeHour) <= parseInt(currentHour)) {
-			                    		$("#addNewPage .error").html('Since the starting date is today, the start time must be an hour or more ahead than the current hour').show();
-									}			  	
+			                    			  	
 			                        resetForm();
 			 
 			                        var id = $("#id").val();
@@ -576,11 +574,11 @@
                 </div>
                 <div data-role="fieldcontain">
                     <label for="start_time">Start Time</label>
-					<input name="start_time" id="start_time" type="text" value="" data-role="datebox" data-options='{"mode":"timebox", "useNewStyle":true, "useFocus": true , "useButton": false}' />
+					<input name="start_time" id="start_time" type="text" value="" data-role="datebox" data-options='{"mode":"timebox", "useNewStyle":true, "notToday":true,"useFocus": true , "useButton": false}' />
                 </div>
                 <div data-role="fieldcontain">
                 	<label for="end_date">End Date</label>
-            		<input name="end_date" id="end_date" type="date" data-role="datebox" data-options='{"mode": "calbox", "closeCallback": "$(\"#end_time\").datebox(\"open\");"}'/>
+            		<input name="end_date" id="end_date" type="date" data-role="datebox" data-options='{"mode": "calbox","afterToday": true,"notToday":true, "closeCallback": "$(\"#end_time\").datebox(\"open\");"}'/>
                 </div>
                 <div data-role="fieldcontain">
                     <label for="end_time">End Time:</label>
