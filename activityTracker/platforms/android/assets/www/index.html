@@ -56,31 +56,38 @@
 	                function populateDB(tx){
 	                    //Create the table
 	                    //tx.executeSql('DROP TABLE IF EXISTS Activity');
-	                    var currDate = new Date();
-	                    var year = currDate.getFullYear();
-	                    var month = currDate.getMonth() + 1;
-	                    var day = currDate.getDate();
-	                    if(day < 10)
-	                    	day = "0"+dayNo;
-	                    var dateToday = year + "-" +month + "-" +dayToday;
 	                    
-	                    var hourNow = currDate.getHours();
-	                 
 	                    
 	                    tx.executeSql('CREATE TABLE IF NOT EXISTS Activity (id INTEGER PRIMARY KEY AUTOINCREMENT, \
 	                            title TEXT NOT NULL, description TEXT, location TEXT, start_date DATE, \
 	                            end_date DATE, start_time DATETIME, end_time DATETIME, alert TEXT NOT NULL)\
 	                             ');
-	                    tx.executeSql('SELECT * FROM Activity WHERE start_date >= ? ORDER BY start_date ASC', [dateToday], querySuccess, errorCB);
+	                    tx.executeSql('SELECT * FROM Activity WHERE start_date = ?', [dateToday], querySuccess, errorCB);
 	                    
 	                }
+	                /*date today global variable*/
+	                var currDate = new Date();
+	                    currDate.setDate(currDate.getDate())
+	                    var year = currDate.getFullYear();
+	                    var month = currDate.getMonth() + 1;
+	                    var day = currDate.getDate();
+	                    if(day < 10)
+	                    	day = "0"+day;
+	                    if(month < 10)
+	                    	month = "0"+month;
+	                    var dateToday = year + "-" +month + "-" +day;
+	                    
+						                  
+	                /*end of dateToday variable declaration*/
 	 
 	                function successCB(){
 	                    db.transaction(queryDB, errorCB);
 	                }
 	 
 	                function queryDB(tx){
-	                    tx.executeSql('SELECT * FROM Activity ORDER BY start_date', [], querySuccess, errorCB);
+	                	console.log(dateToday);
+	                	console.log(currDate);
+	                    tx.executeSql('SELECT * FROM Activity WHERE start_date > ? ORDER BY start_date', [dateToday], querySuccess, errorCB);
 	                }
 	 
 	                function querySuccess(tx, results){
