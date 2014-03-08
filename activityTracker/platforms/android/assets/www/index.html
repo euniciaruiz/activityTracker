@@ -341,17 +341,16 @@
 				    });
 				});
 
-                
                 var googleapi = {
-					setToken: function(data) {
-						//Cache the token
-					    localStorage.access_token = data.access_token;
-					    //Cache the refresh token, if there is one
-					    localStorage.refresh_token = data.refresh_token || localStorage.refresh_token;
-					    //Figure out when the token will expire by using the current
-					    //time, plus the valid time (in seconds), minus a 1 minute buffer
-					    var expiresAt = new Date().getTime() + parseInt(data.expires_in, 10) * 1000 - 60000;
-					    localStorage.expires_at = expiresAt;
+				    setToken: function(data) {
+				        //Cache the token
+				        localStorage.access_token = data.access_token;
+				        //Cache the refresh token, if there is one
+				        localStorage.refresh_token = data.refresh_token || localStorage.refresh_token;
+				        //Figure out when the token will expire by using the current
+				        //time, plus the valid time (in seconds), minus a 1 minute buffer
+				        var expiresAt = new Date().getTime() + parseInt(data.expires_in, 10) * 1000 - 60000;
+				        localStorage.expires_at = expiresAt;
 				    },
 				    authorize: function(options) {
 				        var deferred = $.Deferred();
@@ -391,7 +390,7 @@
 				                $.post('https://accounts.google.com/o/oauth2/token', {
 				                    code: code[1],
 				                    client_id: options.client_id,
-				                    //client_secret: options.client_secret,
+				                    client_secret: options.client_secret,
 				                    redirect_uri: options.redirect_uri,
 				                    grant_type: 'authorization_code'
 				                }).done(function(data) {
@@ -421,7 +420,7 @@
 				            $.post('https://accounts.google.com/o/oauth2/token', {
 				                refresh_token: localStorage.refresh_token,
 				                client_id: options.client_id,
-				                //client_secret: options.client_secret,
+				                client_secret: options.client_secret,
 				                grant_type: 'refresh_token'
 				            }).done(function(data) {
 				                googleapi.setToken(data);
@@ -439,11 +438,12 @@
 				        return $.getJSON('https://www.googleapis.com/oauth2/v1/userinfo', options);
 				    }
 				};
+				
                	var app = {
 				    client_id: '514402709288-kd7geunr7j37fpdpi85u911hbki8f679.apps.googleusercontent.com',
-				    //client_secret: 'J_AYbBvcZ-ZnFj6r-_ADSaPp',
+				    client_secret: 'J_AYbBvcZ-ZnFj6r-_ADSaPp',
 				    redirect_uri: 'http://localhost',
-				    scope: 'https://www.googleapis.com/auth/calendar.readonly',
+				    scope: 'https://www.googleapis.com/auth/calendar',
 				    
 				    init: function() {
 				        $('#login a').on('click', function() {
@@ -455,7 +455,7 @@
 				        //one using a refresh token.
 				        googleapi.getToken({
 				            client_id: this.client_id,
-				            //client_secret: this.client_secret
+				            client_secret: this.client_secret
 				        }).done(function() {
 				            //Show the greet view if we get a valid token
 				            app.showGreetView();
@@ -476,7 +476,7 @@
 				        //or by using the refresh token.
 				        googleapi.getToken({
 				            client_id: this.client_id,
-				            //client_secret: this.client_secret
+				            client_secret: this.client_secret
 				        }).then(function(data) {
 				            //Pass the token to the API call and return a new promise object
 				            return googleapi.userInfo({ access_token: data.access_token });
@@ -493,7 +493,7 @@
 				        //Show the consent page
 				        googleapi.authorize({
 				            client_id: this.client_id,
-				            //client_secret: this.client_secret,
+				            client_secret: this.client_secret,
 				            redirect_uri: this.redirect_uri,
 				            scope: this.scope
 				        }).done(function() {
@@ -504,7 +504,7 @@
 				            $('#login p').html(data.error);
 				        });
 				    }
-				};             
+				};         
 		    function showAlert() {
 		        navigator.notification.alert(
 		            'Activity about to Start!',  // message
