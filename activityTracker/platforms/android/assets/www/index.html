@@ -527,7 +527,31 @@
 		    }
 		    
 
-		    
+			//google calendar integration starts here
+
+			google.load("gdata", "2.x");
+		    google.setOnLoadCallback(getMyFeed);
+
+		    function setupMyService() {
+			  	myService = new google.gdata.calendar.CalendarService('activityTracker');
+			  	//logMeIn();
+			}
+
+			var feedUri = 'https://www.google.com/calendar/feeds/alberando.aljun@gmail.com/private/full'
+
+			function getMyFeed() {
+  				setupMyService();
+  				myService.getEventsFeed(feedUri, handleMyFeed, handleError);
+			}
+
+			function handleMyFeed(myResultsFeedRoot) {
+  				console.log("This feed's title is: " + myResultsFeedRoot.feed.getTitle().getText());
+			}
+
+			var handleError = function(error) {
+ 			 	console.log(error);
+			} 
+
 			var callback = function(result) {       
   
 			  // Obtain the array of CalendarEventEntry
