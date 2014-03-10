@@ -13,6 +13,7 @@
  			<script type="text/javascript" src="js/jqm-datebox.mode.datebox.min.js"></script>
  			<script type="text/javascript" src="js/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
  			<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+ 			<script type="text/javascript" src="http://www.google.com/jsapi"></script>
             <style>
             .error{
                 font-size: 0.8em;
@@ -55,7 +56,7 @@
 	 
 	                function populateDB(tx){
 	                    //Create the table
-	                    //tx.executeSql('DROP TABLE IF EXISTS Activity');
+	                    tx.executeSql('DROP TABLE IF EXISTS Activity');
 	                    
 	                    
 	                    tx.executeSql('CREATE TABLE IF NOT EXISTS Activity (id INTEGER PRIMARY KEY AUTOINCREMENT, \
@@ -421,7 +422,7 @@
 				            $.post('https://accounts.google.com/o/oauth2/token', {
 				                refresh_token: localStorage.refresh_token,
 				                client_id: options.client_id,
-				                //client_secret: options.client_secret,
+				                client_secret: options.client_secret,
 				                grant_type: 'refresh_token'
 				            }).done(function(data) {
 				                googleapi.setToken(data);
@@ -524,9 +525,31 @@
 		    function vibrate() {
 		        navigator.notification.vibrate(2000);
 		    }
+		    
 
-            </script>
-        </head>
+		    
+			var callback = function(result) {       
+  
+			  // Obtain the array of CalendarEventEntry
+			  	var entries = result.feed.entry;    
+			  
+			  // Print the total number of events
+			  	console.log('Total of ' + entries.length + ' event(s)');
+
+			  	for (var i = 0; i < entries.length; i++ ) {
+			   		var eventEntry = entries[i];
+			    	var eventTitle = eventEntry.getTitle().getText();
+			    	console.log('Event title = ' + eventTitle);
+			    	
+  				}    
+			}
+			
+			
+			</script>
+    	</head>
+    
+
+
     <body>
  		<!--Home page view -->
         < <div data-role="page" id="index">
