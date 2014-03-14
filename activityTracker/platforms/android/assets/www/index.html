@@ -28,11 +28,11 @@
             <script type="text/javascript" charset="utf-8">
              
 	            $(document).ready(function(){
-	 
+
 	                document.addEventListener("deviceready", onDeviceReady, false);
-	                 
+
 	                var db = window.openDatabase("Database", "1.0", "ActivityTracker", 200000);
-	 
+
 	                function onDeviceReady(){
 	                    //Populate the database
 	                    db.transaction(populateDB, errorCB, successCB);
@@ -53,18 +53,18 @@
 	                        db.transaction(queryDB, errorCB);
 	                    }
 	                }              
-	 
+
 	                function populateDB(tx){
 	                    //Create the table
 	                    tx.executeSql('DROP TABLE IF EXISTS Activity');
-	                    
-	                    
+
+
 	                    tx.executeSql('CREATE TABLE IF NOT EXISTS Activity (id INTEGER PRIMARY KEY AUTOINCREMENT, \
 	                            title TEXT NOT NULL, description TEXT, location TEXT, start_date DATE, \
 	                            end_date DATE, start_time DATETIME, end_time DATETIME, alert TEXT NOT NULL)\
 	                             ');
 	                    tx.executeSql('SELECT * FROM Activity WHERE start_date = ?', [dateToday], querySuccess, errorCB);
-	                    
+
 	                }
 	                /*date today global variable*/
 	                var currDate = new Date();
@@ -77,20 +77,20 @@
 	                    if(month < 10)
 	                    	month = "0"+month;
 	                    var dateToday = year + "-" +month + "-" +day;
-	                    
-						                  
+
+
 	                /*end of dateToday variable declaration*/
-	 
+
 	                function successCB(){
 	                    db.transaction(queryDB, errorCB);
 	                }
-	 
+
 	                function queryDB(tx){
 	                	console.log(dateToday);
 	                	console.log(currDate);
 	                    tx.executeSql('SELECT * FROM Activity WHERE start_date > ? ORDER BY start_date', [dateToday], querySuccess, errorCB);
 	                }
-	 
+
 	                function querySuccess(tx, results){
 	                    $.mobile.showPageLoadingMsg(true);
 	                    var len = results.rows.length;
@@ -103,19 +103,19 @@
 	                    $.mobile.changePage($("#index"), { transition : "slide"});
 	                    $.mobile.hidePageLoadingMsg();
 	                }
-	 
+
 	                function errorCB(err){
-	 
+
 	                }      
-	             
+
 	                $("#addNewPage .error").html('').hide();
-	 
+
 	                $(".addNew").bind ("click", function (event){
 	                    $("#addNewPage .error").html('').hide();
 	                    $.mobile.changePage ($("#addNewPage"), { transition : "slide", reverse : true });
 	                    $("#addNewPageHeader").html("Add New");
 	                });
-	 
+
 	                $("#save").bind ("click", function (event){
 	                	var len;
 	                    var title = $.trim($("#title").val()).replace(/[^A-Za-z0-9 ]/g, '');
@@ -133,7 +133,7 @@
 	                        	len = results.rows.length;
 	                        });
 	                    });
-	                    
+
 
 	                    if (title == ''){
 	                        $("#addNewPage .error").html("Please enter the activity title").show();
@@ -157,7 +157,7 @@
 		                    else {
 		                    	var currentDate = new Date();
 		                    	var currentHour = currentDate.getHours();
-		                    
+
 		                    	var startTime = $("#start_time").val();
 							    var startHours = Number(startTime.match(/^(\d+)/)[1]);
 							    var startAMPM = startTime.match(/\s(.*)$/)[1];
@@ -173,7 +173,7 @@
 							    if (endAMPM == "AM" && endHours == 12) endHours = endHours - 12;
 							    var endTimeHour = endHours.toString();
 							    if (endHours < 10) endTimeHour = "0" + endTimeHour;
-								
+
 								if(start_date === end_date && parseInt(startTimeHour) >= parseInt(endTimeHour)) {
 		                    		$("#addNewPage .error").html('start time must be less than end time').show();
 								}
@@ -184,9 +184,9 @@
 									$("#addNewPage .error").html('Sorry, you cannot create an activity that ends before it starts.').show();
 								}
 								else{
-			                    			  	
+
 			                        resetForm();
-			 
+
 			                        var id = $("#id").val();
 			                        $("#id").val('');
 			                        if (id == ''){  //Save
@@ -199,26 +199,26 @@
 			                            queryDB, errorCB); }); 
 	                                    console.log(title+' '+description+' '+location+' '+start_date+' '+end_date+' '+start_time+' '+end_time+' '+alert);
 			                        }
-			                        
+
 			                        db.transaction(queryDB, errorCB);
 			                    }
 							}
 	                    }                    
 	                });
-	                 
+
 	                $(".refresh").bind("click", function (event){
 	                    db.transaction(queryDB, errorCB);
 	                });
-	                 
+
 	                $(".back").bind("click", function (event){
 	                    resetForm();
 	                    db.transaction(queryDB, errorCB);
 	                });
-	                
+
 	                $(".signin").bind("click", function (event){
 	                    app.onLoginButtonClick();
 	                });
-	                 
+
 	                function resetForm(){
 	                    $("#addNewPage .error").html('').hide();
 	                    $("#addNewPage #title").val('');
@@ -231,7 +231,7 @@
 	                    $("#addNewPage #alert").val('');
 	                    $("#addNewPage #addNewPageHeader").html(''); 
 	                }
-	                 
+
 	                $("#index [data-role='content'] ul").on('tap taphold', 'li', function (event){
 	                    event.preventDefault();
 	                    event.stopImmediatePropagation();
@@ -281,14 +281,14 @@
 	                    	};
 	                    };
 	                });
-	 
+
 	                //Change the hidden field value when the popup is closed
 	                $('#actionList-popup').bind({
 	                    popupafterclose: function(event, ui){
 	                        $("#tapHoldCheck").val('');
 	                    }
 	                });
-	 
+
 	                $("#index [data-role='popup'] ul").on('click', 'li', function (event){
 	                    var action_liId = this.id.split('&');
 	                    var action = action_liId[0];
@@ -321,7 +321,7 @@
 	                        }     
 	                    }
 	                });
-	                 
+
 	                function onConfirm(buttonIndex, id){
 	                    if (buttonIndex === 1){ //Delete
 	                        db.transaction(function (tx){ tx.executeSql("DELETE FROM Activity WHERE id=?", [id], queryDB, errorCB); });
@@ -331,7 +331,7 @@
 	                    }
 	                }
 	            });
-	            
+
 	            $(document).on('pageinit', '#index', function(){ 
 				    $('#start_date').bind('datebox', function(e, p) {
 				        if ( p.method === 'set') {
@@ -355,7 +355,7 @@
 				    },
 				    authorize: function(options) {
 				        var deferred = $.Deferred();
-				
+
 				        //Build the OAuth consent page URL
 				        var authUrl = 'https://accounts.google.com/o/oauth2/auth?' + $.param({
 				            client_id: options.client_id,
@@ -363,10 +363,10 @@
 				            response_type: 'code',
 				            scope: options.scope
 				        });
-				
+
 				        //Open the OAuth consent page in the InAppBrowser
 				        var authWindow = window.open(authUrl, '_blank', 'location=no,toolbar=no');
-				
+
 				        //The recommendation is to use the redirect_uri "urn:ietf:wg:oauth:2.0:oob"
 				        //which sets the authorization code in the browser's title. However, we can't
 				        //access the title of the InAppBrowser.
@@ -380,12 +380,12 @@
 				            var url = e.originalEvent.url;
 				            var code = /\?code=(.+)$/.exec(url);
 				            var error = /\?error=(.+)$/.exec(url);
-				
+
 				            if (code || error) {
 				                //Always close the browser when match is found
 				                authWindow.close();
 				            }
-				
+
 				            if (code) {
 				                //Exchange the authorization code for an access token
 				                $.post('https://accounts.google.com/o/oauth2/token', {
@@ -407,12 +407,12 @@
 				                });
 				            }
 				        });
-				
+
 				        return deferred.promise();
 				    },
 				    getToken: function(options) {
 				        var deferred = $.Deferred();
-				
+
 				        if (new Date().getTime() < localStorage.expires_at) {
 				            deferred.resolve({
 				                access_token: localStorage.access_token
@@ -432,26 +432,25 @@
 				        } else {
 				            deferred.reject();
 				        }
-				
+
 				        return deferred.promise();
 				    },
 				    userInfo: function(options) {
 				        return $.getJSON('https://www.googleapis.com/oauth2/v1/userinfo', options);
 				    }
 				};
-				
+
                	var app = {
-				    client_id: '423494711912-rgn73jkhj0fgflu7og299l0pkaipfffd.apps.googleusercontent.com',
-				    client_secret: 'Qs_tScRboU3qKa8QJuuW_M7Q',
-				    redirect_uri: 'http://localhost',
-				    //scope: 'https://www.googleapis.com/auth/calendar',
-				    scope: 'https://www.googleapis.com/auth/userinfo.profile',
-				    
+				    client_id: '423494711912-dhjmdke2l529thnmr1ehd9os0euc8e4u.apps.googleusercontent.com',
+				    client_secret: 'j6Gg8IzzJRwiRmuKnf8GYx_F',
+				    redirect_uri: 'http://csc193.0fees.net',
+				    scope: 'https://www.googleapis.com/auth/calendar',
+
 				    init: function() {
 				        $('#login a').on('click', function() {
 				            app.onLoginButtonClick();
 				        });
-				
+
 				        //Check if we have a valid token
 				        //cached or if we can get a new
 				        //one using a refresh token.
@@ -473,7 +472,7 @@
 				    showGreetView: function() {
 				        $('#login').hide();
 				        $('#greet').show();
-				
+
 				        //Get the token, either from the cache
 				        //or by using the refresh token.
 				        googleapi.getToken({
@@ -526,7 +525,7 @@
 		    function vibrate() {
 		        navigator.notification.vibrate(2000);
 		    }
-		    
+
 
 			//google calendar integration starts here
 
@@ -557,7 +556,7 @@
   
 			  // Obtain the array of CalendarEventEntry
 			  	var entries = result.feed.entry;    
-			  
+
 			  // Print the total number of events
 			  	console.log('Total of ' + entries.length + ' event(s)');
 
@@ -565,11 +564,11 @@
 			   		var eventEntry = entries[i];
 			    	var eventTitle = eventEntry.getTitle().getText();
 			    	console.log('Event title = ' + eventTitle);
-			    	
+
   				}    
 			}
-			
-			
+
+
 			</script>
     	</head>
     
