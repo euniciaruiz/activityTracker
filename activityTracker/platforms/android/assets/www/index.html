@@ -13,6 +13,7 @@
  			<script type="text/javascript" src="js/jqm-datebox.mode.datebox.min.js"></script>
  			<script type="text/javascript" src="js/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
  			<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+ 			<script type="text/javascript" src="http://www.google.com/jsapi"></script>
             <style>
             .error{
                 font-size: 0.8em;
@@ -55,7 +56,11 @@
 
 	                function populateDB(tx){
 	                    //Create the table
+<<<<<<< HEAD
 	                    //tx.executeSql('DROP TABLE IF EXISTS Activity');
+=======
+	                    tx.executeSql('DROP TABLE IF EXISTS Activity');
+>>>>>>> 3e22105d5aa5b79d1960dffecf71945a04086591
 
 
 	                    tx.executeSql('CREATE TABLE IF NOT EXISTS Activity (id INTEGER PRIMARY KEY AUTOINCREMENT, \
@@ -75,7 +80,11 @@
 	                    	day = "0"+day;
 	                    if(month < 10)
 	                    	month = "0"+month;
+<<<<<<< HEAD
 	                    var dateToday = month + "-" +day + "-" +year;
+=======
+	                    var dateToday = year + "-" +month + "-" +day;
+>>>>>>> 3e22105d5aa5b79d1960dffecf71945a04086591
 
 
 	                /*end of dateToday variable declaration*/
@@ -172,7 +181,7 @@
 							    if (endAMPM == "AM" && endHours == 12) endHours = endHours - 12;
 							    var endTimeHour = endHours.toString();
 							    if (endHours < 10) endTimeHour = "0" + endTimeHour;
-								
+
 								if(start_date === end_date && parseInt(startTimeHour) >= parseInt(endTimeHour)) {
 		                    		$("#addNewPage .error").html('start time must be less than end time').show();
 								}
@@ -183,7 +192,7 @@
 									$("#addNewPage .error").html('Sorry, you cannot create an activity that ends before it starts.').show();
 								}
 								else{
-			                    			  	
+
 			                        resetForm();
 
 			                        var id = $("#id").val();
@@ -341,17 +350,16 @@
 				    });
 				});
 
-                
                 var googleapi = {
-					setToken: function(data) {
-						//Cache the token
-					    localStorage.access_token = data.access_token;
-					    //Cache the refresh token, if there is one
-					    localStorage.refresh_token = data.refresh_token || localStorage.refresh_token;
-					    //Figure out when the token will expire by using the current
-					    //time, plus the valid time (in seconds), minus a 1 minute buffer
-					    var expiresAt = new Date().getTime() + parseInt(data.expires_in, 10) * 1000 - 60000;
-					    localStorage.expires_at = expiresAt;
+				    setToken: function(data) {
+				        //Cache the token
+				        localStorage.access_token = data.access_token;
+				        //Cache the refresh token, if there is one
+				        localStorage.refresh_token = data.refresh_token || localStorage.refresh_token;
+				        //Figure out when the token will expire by using the current
+				        //time, plus the valid time (in seconds), minus a 1 minute buffer
+				        var expiresAt = new Date().getTime() + parseInt(data.expires_in, 10) * 1000 - 60000;
+				        localStorage.expires_at = expiresAt;
 				    },
 				    authorize: function(options) {
 				        var deferred = $.Deferred();
@@ -391,7 +399,7 @@
 				                $.post('https://accounts.google.com/o/oauth2/token', {
 				                    code: code[1],
 				                    client_id: options.client_id,
-				                    //client_secret: options.client_secret,
+				                    client_secret: options.client_secret,
 				                    redirect_uri: options.redirect_uri,
 				                    grant_type: 'authorization_code'
 				                }).done(function(data) {
@@ -421,7 +429,7 @@
 				            $.post('https://accounts.google.com/o/oauth2/token', {
 				                refresh_token: localStorage.refresh_token,
 				                client_id: options.client_id,
-				                //client_secret: options.client_secret,
+				                client_secret: options.client_secret,
 				                grant_type: 'refresh_token'
 				            }).done(function(data) {
 				                googleapi.setToken(data);
@@ -439,11 +447,19 @@
 				        return $.getJSON('https://www.googleapis.com/oauth2/v1/userinfo', options);
 				    }
 				};
+
                	var app = {
+<<<<<<< HEAD
 				    client_id: '514402709288-kd7geunr7j37fpdpi85u911hbki8f679.apps.googleusercontent.com',
 				    //client_secret: 'J_AYbBvcZ-ZnFj6r-_ADSaPp',
 				    redirect_uri: 'http://localhost',
 				    scope: 'https://www.googleapis.com/auth/calendar.readonly',
+=======
+				    client_id: '423494711912-dhjmdke2l529thnmr1ehd9os0euc8e4u.apps.googleusercontent.com',
+				    client_secret: 'j6Gg8IzzJRwiRmuKnf8GYx_F',
+				    redirect_uri: 'http://csc193.0fees.net/Standard.html',
+				    scope: 'https://www.googleapis.com/auth/calendar',
+>>>>>>> 3e22105d5aa5b79d1960dffecf71945a04086591
 
 				    init: function() {
 				        $('#login a').on('click', function() {
@@ -455,7 +471,7 @@
 				        //one using a refresh token.
 				        googleapi.getToken({
 				            client_id: this.client_id,
-				            //client_secret: this.client_secret
+				            client_secret: this.client_secret
 				        }).done(function() {
 				            //Show the greet view if we get a valid token
 				            app.showGreetView();
@@ -476,7 +492,7 @@
 				        //or by using the refresh token.
 				        googleapi.getToken({
 				            client_id: this.client_id,
-				            //client_secret: this.client_secret
+				            client_secret: this.client_secret
 				        }).then(function(data) {
 				            //Pass the token to the API call and return a new promise object
 				            return googleapi.userInfo({ access_token: data.access_token });
@@ -493,7 +509,7 @@
 				        //Show the consent page
 				        googleapi.authorize({
 				            client_id: this.client_id,
-				            //client_secret: this.client_secret,
+				            client_secret: this.client_secret,
 				            redirect_uri: this.redirect_uri,
 				            scope: this.scope
 				        }).done(function() {
@@ -504,7 +520,7 @@
 				            $('#login p').html(data.error);
 				        });
 				    }
-				};             
+				};         
 		    function showAlert() {
 		        navigator.notification.alert(
 		            'Activity about to Start!',  // message
@@ -525,8 +541,54 @@
 		        navigator.notification.vibrate(2000);
 		    }
 
-            </script>
-        </head>
+
+			//google calendar integration starts here
+
+			google.load("gdata", "2.x");
+		    google.setOnLoadCallback(getMyFeed);
+
+		    function setupMyService() {
+			  	myService = new google.gdata.calendar.CalendarService('activityTracker');
+			  	//logMeIn();
+			}
+
+			var feedUri = 'https://www.google.com/calendar/feeds/alberando.aljun@gmail.com/private/full'
+
+			function getMyFeed() {
+  				setupMyService();
+  				myService.getEventsFeed(feedUri, handleMyFeed, handleError);
+			}
+
+			function handleMyFeed(myResultsFeedRoot) {
+  				console.log("This feed's title is: " + myResultsFeedRoot.feed.getTitle().getText());
+			}
+
+			var handleError = function(error) {
+ 			 	console.log(error);
+			} 
+
+			var callback = function(result) {       
+  
+			  // Obtain the array of CalendarEventEntry
+			  	var entries = result.feed.entry;    
+
+			  // Print the total number of events
+			  	console.log('Total of ' + entries.length + ' event(s)');
+
+			  	for (var i = 0; i < entries.length; i++ ) {
+			   		var eventEntry = entries[i];
+			    	var eventTitle = eventEntry.getTitle().getText();
+			    	console.log('Event title = ' + eventTitle);
+
+  				}    
+			}
+
+
+			</script>
+    	</head>
+    
+
+
     <body>
  		<!--Home page view -->
         < <div data-role="page" id="index">
