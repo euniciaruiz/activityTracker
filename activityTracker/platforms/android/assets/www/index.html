@@ -56,11 +56,9 @@
 
 	                function populateDB(tx){
 	                    //Create the table
-<<<<<<< HEAD
+
 	                    //tx.executeSql('DROP TABLE IF EXISTS Activity');
-=======
-	                    tx.executeSql('DROP TABLE IF EXISTS Activity');
->>>>>>> 3e22105d5aa5b79d1960dffecf71945a04086591
+
 
 
 	                    tx.executeSql('CREATE TABLE IF NOT EXISTS Activity (id INTEGER PRIMARY KEY AUTOINCREMENT, \
@@ -80,11 +78,8 @@
 	                    	day = "0"+day;
 	                    if(month < 10)
 	                    	month = "0"+month;
-<<<<<<< HEAD
+
 	                    var dateToday = month + "-" +day + "-" +year;
-=======
-	                    var dateToday = year + "-" +month + "-" +day;
->>>>>>> 3e22105d5aa5b79d1960dffecf71945a04086591
 
 
 	                /*end of dateToday variable declaration*/
@@ -449,17 +444,12 @@
 				};
 
                	var app = {
-<<<<<<< HEAD
+
 				    client_id: '514402709288-kd7geunr7j37fpdpi85u911hbki8f679.apps.googleusercontent.com',
 				    //client_secret: 'J_AYbBvcZ-ZnFj6r-_ADSaPp',
 				    redirect_uri: 'http://localhost',
 				    scope: 'https://www.googleapis.com/auth/calendar.readonly',
-=======
-				    client_id: '423494711912-dhjmdke2l529thnmr1ehd9os0euc8e4u.apps.googleusercontent.com',
-				    client_secret: 'j6Gg8IzzJRwiRmuKnf8GYx_F',
-				    redirect_uri: 'http://csc193.0fees.net/Standard.html',
-				    scope: 'https://www.googleapis.com/auth/calendar',
->>>>>>> 3e22105d5aa5b79d1960dffecf71945a04086591
+
 
 				    init: function() {
 				        $('#login a').on('click', function() {
