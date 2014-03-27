@@ -206,16 +206,22 @@
 			                        db.transaction(queryDB, errorCB);
 			                    }
 
-			                    var now                  = new Date().getTime(),
-								    _60_seconds_from_now = new Date(now + 14*1000);
+			                    console.log(start_time+' aasdasdasdjahskdhaskdhaksjd');
+			                    if(alert=="Yes"){
 
-								window.plugin.notification.local.add({
-								    id:      1,
-								    title:   title,
-								    message: 'Your Activity is about to start!',
-								    //repeat:  'weekly',
-								    date:    _60_seconds_from_now
-								});
+			                    	var now                  = new Date().getTime(),
+								    _60_seconds_from_now = new Date(now + 5*1000);
+
+									console.log(now+' nooooooooooooooooooow');
+									console.log(_60_seconds_from_now+' aasdasdasdjahskdhaskdhaksjd');
+									window.plugin.notification.local.add({
+									    id:      1,
+									    title:   title,
+									    message: 'Your Activity is about to start!',
+									    //repeat:  'weekly',
+									    date:    _60_seconds_from_now
+									});
+			                    }
 							}
 	                    }                    
 	                });
