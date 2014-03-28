@@ -473,25 +473,8 @@
 										var eyear = edateObj.getUTCFullYear();
 										start_date = smonth+1 + "/" + sday + "/" + syear;
 										end_date = emonth+1 + "/" + eday + "/" + eyear;
-<<<<<<< HEAD
-							}
-=======
+							        	
 
-										// Time
-										var shour = sdateObj.getUTCHours();
-										var smin = sdateObj.getUTCMinutes();
-										var ehour = edateObj.getUTCHours();
-										var emin = edateObj.getUTCMinutes();
-										start_time = shour + ":" + smin;
-										end_time = ehour + ":" + emin;
-										
-										var d = new Date();
-										var dateToday = (d.getMonth() + 1) + "/" + d.getDay() + "/" + d.getFullYear();
-										// Query
-										if (Date.parse(start_date) >= Date.parse(dateToday)) {						
-							            	tx.executeSql("INSERT INTO Activity (title, description, location, start_date, end_date, start_time, end_time, alert) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [user.items[i].summary, user.items[i].description, user.items[i].location, start_date, end_date, start_time, end_time, "yes"], queryDB, errorCB);
-							        	}
->>>>>>> 6fa0b835a1919e97e98595fa68ae1b4b4b210ee6
 							        }
 							    });
 					        	db.transaction(queryDB, errorCB);
