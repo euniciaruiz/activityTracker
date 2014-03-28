@@ -19,6 +19,7 @@
         <plugin name="App" value="org.apache.cordova.App" />
         <plugin name="Device" value="org.apache.cordova.Device" />
         <plugin name="Storage" value="org.apache.cordova.Storage" />
+        <plugin name="de.appplant.cordova.plugin.local-notification" />
     </plugins>
     <feature name="Vibration">
         <param name="android-package" value="org.apache.cordova.vibration.Vibration" />
@@ -28,5 +29,11 @@
     </feature>
     <feature name="InAppBrowser">
         <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
+    </feature>
+    <feature name="Device">
+        <param name="android-package" value="org.apache.cordova.device.Device" />
+    </feature>
+    <feature name="LocalNotification">
+        <param name="android-package" value="de.appplant.cordova.plugin.localnotification.LocalNotification" />
     </feature>
 </widget>
