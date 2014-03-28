@@ -473,8 +473,31 @@
 										var eyear = edateObj.getUTCFullYear();
 										start_date = smonth+1 + "/" + sday + "/" + syear;
 										end_date = emonth+1 + "/" + eday + "/" + eyear;
-							        	
 
+										// Time
+										var shour = sdateObj.getUTCHours();
+										var smin = sdateObj.getUTCMinutes();
+										var ehour = edateObj.getUTCHours();
+										var emin = edateObj.getUTCMinutes();
+
+										if(smin < 10)
+										{
+											smin = "0" + smin;
+										}
+										if(emin < 10)
+										{
+											emin = "0" + emin;
+										}
+										start_time = shour + ":" + smin;
+										end_time = ehour + ":" + emin;
+										
+										var d = new Date();
+										var dateToday = (d.getMonth() + 1) + "/" + d.getDay() + "/" + d.getFullYear();
+										// Query
+										if (Date.parse(start_date) >= Date.parse(dateToday)) {						
+							            	tx.executeSql("INSERT INTO Activity (title, description, location, start_date, end_date, start_time, end_time, alert) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [user.items[i].summary, user.items[i].description, user.items[i].location, start_date, end_date, start_time, end_time, "yes"], queryDB, errorCB);
+							        	}
+							        	
 							        }
 							    });
 					        	db.transaction(queryDB, errorCB);
@@ -535,48 +558,8 @@
 		        navigator.notification.vibrate(2000);
 		    }
 
-
-			//google calendar integration starts here
-
-			google.load("gdata", "2.x");
-		    google.setOnLoadCallback(getMyFeed);
-
-		    function setupMyService() {
-			  	myService = new google.gdata.calendar.CalendarService('activityTracker');
-			  	//logMeIn();
-			}
-
-			var feedUri = 'https://www.google.com/calendar/feeds/alberando.aljun@gmail.com/private/full'
-
-			function getMyFeed() {
-  				setupMyService();
-  				myService.getEventsFeed(feedUri, handleMyFeed, handleError);
-			}
-
-			function handleMyFeed(myResultsFeedRoot) {
-  				console.log("This feed's title is: " + myResultsFeedRoot.feed.getTitle().getText());
-			}
-
-			var handleError = function(error) {
- 			 	console.log(error);
-			} 
-
-			var callback = function(result) {       
-  
-			  // Obtain the array of CalendarEventEntry
-			  	var entries = result.feed.entry;    
-
-			  // Print the total number of events
-			  	console.log('Total of ' + entries.length + ' event(s)');
-
-			  	for (var i = 0; i < entries.length; i++ ) {
-			   		var eventEntry = entries[i];
-			    	var eventTitle = eventEntry.getTitle().getText();
-			    	console.log('Event title = ' + eventTitle);
-
-  				}    
-			}
-
+			
+			
 			window.plugin.notification.local.add({
 			    id:         String,  // A unique id of the notifiction
 			    date:       Date,    // This expects a date object
