@@ -455,7 +455,25 @@
 					            //Pass the token to the API call and return a new promise object
 					            return googleapi.userInfo({ access_token: data.access_token});
 					        }).done(function(user) {
-						        // code here
+						        db.transaction(function (tx) {
+							        for (var i in user.items) {
+							        	// Date
+										var sdateObj = new Date(user.items[i].start.dateTime);
+										var edateObj = new Date(user.items[i].end.dateTime);
+										sdateObj = new Date(sdateObj.getTime() + (sdateObj.getTimezoneOffset() * 60000 ));
+										edateObj = new Date(edateObj.getTime() + (edateObj.getTimezoneOffset() * 60000 ));
+					        			var smonth = sdateObj.getUTCMonth();
+										var sday = sdateObj.getUTCDate();
+										var syear = sdateObj.getUTCFullYear();
+										var emonth = edateObj.getUTCMonth();
+										var eday = edateObj.getUTCDate();
+										var eyear = edateObj.getUTCFullYear();
+										start_date = smonth+1 + "/" + sday + "/" + syear;
+										end_date = emonth+1 + "/" + eday + "/" + eyear;
+							}
+							        }
+							    });
+					        	db.transaction(queryDB, errorCB);
 					        }).fail(function() {
 					            //If getting the token fails, or the token has been
 					            //revoked, show the login view.
