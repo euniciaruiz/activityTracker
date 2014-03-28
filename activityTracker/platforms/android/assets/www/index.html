@@ -90,7 +90,6 @@
 		            });
 
 		            $("#save").bind ("click", function (event) {
-		             	var len;
 		                var title = $.trim($("#title").val()).replace(/[^A-Za-z0-9 ]/g, '');
 		                var description = $.trim($("#description").val());
 		                var location = $.trim($("#location").val());
@@ -101,12 +100,6 @@
 		                var alert = $.trim($("#alert").val());
 		                
 		                console.log(title+' '+description+' '+location+' '+start_date+' '+end_date+' '+start_time+' '+end_time+' '+alert);
-
-						db.transaction(function (tx){
-		                    tx.executeSql("SELECT * FROM Activity WHERE title=?;", [title], function (tx, results){
-		                        len = results.rows.length;
-		                    });
-		                });
 
 
 		                if (title == ''){
@@ -124,9 +117,6 @@
 			                }
 			                else if (end_time == ''){
 			                    $("#addNewPage .error").html('Please enter the ending time of the activity.').show();
-			                }
-			                else if (len == 0){
-			                    $("#addNewPage .error").html('Activity already exists.').show();
 			                }
 			                else {
 			                    var currentDate = new Date();
@@ -163,22 +153,35 @@
 				                    var id = $("#id").val();
 				                    $("#id").val('');
 				                    if (id == ''){  //Save
-				                        db.transaction(function (tx){ tx.executeSql("INSERT INTO Activity (title, description, location, start_date, end_date, start_time, end_time, alert) VALUES  (?, ?, ?, ?, ?, ?, ?, ?)",[title, description, location, start_date, end_date, start_time, end_time, alert],
-				                        queryDB, errorCB); }); 
+				                    	var len;
+
+						                db.transaction(function (tx){
+					                        tx.executeSql("SELECT title FROM Activity WHERE title=?;", [title], function (tx, results){
+					                            len = results.rows.length;
+					                            console.log(len);
+					                            
+					                            if (len >= 1){
+								                    $("#addNewPage .error").html('Activity already exists.').show();
+								                } else {
+							                        db.transaction(function (tx){ tx.executeSql("INSERT INTO Activity (title, description, location, start_date, end_date, start_time, end_time, alert) VALUES  (?, ?, ?, ?, ?, ?, ?, ?)",[title, description, location, start_date, end_date, start_time, end_time, alert], queryDB, errorCB); });
+							                        db.transaction(queryDB, errorCB);
+							                    }
+					                        });
+					                    });
 				                    }
 									else{   //Update
 		                                console.log("start update");
 				                        db.transaction(function (tx){ tx.executeSql("UPDATE Activity SET title=?, description=?, location=?, start_date=?, end_date=?, start_time=?, end_time=?, alert=? WHERE id=? ",[title, description, location, start_date, end_date, start_time, end_time, alert, id],
 				                            queryDB, errorCB); }); 
 		                                console.log(title+' '+description+' '+location+' '+start_date+' '+end_date+' '+start_time+' '+end_time+' '+alert);
+		                                db.transaction(queryDB, errorCB);
 				                    }
-			                        db.transaction(queryDB, errorCB);
 			                    }
 
 			                    console.log(start_time+' aasdasdasdjahskdhaskdhaksjd');
 			                    if(alert=="Yes"){
 
-			                    	var now                  = new Date().getTime(),
+			                    	var now = new Date().getTime(),
 								    _60_seconds_from_now = new Date(now + 5*1000);
 
 									console.log(now+' nooooooooooooooooooow');
@@ -470,7 +473,25 @@
 										var eyear = edateObj.getUTCFullYear();
 										start_date = smonth+1 + "/" + sday + "/" + syear;
 										end_date = emonth+1 + "/" + eday + "/" + eyear;
+<<<<<<< HEAD
 							}
+=======
+
+										// Time
+										var shour = sdateObj.getUTCHours();
+										var smin = sdateObj.getUTCMinutes();
+										var ehour = edateObj.getUTCHours();
+										var emin = edateObj.getUTCMinutes();
+										start_time = shour + ":" + smin;
+										end_time = ehour + ":" + emin;
+										
+										var d = new Date();
+										var dateToday = (d.getMonth() + 1) + "/" + d.getDay() + "/" + d.getFullYear();
+										// Query
+										if (Date.parse(start_date) >= Date.parse(dateToday)) {						
+							            	tx.executeSql("INSERT INTO Activity (title, description, location, start_date, end_date, start_time, end_time, alert) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [user.items[i].summary, user.items[i].description, user.items[i].location, start_date, end_date, start_time, end_time, "yes"], queryDB, errorCB);
+							        	}
+>>>>>>> 6fa0b835a1919e97e98595fa68ae1b4b4b210ee6
 							        }
 							    });
 					        	db.transaction(queryDB, errorCB);

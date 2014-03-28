@@ -26,7 +26,11 @@ module.exports = [
         "id": "org.apache.cordova.inappbrowser.inappbrowser",
         "clobbers": [
             "window.open"
+<<<<<<< HEAD
 	]
+=======
+        ]
+>>>>>>> 6fa0b835a1919e97e98595fa68ae1b4b4b210ee6
     },
     {
         "file": "plugins/de.appplant.cordova.plugin.local-notification/www/local-notification.js",
