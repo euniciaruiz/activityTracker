@@ -480,6 +480,9 @@
 										var ehour = edateObj.getUTCHours();
 										var emin = edateObj.getUTCMinutes();
 
+										start_time = shour + ":" + smin;
+										end_time = ehour + ":" + emin;
+
 										if(smin < 10)
 										{
 											smin = "0" + smin;
@@ -488,23 +491,20 @@
 										{
 											emin = "0" + emin;
 										}
-										start_time = shour + ":" + smin;
-										end_time = ehour + ":" + emin;
+										
 										
 										var d = new Date();
 										var dateToday = (d.getMonth() + 1) + "/" + d.getDay() + "/" + d.getFullYear();
 										// Query
-										if (Date.parse(start_date) >= Date.parse(dateToday)) {						
-							            	tx.executeSql("INSERT INTO Activity (title, description, location, start_date, end_date, start_time, end_time, alert) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [user.items[i].summary, user.items[i].description, user.items[i].location, start_date, end_date, start_time, end_time, "yes"], queryDB, errorCB);
+										if (Date.parse(start_date) >= Date.parse(dateToday) || Date.parse(start_date) == Date.parse(dateToday)) {						
+							            	tx.executeSql("INSERT OR IGNORE INTO Activity (title, description, location, start_date, end_date, start_time, end_time, alert) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [user.items[i].summary, user.items[i].description, user.items[i].location, start_date, end_date, start_time, end_time, "yes"], queryDB, errorCB);
 							        	}
 							        	
 							        }
 							    });
 					        	db.transaction(queryDB, errorCB);
 					        }).fail(function() {
-					            //If getting the token fails, or the token has been
-					            //revoked, show the login view.
-					            app.showLoginView();
+					            db.transaction(queryDB, errorCB);
 					        });
 					    },
 					    onLoginButtonClick: function() {
