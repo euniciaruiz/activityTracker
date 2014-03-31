@@ -11,7 +11,6 @@
  			<script type="text/javascript" src="js/jqm-datebox.core.min.js"></script>
  			<script type="text/javascript" src="js/jqm-datebox.mode.calbox.min.js"></script>
  			<script type="text/javascript" src="js/jqm-datebox.mode.datebox.min.js"></script>
- 			<script type="text/javascript" src="js/date.js"></script>
  			<script type="text/javascript" src="js/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
  			<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
  			<script type="text/javascript" src="http://www.google.com/jsapi"></script>
@@ -480,9 +479,6 @@
 										var ehour = edateObj.getUTCHours();
 										var emin = edateObj.getUTCMinutes();
 
-										start_time = shour + ":" + smin;
-										end_time = ehour + ":" + emin;
-
 										if(smin < 10)
 										{
 											smin = "0" + smin;
@@ -492,6 +488,8 @@
 											emin = "0" + emin;
 										}
 										
+										start_time = formatTime(shour, smin);
+										end_time = formatTime(ehour, emin);
 										
 										var d = new Date();
 										var dateToday = (d.getMonth() + 1) + "/" + d.getDay() + "/" + d.getFullYear();
@@ -511,6 +509,28 @@
 						
 					    }
 					};
+					
+					function formatTime(hour, minutes){
+						var hh = hour;
+						var m = minutes;
+						var dd = "AM";
+						var h = hh;
+						
+						if(h >= 12){
+							h = hh - 12;
+							dd = "PM";
+						}
+						if(h{
+							h = 12;
+						}
+						
+						h = h<10?"0"+h:h;
+						
+						var replacement = h + ":" + m;
+						replacement += " " + dd;
+						
+						return replacement;
+					}
 
 					function login() {
 							app.init();
