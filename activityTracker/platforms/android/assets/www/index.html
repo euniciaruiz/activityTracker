@@ -48,7 +48,7 @@
 
 		            function populateDB(tx){
 		            	tx.executeSql('CREATE TABLE IF NOT EXISTS Activity (id INTEGER PRIMARY KEY AUTOINCREMENT, \
-		                            title TEXT NOT NULL, description TEXT, location TEXT, start_date DATE, \
+		                            title TEXT UNIQUE NOT NULL, description TEXT, location TEXT, start_date DATE, \
 		                            end_date DATE, start_time DATETIME, end_time DATETIME, alert TEXT NOT NULL)\
 		                            ');
 		                tx.executeSql('SELECT * FROM Activity', [], querySuccess, errorCB);
@@ -175,24 +175,19 @@
 		                                console.log(title+' '+description+' '+location+' '+start_date+' '+end_date+' '+start_time+' '+end_time+' '+alert);
 		                                db.transaction(queryDB, errorCB);
 				                    }
-			                    }
 
-			                    console.log(start_time+' aasdasdasdjahskdhaskdhaksjd');
-			                    if(alert=="Yes"){
+				                    if(alert=="Yes"){
+									    _60_seconds_from_now = new Date(start_date);
 
-			                    	var now = new Date().getTime(),
-								    _60_seconds_from_now = new Date(now + 5*1000);
-
-									console.log(now+' nooooooooooooooooooow');
-									console.log(_60_seconds_from_now+' aasdasdasdjahskdhaskdhaksjd');
-									window.plugin.notification.local.add({
-									    id:      1,
-									    title:   title,
-									    message: 'Your Activity is about to start!',
-									    //repeat:  'weekly',
-									    date:    _60_seconds_from_now
-									});
-			                    }
+										window.plugin.notification.local.add({
+										    id:      1,
+										    title:   title,
+										    message: 'Your Activity is about to start!',
+										    //repeat:  'weekly',
+										    date:    _60_seconds_from_now
+										});
+				                    }
+			                    }			                    
 							}
 	                    }                    
 	                });
@@ -412,10 +407,7 @@
 
 					        return deferred.promise();
 					    },
-					    userInfo: function(options) {
-					    	var d = new Date();
-							var n = d.toISOString();
-					        //return $.getJSON('https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=' + n + '&access_token=' + options.access_token);
+					    calendarEvent: function(options) {
 					        return $.getJSON('https://www.googleapis.com/calendar/v3/calendars/primary/events', options);
 					    }
 					};
@@ -424,29 +416,8 @@
 					    client_secret: 'F7wz2T8FjEiGJ6kc23QgnB8o',
 					    redirect_uri: "http://localhost",
 					    scope: 'https://www.googleapis.com/auth/calendar',
-					    init: function() {
-					        $('#login a .test').on('click', function() {
-					            app.onLoginButtonClick();
-					        });
-					        //Check if we have a valid token
-					        //cached or if we can get a new
-					        //one using a refresh token.
-					        googleapi.getToken({
-					            client_id: this.client_id,
-					            client_secret: this.client_secret
-					        }).done(function() {
-					            //Show the greet view if we get a valid token
-					            app.showGreetView();
-					        }).fail(function() {
-					            //Show the login view if we have no valid token
-					            app.showLoginView();
-					        });
-					    },
-					    showLoginView: function() {
-					        $('#login').show();
-					        
-					    },
-					    showGreetView: function() {
+					    
+					    integrate: function() {
 					        $('#login').hide();
 					         //Get the token, either from the cache
 					        //or by using the refresh token.
@@ -455,7 +426,7 @@
 					            client_secret: this.client_secret
 					        }).then(function(data) {
 					            //Pass the token to the API call and return a new promise object
-					            return googleapi.userInfo({ access_token: data.access_token});
+					            return googleapi.calendarEvent({ access_token: data.access_token});
 					        }).done(function(user) {
 						        db.transaction(function (tx) {
 							        for (var i in user.items) {
@@ -492,7 +463,7 @@
 										end_time = formatTime(ehour, emin);
 										
 										var d = new Date();
-										var dateToday = (d.getMonth() + 1) + "/" + d.getDay() + "/" + d.getFullYear();
+										var dateToday = (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear();
 										// Query
 										if (Date.parse(start_date) >= Date.parse(dateToday) || Date.parse(start_date) == Date.parse(dateToday)) {						
 							            	tx.executeSql("INSERT OR IGNORE INTO Activity (title, description, location, start_date, end_date, start_time, end_time, alert) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [user.items[i].summary, user.items[i].description, user.items[i].location, start_date, end_date, start_time, end_time, "yes"], queryDB, errorCB);
@@ -504,9 +475,6 @@
 					        }).fail(function() {
 					            db.transaction(queryDB, errorCB);
 					        });
-					    },
-					    onLoginButtonClick: function() {
-						
 					    }
 					};
 					
@@ -520,7 +488,7 @@
 							h = hh - 12;
 							dd = "PM";
 						}
-						if(h{
+						if(h == 0) {
 							h = 12;
 						}
 						
@@ -533,7 +501,6 @@
 					}
 
 					function login() {
-							app.init();
 					        //Show the consent page
 					      	googleapi.authorize({
 								client_id: '423494711912-lakme09m8jf2ueu14jfacr5u86il95pm.apps.googleusercontent.com',
@@ -542,43 +509,13 @@
 								scope: 'https://www.googleapis.com/auth/calendar'
 					        }).done(function() {
 					            //Show the greet view if access is granted
-					            app.showGreetView();
+					            app.integrate();
 					        }).fail(function(data) {
 					            //Show an error message if access was denied
 					            $('#login p').html(data.error);
 					        });
 					}
-					function logout() {
-					    		var ref = window.open('https://mail.google.com/mail/u/0/?logout&hl=en', '_blank', 'location=yes');
-					            ref.addEventListener('loadstop', function() {ref.close(); });	
-								$('.master').css("display","none");
-								$('.lout').css("display","none");
-								$('#login').css("display","block");
-								
-					}
 			});
-    
-		    function showAlert() {
-		        navigator.notification.alert(
-		            'Activity about to Start!',  // message
-		            '',            // title
-		            'Reminder!'                  // buttonName
-		        );
-		    }
-
-		    // Beep three times
-		    //
-		    function playBeep() {
-		        navigator.notification.beep(3);
-		    }
-
-		    // Vibrate for 2 seconds
-		    //
-		    function vibrate() {
-		        navigator.notification.vibrate(2000);
-		    }
-
-			
 			
 			window.plugin.notification.local.add({
 			    id:         String,  // A unique id of the notifiction
