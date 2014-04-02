@@ -510,6 +510,7 @@
 					        }).done(function() {
 					            //Show the greet view if access is granted
 					            app.integrate();
+					            checkLogin(true);
 					        }).fail(function(data) {
 					            //Show an error message if access was denied
 					            $('#login p').html(data.error);
@@ -517,6 +518,15 @@
 					}
 			});
 			
+			function checkLogin(status) {
+				var myStatus = status;
+
+				if(myStatus==true) {
+					document.getElementById("account").innerHTML="Account";
+				}
+
+			}
+
 			window.plugin.notification.local.add({
 			    id:         String,  // A unique id of the notifiction
 			    date:       Date,    // This expects a date object
@@ -538,7 +548,7 @@
  		<!--Home page view -->
         <div data-role="page" id="index">
             <div data-role="header" data-position="fixed">
-                <a href="#" class="signin" data-role="button" data-theme="a" title="Refresh">Sign In</a>
+                <a href="#" id="account" class="signin" data-role="button" data-theme="a" value="Sign in">Sign in</a>
                 <h1>Upcoming Activities</h1>
                 <a href="#" class="addNew" data-role="button" data-icon="add" data-theme="a" title="Add New">Add</a>
             </div>

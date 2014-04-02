@@ -11,7 +11,6 @@
  			<script type="text/javascript" src="js/jqm-datebox.core.min.js"></script>
  			<script type="text/javascript" src="js/jqm-datebox.mode.calbox.min.js"></script>
  			<script type="text/javascript" src="js/jqm-datebox.mode.datebox.min.js"></script>
- 			<script type="text/javascript" src="js/date.js"></script>
  			<script type="text/javascript" src="js/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
  			<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
  			<script type="text/javascript" src="http://www.google.com/jsapi"></script>
@@ -49,7 +48,7 @@
 
 		            function populateDB(tx){
 		            	tx.executeSql('CREATE TABLE IF NOT EXISTS Activity (id INTEGER PRIMARY KEY AUTOINCREMENT, \
-		                            title TEXT NOT NULL, description TEXT, location TEXT, start_date DATE, \
+		                            title TEXT UNIQUE NOT NULL, description TEXT, location TEXT, start_date DATE, \
 		                            end_date DATE, start_time DATETIME, end_time DATETIME, alert TEXT NOT NULL)\
 		                            ');
 		                tx.executeSql('SELECT * FROM Activity', [], querySuccess, errorCB);
@@ -90,7 +89,6 @@
 		            });
 
 		            $("#save").bind ("click", function (event) {
-		             	var len;
 		                var title = $.trim($("#title").val()).replace(/[^A-Za-z0-9 ]/g, '');
 		                var description = $.trim($("#description").val());
 		                var location = $.trim($("#location").val());
@@ -101,12 +99,6 @@
 		                var alert = $.trim($("#alert").val());
 		                
 		                console.log(title+' '+description+' '+location+' '+start_date+' '+end_date+' '+start_time+' '+end_time+' '+alert);
-
-						db.transaction(function (tx){
-		                    tx.executeSql("SELECT * FROM Activity WHERE title=?;", [title], function (tx, results){
-		                        len = results.rows.length;
-		                    });
-		                });
 
 
 		                if (title == ''){
@@ -124,9 +116,6 @@
 			                }
 			                else if (end_time == ''){
 			                    $("#addNewPage .error").html('Please enter the ending time of the activity.').show();
-			                }
-			                else if (len == 0){
-			                    $("#addNewPage .error").html('Activity already exists.').show();
 			                }
 			                else {
 			                    var currentDate = new Date();
@@ -163,34 +152,42 @@
 				                    var id = $("#id").val();
 				                    $("#id").val('');
 				                    if (id == ''){  //Save
-				                        db.transaction(function (tx){ tx.executeSql("INSERT INTO Activity (title, description, location, start_date, end_date, start_time, end_time, alert) VALUES  (?, ?, ?, ?, ?, ?, ?, ?)",[title, description, location, start_date, end_date, start_time, end_time, alert],
-				                        queryDB, errorCB); }); 
+				                    	var len;
+
+						                db.transaction(function (tx){
+					                        tx.executeSql("SELECT title FROM Activity WHERE title=?;", [title], function (tx, results){
+					                            len = results.rows.length;
+					                            console.log(len);
+					                            
+					                            if (len >= 1){
+								                    $("#addNewPage .error").html('Activity already exists.').show();
+								                } else {
+							                        db.transaction(function (tx){ tx.executeSql("INSERT INTO Activity (title, description, location, start_date, end_date, start_time, end_time, alert) VALUES  (?, ?, ?, ?, ?, ?, ?, ?)",[title, description, location, start_date, end_date, start_time, end_time, alert], queryDB, errorCB); });
+							                        db.transaction(queryDB, errorCB);
+							                    }
+					                        });
+					                    });
 				                    }
 									else{   //Update
 		                                console.log("start update");
 				                        db.transaction(function (tx){ tx.executeSql("UPDATE Activity SET title=?, description=?, location=?, start_date=?, end_date=?, start_time=?, end_time=?, alert=? WHERE id=? ",[title, description, location, start_date, end_date, start_time, end_time, alert, id],
 				                            queryDB, errorCB); }); 
 		                                console.log(title+' '+description+' '+location+' '+start_date+' '+end_date+' '+start_time+' '+end_time+' '+alert);
+		                                db.transaction(queryDB, errorCB);
 				                    }
-			                        db.transaction(queryDB, errorCB);
-			                    }
 
-			                    console.log(start_time+' aasdasdasdjahskdhaskdhaksjd');
-			                    if(alert=="Yes"){
+				                    if(alert=="Yes"){
+									    _60_seconds_from_now = new Date(start_date);
 
-			                    	var now                  = new Date().getTime(),
-								    _60_seconds_from_now = new Date(now + 5*1000);
-
-									console.log(now+' nooooooooooooooooooow');
-									console.log(_60_seconds_from_now+' aasdasdasdjahskdhaskdhaksjd');
-									window.plugin.notification.local.add({
-									    id:      1,
-									    title:   title,
-									    message: 'Your Activity is about to start!',
-									    //repeat:  'weekly',
-									    date:    _60_seconds_from_now
-									});
-			                    }
+										window.plugin.notification.local.add({
+										    id:      1,
+										    title:   title,
+										    message: 'Your Activity is about to start!',
+										    //repeat:  'weekly',
+										    date:    _60_seconds_from_now
+										});
+				                    }
+			                    }			                    
 							}
 	                    }                    
 	                });
@@ -410,10 +407,7 @@
 
 					        return deferred.promise();
 					    },
-					    userInfo: function(options) {
-					    	var d = new Date();
-							var n = d.toISOString();
-					        //return $.getJSON('https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=' + n + '&access_token=' + options.access_token);
+					    calendarEvent: function(options) {
 					        return $.getJSON('https://www.googleapis.com/calendar/v3/calendars/primary/events', options);
 					    }
 					};
@@ -422,29 +416,8 @@
 					    client_secret: 'F7wz2T8FjEiGJ6kc23QgnB8o',
 					    redirect_uri: "http://localhost",
 					    scope: 'https://www.googleapis.com/auth/calendar',
-					    init: function() {
-					        $('#login a .test').on('click', function() {
-					            app.onLoginButtonClick();
-					        });
-					        //Check if we have a valid token
-					        //cached or if we can get a new
-					        //one using a refresh token.
-					        googleapi.getToken({
-					            client_id: this.client_id,
-					            client_secret: this.client_secret
-					        }).done(function() {
-					            //Show the greet view if we get a valid token
-					            app.showGreetView();
-					        }).fail(function() {
-					            //Show the login view if we have no valid token
-					            app.showLoginView();
-					        });
-					    },
-					    showLoginView: function() {
-					        $('#login').show();
-					        
-					    },
-					    showGreetView: function() {
+					    
+					    integrate: function() {
 					        $('#login').hide();
 					         //Get the token, either from the cache
 					        //or by using the refresh token.
@@ -453,22 +426,81 @@
 					            client_secret: this.client_secret
 					        }).then(function(data) {
 					            //Pass the token to the API call and return a new promise object
-					            return googleapi.userInfo({ access_token: data.access_token});
+					            return googleapi.calendarEvent({ access_token: data.access_token});
 					        }).done(function(user) {
-						        // code here
+						        db.transaction(function (tx) {
+							        for (var i in user.items) {
+							        	// Date
+										var sdateObj = new Date(user.items[i].start.dateTime);
+										var edateObj = new Date(user.items[i].end.dateTime);
+										sdateObj = new Date(sdateObj.getTime() + (sdateObj.getTimezoneOffset() * 60000 ));
+										edateObj = new Date(edateObj.getTime() + (edateObj.getTimezoneOffset() * 60000 ));
+					        			var smonth = sdateObj.getUTCMonth();
+										var sday = sdateObj.getUTCDate();
+										var syear = sdateObj.getUTCFullYear();
+										var emonth = edateObj.getUTCMonth();
+										var eday = edateObj.getUTCDate();
+										var eyear = edateObj.getUTCFullYear();
+										start_date = smonth+1 + "/" + sday + "/" + syear;
+										end_date = emonth+1 + "/" + eday + "/" + eyear;
+
+										// Time
+										var shour = sdateObj.getUTCHours();
+										var smin = sdateObj.getUTCMinutes();
+										var ehour = edateObj.getUTCHours();
+										var emin = edateObj.getUTCMinutes();
+
+										if(smin < 10)
+										{
+											smin = "0" + smin;
+										}
+										if(emin < 10)
+										{
+											emin = "0" + emin;
+										}
+										
+										start_time = formatTime(shour, smin);
+										end_time = formatTime(ehour, emin);
+										
+										var d = new Date();
+										var dateToday = (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear();
+										// Query
+										if (Date.parse(start_date) >= Date.parse(dateToday) || Date.parse(start_date) == Date.parse(dateToday)) {						
+							            	tx.executeSql("INSERT OR IGNORE INTO Activity (title, description, location, start_date, end_date, start_time, end_time, alert) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [user.items[i].summary, user.items[i].description, user.items[i].location, start_date, end_date, start_time, end_time, "yes"], queryDB, errorCB);
+							        	}
+							        	
+							        }
+							    });
+					        	db.transaction(queryDB, errorCB);
 					        }).fail(function() {
-					            //If getting the token fails, or the token has been
-					            //revoked, show the login view.
-					            app.showLoginView();
+					            db.transaction(queryDB, errorCB);
 					        });
-					    },
-					    onLoginButtonClick: function() {
-						
 					    }
 					};
+					
+					function formatTime(hour, minutes){
+						var hh = hour;
+						var m = minutes;
+						var dd = "AM";
+						var h = hh;
+						
+						if(h >= 12){
+							h = hh - 12;
+							dd = "PM";
+						}
+						if(h == 0) {
+							h = 12;
+						}
+						
+						h = h<10?"0"+h:h;
+						
+						var replacement = h + ":" + m;
+						replacement += " " + dd;
+						
+						return replacement;
+					}
 
 					function login() {
-							app.init();
 					        //Show the consent page
 					      	googleapi.authorize({
 								client_id: '423494711912-lakme09m8jf2ueu14jfacr5u86il95pm.apps.googleusercontent.com',
@@ -477,84 +509,14 @@
 								scope: 'https://www.googleapis.com/auth/calendar'
 					        }).done(function() {
 					            //Show the greet view if access is granted
-					            app.showGreetView();
+					            app.integrate();
 					        }).fail(function(data) {
 					            //Show an error message if access was denied
 					            $('#login p').html(data.error);
 					        });
 					}
-					function logout() {
-					    		var ref = window.open('https://mail.google.com/mail/u/0/?logout&hl=en', '_blank', 'location=yes');
-					            ref.addEventListener('loadstop', function() {ref.close(); });	
-								$('.master').css("display","none");
-								$('.lout').css("display","none");
-								$('#login').css("display","block");
-								
-					}
 			});
-    
-		    function showAlert() {
-		        navigator.notification.alert(
-		            'Activity about to Start!',  // message
-		            '',            // title
-		            'Reminder!'                  // buttonName
-		        );
-		    }
-
-		    // Beep three times
-		    //
-		    function playBeep() {
-		        navigator.notification.beep(3);
-		    }
-
-		    // Vibrate for 2 seconds
-		    //
-		    function vibrate() {
-		        navigator.notification.vibrate(2000);
-		    }
-
-
-			//google calendar integration starts here
-
-			google.load("gdata", "2.x");
-		    google.setOnLoadCallback(getMyFeed);
-
-		    function setupMyService() {
-			  	myService = new google.gdata.calendar.CalendarService('activityTracker');
-			  	//logMeIn();
-			}
-
-			var feedUri = 'https://www.google.com/calendar/feeds/alberando.aljun@gmail.com/private/full'
-
-			function getMyFeed() {
-  				setupMyService();
-  				myService.getEventsFeed(feedUri, handleMyFeed, handleError);
-			}
-
-			function handleMyFeed(myResultsFeedRoot) {
-  				console.log("This feed's title is: " + myResultsFeedRoot.feed.getTitle().getText());
-			}
-
-			var handleError = function(error) {
- 			 	console.log(error);
-			} 
-
-			var callback = function(result) {       
-  
-			  // Obtain the array of CalendarEventEntry
-			  	var entries = result.feed.entry;    
-
-			  // Print the total number of events
-			  	console.log('Total of ' + entries.length + ' event(s)');
-
-			  	for (var i = 0; i < entries.length; i++ ) {
-			   		var eventEntry = entries[i];
-			    	var eventTitle = eventEntry.getTitle().getText();
-			    	console.log('Event title = ' + eventTitle);
-
-  				}    
-			}
-
+			
 			window.plugin.notification.local.add({
 			    id:         String,  // A unique id of the notifiction
 			    date:       Date,    // This expects a date object
@@ -576,7 +538,7 @@
  		<!--Home page view -->
         <div data-role="page" id="index">
             <div data-role="header" data-position="fixed">
-                <a href="#" class="signin" data-role="button" data-theme="a" title="Refresh">Sign In</a>
+                <a href="#" class="signin" data-role="button" data-theme="a" title="Refresh">Change User</a>
                 <h1>Upcoming Activities</h1>
                 <a href="#" class="addNew" data-role="button" data-icon="add" data-theme="a" title="Add New">Add</a>
             </div>
