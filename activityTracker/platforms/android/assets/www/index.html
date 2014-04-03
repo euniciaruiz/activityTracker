@@ -14,7 +14,7 @@
  			<script type="text/javascript" src="js/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
  			<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
  			<script type="text/javascript" src="http://www.google.com/jsapi"></script>
-            <style>
+ 			<style>
             .error{
                 font-size: 0.8em;
                 border: 1px solid;
@@ -30,7 +30,7 @@
 		        	document.addEventListener("deviceready", onDeviceReady, false);
 
 		            var db = window.openDatabase("Database", "1.0", "ActivityTracker", 200000);
-
+		            var resource;
 		            function onDeviceReady(){
 		                db.transaction(populateDB, errorCB, successCB);
 		                document.addEventListener('backbutton', onBack, false);
@@ -163,9 +163,40 @@
 								                    $("#addNewPage .error").html('Activity already exists.').show();
 								                } else {
 							                        db.transaction(function (tx){ tx.executeSql("INSERT INTO Activity (title, description, location, start_date, end_date, start_time, end_time, alert) VALUES  (?, ?, ?, ?, ?, ?, ?, ?)",[title, description, location, start_date, end_date, start_time, end_time, alert], queryDB, errorCB); });
+<<<<<<< HEAD
 							                        db.transaction(queryDB, errorCB);
 
 							                        
+=======
+
+							                        /*var startDateTime = 2014-04-08 + "T" + 18:00 + ":00+08:00";
+							                        var endDateTime = 2014-04-08 + "T" + 18:00 + ":00+08:00";
+							                        var time = $("#starttime").val();
+													var hours = Number(time.match(/^(\d+)/)[1]);
+													var minutes = Number(time.match(/:(\d+)/)[1]);
+													var AMPM = time.match(/\s(.*)$/)[1];
+													if(AMPM == "PM" && hours<12) hours = hours+12;
+													if(AMPM == "AM" && hours==12) hours = hours-12;
+													var sHours = hours.toString();
+													var sMinutes = minutes.toString();
+													if(hours<10) sHours = "0" + sHours;
+													if(minutes<10) sMinutes = "0" + sMinutes;
+													alert(sHours + ":" + sMinutes);*/
+							                        resource = {
+													  "summary": title,
+													  "description": description,
+													  "location": location,
+													  "start": {
+													    "dateTime": "2014-04-07T18:00:00+08:00"
+													  },
+													  "end": {
+													    "dateTime": "2014-04-08T18:00:00+08:00"
+													  }
+													};
+
+													app.addEvent();
+													db.transaction(queryDB, errorCB);
+>>>>>>> 88488da06fd02a543859dbad8cda882556c8124e
 							                    }
 					                        });
 					                    });
@@ -475,6 +506,27 @@
 							    });
 					        	db.transaction(queryDB, errorCB);
 					        }).fail(function() {
+					            db.transaction(queryDB, errorCB);
+					        });
+					    },
+					    addEvent: function() {
+					        $('#login').hide();
+					         //Get the token, either from the cache
+					        //or by using the refresh token.
+					        googleapi.getToken({
+					            client_id: this.client_id,
+					            client_secret: this.client_secret
+					        }).done(function(data) {
+					        	var url = "https://www.googleapis.com/calendar/v3/calendars/primary/events?access_token=" + data.access_token;
+					            $.ajax({
+								    type: 'POST',
+								    url: url,
+								    data: JSON.stringify(resource), // or JSON.stringify ({name: 'jonas'}),
+								    success: function(data) { console.log('data: ' + data); },
+								    contentType: "application/json",
+								    dataType: 'json'
+								});           
+						    }).fail(function() {
 					            db.transaction(queryDB, errorCB);
 					        });
 					    }
