@@ -131,6 +131,9 @@
 
 		                //end of format date
 		                
+		                var finalStartDate = start_year+"-"+start_month+"-"+start_day;
+		                var finalEndDate = end_year+"-"+end_month+"-"+end_day;
+
 		                console.log(title+' '+description+' '+location+' '+start_date+' '+end_date+' '+start_time+' '+end_time+' '+alert);
 
 
@@ -176,7 +179,8 @@
 								if (endHours < 10) endTimeHour = "0" + endTimeHour;
 								if (endMinutes < 10) endTimeMinutes = "0" + endTimeMinutes;
 
-
+								var finalStartTime = startTimeHour+ ":" +startTimeMinutes;
+								var finalEndTime = endTimeHour + ":" +endTimeMinutes;	
 								if(start_date === end_date && parseInt(startTimeHour) >= parseInt(endTimeHour)) {
 			                    	$("#addNewPage .error").html('start time must be less than end time').show();
 								}
@@ -204,19 +208,21 @@
 								                } else {
 							                        db.transaction(function (tx){ tx.executeSql("INSERT INTO Activity (title, description, location, start_date, end_date, start_time, end_time, alert) VALUES  (?, ?, ?, ?, ?, ?, ?, ?)",[title, description, location, start_date, end_date, start_time, end_time, alert], queryDB, errorCB); });
 
-							                        
+							                        var finalStartDateTime = finalStartDate + "T" +finalStartTime+ ":00+08:00";
+							                        var finalEndDateTime = finalEndDate + "T" + finalEndTime + ":00+08:00";
 							                        resource = {
 													  "summary": title,
 													  "description": description,
 													  "location": location,
 													  "start": {
-													    "dateTime": "2014-04-07T18:00:00+08:00"
+													    "dateTime": finalStartDateTime
 													  },
 													  "end": {
-													    "dateTime": "2014-04-08T18:00:00+08:00"
+													    "dateTime": finalEndDateTime
 													  }
 													};
-
+													console.log(finalStartDateTime);
+													console.log(finalEndDateTime);
 													app.addEvent();
 													db.transaction(queryDB, errorCB);
 							                    }
