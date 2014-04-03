@@ -164,6 +164,8 @@
 								                } else {
 							                        db.transaction(function (tx){ tx.executeSql("INSERT INTO Activity (title, description, location, start_date, end_date, start_time, end_time, alert) VALUES  (?, ?, ?, ?, ?, ?, ?, ?)",[title, description, location, start_date, end_date, start_time, end_time, alert], queryDB, errorCB); });
 							                        db.transaction(queryDB, errorCB);
+
+							                        
 							                    }
 					                        });
 					                    });
