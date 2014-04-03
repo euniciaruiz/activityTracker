@@ -97,6 +97,39 @@
 		                var start_time = $.trim($("#start_time").val());
 		                var end_time = $.trim($("#end_time").val());
 		                var alert = $.trim($("#alert").val());
+
+		                //format date
+		                var startDate = new Date(start_date);
+		                var start_day = startDate.getDate();
+		                if(start_day < 10)
+		                {
+		                	start_day = "0" + start_day;
+		                }
+
+		                var start_month = startDate.getMonth()+1;
+		                if(start_month < 10)
+		                {
+		                	start_month = "0" + start_month;
+		                }
+		                var start_year = startDate.getFullYear();
+		                 console.log(start_year+"-"+start_month+"-"+start_day);
+
+		                var endDate = new Date(end_date);
+		                var end_day = endDate.getDate();
+		                if(end_day < 10)
+		                {
+		                	end_day = "0" + end_day;
+		                }
+
+		                var end_month = endDate.getMonth()+1;
+		                if(end_month < 10)
+		                {
+		                	end_month = "0" + end_month;
+		                }
+		                var end_year = endDate.getFullYear();
+		                 console.log("End Date: " + end_year+"-"+end_month+"-"+end_day);
+
+		                //end of format date
 		                
 		                console.log(title+' '+description+' '+location+' '+start_date+' '+end_date+' '+start_time+' '+end_time+' '+alert);
 
